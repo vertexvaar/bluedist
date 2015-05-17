@@ -19,7 +19,7 @@ class Router {
 	/**
 	 * @var array[][]
 	 */
-	protected $configuration = array();
+	protected $configuration = [];
 
 	/**
 	 * @throws \Exception

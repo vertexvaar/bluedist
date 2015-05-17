@@ -11,9 +11,9 @@ class Response {
 	/**
 	 * @var array
 	 */
-	protected $headers = array(
+	protected $headers = [
 		'Content-Type' => 'text/html; charset=utf-8',
-	);
+	];
 
 	/**
 	 * @var string

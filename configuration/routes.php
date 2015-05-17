@@ -2,17 +2,17 @@
 
 use VerteXVaaR\BlueSprints\Http\RequestInterface;
 
-return array(
+return [
 	// safe methods
-	RequestInterface::HTTP_METHOD_GET => array(
-		'.*' => array(
+	RequestInterface::HTTP_METHOD_GET => [
+		'.*' => [
 			'controller' => '\\VerteXVaaR\\BlueSprints\\Controller\\Frontend',
-			'action' => 'show'
-		),
-	),
-	RequestInterface::HTTP_METHOD_HEAD => array(),
+			'action' => 'show',
+		],
+	],
+	RequestInterface::HTTP_METHOD_HEAD => [],
 	// not safe methods
-	RequestInterface::HTTP_METHOD_POST => array(),
-	RequestInterface::HTTP_METHOD_PUT => array(),
-	RequestInterface::HTTP_METHOD_DELETE => array(),
-);
+	RequestInterface::HTTP_METHOD_POST => [],
+	RequestInterface::HTTP_METHOD_PUT => [],
+	RequestInterface::HTTP_METHOD_DELETE => [],
+];

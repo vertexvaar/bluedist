@@ -34,7 +34,7 @@ class RequestHandler {
 		$controller = new $routeConfiguration['controller'];
 		$controller->setRequest($request);
 		$controller->setResponse($response);
-		call_user_func(array($controller, $routeConfiguration['action']));
+		call_user_func([$controller, $routeConfiguration['action']]);
 		return $response;
 	}
 }
