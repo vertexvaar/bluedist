@@ -1,0 +1,20 @@
+{
+    "name": "vertexvaar/bluesprints",
+    "description": "BlueSprints is a small experimental PHP Project",
+    "version": "0.0.0-alpha",
+    "type": "project",
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Oliver Eglseder",
+            "email": "bluesprints@vxvr.de",
+            "homepage": "http://vxvr.de/",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "VerteXVaaR\\BlueSprints": "src/"
+        }
+    }
+}
