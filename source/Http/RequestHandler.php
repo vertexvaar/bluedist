@@ -31,9 +31,7 @@ class RequestHandler {
 		$routeConfiguration = $this->router->findMatchingRouteForRequest($request);
 		$response = new Response();
 		/** @var AbstractController $controller */
-		$controller = new $routeConfiguration['controller'];
-		$controller->setRequest($request);
-		$controller->setResponse($response);
+		$controller = new $routeConfiguration['controller']($request, $response);
 		call_user_func([$controller, $routeConfiguration['action']]);
 		return $response;
 	}

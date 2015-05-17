@@ -22,36 +22,24 @@ class Files {
 	 * @param string $fileName
 	 * @return mixed
 	 */
-	static public function includeFile($fileName = '') {
+	static public function requireOnceFile($fileName = '', $variables = array()) {
 		$absoluteFilePath = self::getAbsoluteFilePath($fileName);
-		return include($absoluteFilePath);
-	}
-
-	/**
-	 * @param string $fileName
-	 * @return mixed
-	 */
-	static public function requireFile($fileName = '') {
-		$absoluteFilePath = self::getAbsoluteFilePath($fileName);
-		return require($absoluteFilePath);
-	}
-
-	/**
-	 * @param string $fileName
-	 * @return mixed
-	 */
-	static public function includeOnceFile($fileName = '') {
-		$absoluteFilePath = self::getAbsoluteFilePath($fileName);
-		return include_once($absoluteFilePath);
-	}
-
-	/**
-	 * @param string $fileName
-	 * @return mixed
-	 */
-	static public function requireOnceFile($fileName = '') {
-		$absoluteFilePath = self::getAbsoluteFilePath($fileName);
+		foreach ($variables as $variableName => $variable) {
+			$$variableName = $variable;
+		}
 		return require_once($absoluteFilePath);
+	}
+
+	/**
+	 * @param string $fileName
+	 * @return mixed
+	 */
+	static public function requireFile($fileName = '', $variables = array()) {
+		$absoluteFilePath = self::getAbsoluteFilePath($fileName);
+		foreach ($variables as $variableName => $variable) {
+			$$variableName = $variable;
+		}
+		return require($absoluteFilePath);
 	}
 
 	/**

@@ -3,6 +3,7 @@ namespace VerteXVaaR\BlueSprints\Controller;
 
 use VerteXVaaR\BlueSprints\Http\Request;
 use VerteXVaaR\BlueSprints\Http\Response;
+use VerteXVaaR\BlueSprints\View\TemplateRenderer;
 
 /**
  * Class AbstractController
@@ -22,19 +23,26 @@ abstract class AbstractController {
 	protected $response = NULL;
 
 	/**
+	 * @var TemplateRenderer
+	 */
+	protected $templateRenderer = NULL;
+
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 * @return AbstractController
+	 */
+	final public function __construct(Request $request, Response $response) {
+		$this->request = $request;
+		$this->response = $response;
+		$this->templateRenderer = new TemplateRenderer($this->response);
+	}
+
+	/**
 	 * @return Request
 	 */
 	public function getRequest() {
 		return $this->request;
-	}
-
-	/**
-	 * @param Request $request
-	 * @return AbstractController
-	 */
-	public function setRequest($request) {
-		$this->request = $request;
-		return $this;
 	}
 
 	/**
@@ -44,12 +52,4 @@ abstract class AbstractController {
 		return $this->response;
 	}
 
-	/**
-	 * @param Response $response
-	 * @return AbstractController
-	 */
-	public function setResponse($response) {
-		$this->response = $response;
-		return $this;
-	}
 }

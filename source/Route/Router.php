@@ -39,13 +39,13 @@ class Router {
 	 * @throws \Exception
 	 */
 	public function findMatchingRouteForRequest(Request $request) {
-		$requestUri = $request->getRequestUri();
+		$path = $request->getPath();
 		foreach ($this->configuration[$request->getMethod()] as $pattern => $possibleRoute) {
-			if (preg_match('~' . $pattern . '~', $requestUri)) {
+			if (preg_match('~^' . $pattern . '$~', $path)) {
 				return $possibleRoute;
 			}
 		}
-		throw new \Exception('Could not resolve a route for "' . $requestUri . '"', 1431887428);
+		throw new \Exception('Could not resolve a route for path "' . $path . '"', 1431887428);
 	}
 
 }
