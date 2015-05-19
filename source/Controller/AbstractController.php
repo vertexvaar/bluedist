@@ -52,4 +52,12 @@ abstract class AbstractController {
 		return $this->response;
 	}
 
+	/**
+	 * @param string $url
+	 * @return void
+	 */
+	protected function redirect($url = '') {
+		$this->response->setHeader('Location', $url);
+	}
+
 }

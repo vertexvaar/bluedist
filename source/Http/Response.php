@@ -52,4 +52,12 @@ class Response {
 		$this->content .= $content;
 	}
 
+	/**
+	 * @param string $key
+	 * @param string $value
+	 * @return void
+	 */
+	public function setHeader($key = '', $value = '') {
+		$this->headers[$key] = $value;
+	}
 }

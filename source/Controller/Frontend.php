@@ -1,6 +1,8 @@
 <?php
 namespace VerteXVaaR\BlueSprints\Controller;
 
+use VerteXVaaR\BlueSprints\Model\Person;
+
 /**
  * Class Frontend
  *
@@ -30,4 +32,40 @@ class Frontend extends AbstractController {
 		$this->templateRenderer->render('Frontend/Hello');
 	}
 
+	/**
+	 * @return void
+	 */
+	public function listPerson() {
+		$this->templateRenderer->setVariable('persons', Person::findAll());
+		$this->templateRenderer->render('Frontend/ListPersons');
+	}
+
+	/**
+	 * @return void
+	 */
+	public function newPerson() {
+		$this->templateRenderer->render('Frontend/NewPerson');
+	}
+
+	/**
+	 * @return void
+	 */
+	public function createPerson() {
+		$person = new Person();
+		$person->setFirstName($this->request->getArgument('firstName'));
+		$person->setLastName($this->request->getArgument('lastName'));
+		$person->save();
+		$this->redirect('listPerson');
+	}
+
+	/**
+	 * @return void
+	 */
+	public function showPerson() {
+		$this->templateRenderer->setVariable(
+			'person',
+			Person::findByUuid($this->request->getArgument('person'))
+		);
+		$this->templateRenderer->render('Frontend/ShowPerson');
+	}
 }
