@@ -1,16 +1,17 @@
 <?php
 
+use VerteXVaaR\BlueSprints\Controller\Frontend;
 use VerteXVaaR\BlueSprints\Http\RequestInterface;
 
 return [
 	// safe methods
 	RequestInterface::HTTP_METHOD_GET => [
 		'/hello' => [
-			'controller' => '\\VerteXVaaR\\BlueSprints\\Controller\\Frontend',
+			'controller' => Frontend::class,
 			'action' => 'hello',
 		],
 		'.*' => [
-			'controller' => '\\VerteXVaaR\\BlueSprints\\Controller\\Frontend',
+			'controller' => Frontend::class,
 			'action' => 'show',
 		],
 	],
