@@ -19,7 +19,7 @@ class Request {
 	protected $path = '';
 
 	/**
-	 * @var array
+	 * @var string[]
 	 */
 	protected $arguments = [];
 
@@ -86,10 +86,18 @@ class Request {
 	}
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 * @return string
 	 */
-	public function getArgument($key) {
+	public function getArgument($key = '') {
 		return $this->arguments[$key];
+	}
+
+	/**
+	 * @param string $key
+	 * @return bool
+	 */
+	public function hasArgument($key = '') {
+		return array_key_exists($key, $this->arguments);
 	}
 }
