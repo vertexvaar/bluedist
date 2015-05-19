@@ -21,7 +21,12 @@ class Frontend extends AbstractController {
 	 * @return void
 	 */
 	public function hello() {
-		$this->templateRenderer->setVariable('name', $this->request->getArgument('name'));
+		if ($this->request->hasArgument('name')) {
+			$name = $this->request->getArgument('name');
+		} else {
+			$name = '[noname]';
+		}
+		$this->templateRenderer->setVariable('name', $name);
 		$this->templateRenderer->render('Frontend/Hello');
 	}
 
