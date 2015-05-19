@@ -20,6 +20,7 @@ class Files {
 
 	/**
 	 * @param string $fileName
+	 * @param array $variables
 	 * @return mixed
 	 */
 	static public function requireOnceFile($fileName = '', $variables = array()) {
@@ -32,6 +33,7 @@ class Files {
 
 	/**
 	 * @param string $fileName
+	 * @param array $variables
 	 * @return mixed
 	 */
 	static public function requireFile($fileName = '', $variables = array()) {
