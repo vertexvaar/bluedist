@@ -45,10 +45,10 @@ class Response {
 	}
 
 	/**
-	 * @param $content
+	 * @param string $content
 	 * @return void
 	 */
-	public function appendContent($content) {
+	public function appendContent($content = '') {
 		$this->content .= $content;
 	}
 

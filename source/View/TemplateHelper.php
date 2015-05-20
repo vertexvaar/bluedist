@@ -16,7 +16,7 @@ class TemplateHelper {
 	protected $fileName = '';
 
 	/**
-	 * @var array
+	 * @var array[]
 	 */
 	protected $variables = [];
 
@@ -25,7 +25,7 @@ class TemplateHelper {
 	 * @param array $variables
 	 * @return void
 	 */
-	public function requireLayout($fileName = '', $variables = []) {
+	public function requireLayout($fileName = '', array $variables = []) {
 		$this->fileName = $fileName;
 		$this->variables = $variables;
 	}

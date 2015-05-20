@@ -23,7 +23,7 @@ class Files {
 	 * @param array $variables
 	 * @return mixed
 	 */
-	static public function requireOnceFile($fileName = '', $variables = array()) {
+	static public function requireOnceFile($fileName = '', array $variables = []) {
 		$absoluteFilePath = self::getAbsoluteFilePath($fileName);
 		foreach ($variables as $variableName => $variable) {
 			$$variableName = $variable;
@@ -36,7 +36,7 @@ class Files {
 	 * @param array $variables
 	 * @return mixed
 	 */
-	static public function requireFile($fileName = '', $variables = array()) {
+	static public function requireFile($fileName = '', array $variables = []) {
 		$absoluteFilePath = self::getAbsoluteFilePath($fileName);
 		foreach ($variables as $variableName => $variable) {
 			$$variableName = $variable;

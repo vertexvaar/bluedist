@@ -80,7 +80,7 @@ class Request {
 	 * @param array $arguments
 	 * @return Request
 	 */
-	public function setArguments($arguments) {
+	public function setArguments(array $arguments) {
 		$this->arguments = $arguments;
 		return $this;
 	}

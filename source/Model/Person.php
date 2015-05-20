@@ -9,14 +9,6 @@ namespace VerteXVaaR\BlueSprints\Model;
 class Person extends AbstractModel {
 
 	/**
-	 * @var array
-	 */
-	static public $columns = [
-		'firstName' => 'VARCHAR(255) DEFAULT "" NOT NULL',
-		'lastName' => 'VARCHAR(255) DEFAULT "" NOT NULL',
-	];
-
-	/**
 	 * @var string
 	 */
 	protected $firstName = '';

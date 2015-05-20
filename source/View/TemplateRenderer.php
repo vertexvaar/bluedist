@@ -40,15 +40,15 @@ class TemplateRenderer {
 	 * @param mixed $value
 	 * @return void
 	 */
-	public function setVariable($key, $value) {
+	public function setVariable($key = '', $value = NULL) {
 		$this->variables[$key] = $value;
 	}
 
 	/**
-	 * @param $templateName
+	 * @param string $templateName
 	 * @return void
 	 */
-	public function render($templateName) {
+	public function render($templateName = '') {
 		$this->setVariable('templateHelper', $this->templateHelper);
 		ob_start();
 		Files::requireOnceFile('html/Template/' . $templateName . '.php', $this->variables);
