@@ -9,43 +9,45 @@ use VerteXVaaR\BlueSprints\Utility\Files;
  *
  * @package VerteXVaaR\BlueSprints\Route
  */
-class Router {
+class Router
+{
 
-	/**
-	 * @var string
-	 */
-	const configurationFileName = 'configuration/routes.php';
+    /**
+     * @var string
+     */
+    const CONFIGURATION_FILENAME = 'configuration/routes.php';
 
-	/**
-	 * @var array[][]
-	 */
-	protected $configuration = [];
+    /**
+     * @var array[][]
+     */
+    protected $configuration = [];
 
-	/**
-	 * @throws \Exception
-	 * @return Router
-	 */
-	public function __construct() {
-		if (Files::fileExists(self::configurationFileName)) {
-			$this->configuration = Files::requireFile(self::configurationFileName);
-		} else {
-			throw new \Exception('The Router configuration does not exist', 1431886993);
-		}
-	}
+    /**
+     * @throws \Exception
+     * @return Router
+     */
+    public function __construct()
+    {
+        if (Files::fileExists(self::CONFIGURATION_FILENAME)) {
+            $this->configuration = Files::requireFile(self::CONFIGURATION_FILENAME);
+        } else {
+            throw new \Exception('The Router configuration does not exist', 1431886993);
+        }
+    }
 
-	/**
-	 * @param Request $request
-	 * @return array
-	 * @throws \Exception
-	 */
-	public function findMatchingRouteForRequest(Request $request) {
-		$path = $request->getPath();
-		foreach ($this->configuration[$request->getMethod()] as $pattern => $possibleRoute) {
-			if (preg_match('~^' . $pattern . '$~', $path)) {
-				return $possibleRoute;
-			}
-		}
-		throw new \Exception('Could not resolve a route for path "' . $path . '"', 1431887428);
-	}
-
+    /**
+     * @param Request $request
+     * @return array
+     * @throws \Exception
+     */
+    public function findMatchingRouteForRequest(Request $request)
+    {
+        $path = $request->getPath();
+        foreach ($this->configuration[$request->getMethod()] as $pattern => $possibleRoute) {
+            if (preg_match('~^' . $pattern . '$~', $path)) {
+                return $possibleRoute;
+            }
+        }
+        throw new \Exception('Could not resolve a route for path "' . $path . '"', 1431887428);
+    }
 }

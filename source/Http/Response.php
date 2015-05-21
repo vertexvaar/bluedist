@@ -6,58 +6,64 @@ namespace VerteXVaaR\BlueSprints\Http;
  *
  * @package VerteXVaaR\BlueSprints\Http
  */
-class Response {
+class Response
+{
 
-	/**
-	 * @var array
-	 */
-	protected $headers = [
-		'Content-Type' => 'text/html; charset=utf-8',
-	];
+    /**
+     * @var array
+     */
+    protected $headers = [
+        'Content-Type' => 'text/html; charset=utf-8',
+    ];
 
-	/**
-	 * @var string
-	 */
-	protected $content = '';
+    /**
+     * @var string
+     */
+    protected $content = '';
 
-	/**
-	 * @return void
-	 */
-	public function respond() {
-		$this->sendHeaders();
-		$this->printContent();
-	}
+    /**
+     * @return void
+     */
+    public function respond()
+    {
+        $this->sendHeaders();
+        $this->printContent();
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function sendHeaders() {
-		foreach ($this->headers as $key => $value) {
-			header($key . ':' . $value);
-		}
-	}
+    /**
+     * @return void
+     */
+    protected function sendHeaders()
+    {
+        foreach ($this->headers as $key => $value) {
+            header($key . ':' . $value);
+        }
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function printContent() {
-		echo $this->content;
-	}
+    /**
+     * @return void
+     */
+    protected function printContent()
+    {
+        echo $this->content;
+    }
 
-	/**
-	 * @param string $content
-	 * @return void
-	 */
-	public function appendContent($content = '') {
-		$this->content .= $content;
-	}
+    /**
+     * @param string $content
+     * @return void
+     */
+    public function appendContent($content = '')
+    {
+        $this->content .= $content;
+    }
 
-	/**
-	 * @param string $key
-	 * @param string $value
-	 * @return void
-	 */
-	public function setHeader($key = '', $value = '') {
-		$this->headers[$key] = $value;
-	}
+    /**
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
+    public function setHeader($key = '', $value = '')
+    {
+        $this->headers[$key] = $value;
+    }
 }

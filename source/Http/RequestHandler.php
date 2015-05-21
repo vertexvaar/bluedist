@@ -9,30 +9,33 @@ use VerteXVaaR\BlueSprints\Route\Router;
  *
  * @package VerteXVaaR\BlueSprints\Http
  */
-class RequestHandler {
+class RequestHandler
+{
 
-	/**
-	 * @var Router
-	 */
-	protected $router = NULL;
+    /**
+     * @var Router
+     */
+    protected $router = null;
 
-	/**
-	 * @return RequestHandler
-	 */
-	public function __construct() {
-		$this->router = new Router();
-	}
+    /**
+     * @return RequestHandler
+     */
+    public function __construct()
+    {
+        $this->router = new Router();
+    }
 
-	/**
-	 * @param Request $request
-	 * @return Response
-	 */
-	public function handleRequest(Request $request) {
-		$routeConfiguration = $this->router->findMatchingRouteForRequest($request);
-		$response = new Response();
-		/** @var AbstractController $controller */
-		$controller = new $routeConfiguration['controller']($request, $response);
-		call_user_func([$controller, $routeConfiguration['action']]);
-		return $response;
-	}
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function handleRequest(Request $request)
+    {
+        $routeConfiguration = $this->router->findMatchingRouteForRequest($request);
+        $response = new Response();
+        /** @var AbstractController $controller */
+        $controller = new $routeConfiguration['controller']($request, $response);
+        call_user_func([$controller, $routeConfiguration['action']]);
+        return $response;
+    }
 }
