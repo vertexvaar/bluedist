@@ -16,7 +16,7 @@ class Folders
     public static function createFolderForClassName($className = '')
     {
         $configuration = Files::requireFile('configuration/system.php');
-        $folderName = Environment::getDocumentRoot() .
+        $folderName = VXVR_BS_ROOT .
             'database' .
             DIRECTORY_SEPARATOR .
             str_replace('\\', DIRECTORY_SEPARATOR, $className) .

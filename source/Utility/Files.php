@@ -26,7 +26,7 @@ class Files
      */
     public static function getAbsoluteFilePath($fileName = '')
     {
-        return Environment::getDocumentRoot() . $fileName;
+        return VXVR_BS_ROOT . $fileName;
     }
 
     /**
