@@ -1,14 +1,13 @@
 <?php
-namespace VerteXVaaR\BlueSprints\Controller;
+namespace VerteXVaaR\BlueSprints\Mvc;
 
 use VerteXVaaR\BlueSprints\Http\Request;
 use VerteXVaaR\BlueSprints\Http\Response;
-use VerteXVaaR\BlueSprints\View\TemplateRenderer;
 
 /**
  * Class AbstractController
  *
- * @package VerteXVaaR\BlueSprints\Controller
+ * @package VerteXVaaR\BlueSprints\Mvc
  */
 abstract class AbstractController
 {
@@ -60,8 +59,18 @@ abstract class AbstractController
      * @param string $url
      * @return void
      */
-    protected function redirect($url = '')
+    protected function redirect($url)
     {
         $this->response->setHeader('Location', $url);
+    }
+
+    /**
+     * @param array $configuration
+     * @return void
+     */
+    public function callActionMethod(array $configuration)
+    {
+        $this->templateRenderer->setRouteConfiguration($configuration);
+        $this->{$configuration['action']}();
     }
 }

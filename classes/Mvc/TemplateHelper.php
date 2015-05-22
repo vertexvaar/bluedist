@@ -1,5 +1,5 @@
 <?php
-namespace VerteXVaaR\BlueSprints\View;
+namespace VerteXVaaR\BlueSprints\Mvc;
 
 use VerteXVaaR\BlueSprints\Utility\Files;
 
@@ -41,7 +41,7 @@ class TemplateHelper
         if (!empty($this->fileName)) {
             ob_start();
             $this->variables['body'] = $body;
-            Files::requireFile('html/Layout/' . $this->fileName . '.php', $this->variables);
+            Files::requireFile('view/Layout/' . $this->fileName . '.php', $this->variables);
             $content = ob_get_contents();
             ob_end_clean();
             return $content;

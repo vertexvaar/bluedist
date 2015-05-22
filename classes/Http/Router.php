@@ -1,13 +1,12 @@
 <?php
-namespace VerteXVaaR\BlueSprints\Route;
+namespace VerteXVaaR\BlueSprints\Http;
 
-use VerteXVaaR\BlueSprints\Http\Request;
 use VerteXVaaR\BlueSprints\Utility\Files;
 
 /**
  * Class Router
  *
- * @package VerteXVaaR\BlueSprints\Route
+ * @package VerteXVaaR\BlueSprints\Http
  */
 class Router
 {
@@ -40,7 +39,7 @@ class Router
      * @return array
      * @throws \Exception
      */
-    public function findMatchingRouteForRequest(Request $request)
+    public function findMatchingRouteConfigurationForRequest(Request $request)
     {
         $path = $request->getPath();
         foreach ($this->configuration[$request->getMethod()] as $pattern => $possibleRoute) {

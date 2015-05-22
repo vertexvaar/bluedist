@@ -13,10 +13,11 @@
   ],
   "autoload": {
     "psr-4": {
-      "VerteXVaaR\\BlueSprints\\": "source/"
+      "VerteXVaaR\\BlueSprints\\": "classes/"
     }
   },
   "require": {
-    "php": ">=5.5.0"
+    "php": ">=5.5.0",
+    "vertexvaar/bluewelcome": "dev-master"
   }
 }

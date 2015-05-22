@@ -1,8 +1,7 @@
 <?php
 namespace VerteXVaaR\BlueSprints\Http;
 
-use VerteXVaaR\BlueSprints\Controller\AbstractController;
-use VerteXVaaR\BlueSprints\Route\Router;
+use VerteXVaaR\BlueSprints\Mvc\AbstractController;
 
 /**
  * Class RequestHandler
@@ -31,11 +30,11 @@ class RequestHandler
      */
     public function handleRequest(Request $request)
     {
-        $routeConfiguration = $this->router->findMatchingRouteForRequest($request);
+        $routeConfiguration = $this->router->findMatchingRouteConfigurationForRequest($request);
         $response = new Response();
         /** @var AbstractController $controller */
         $controller = new $routeConfiguration['controller']($request, $response);
-        call_user_func([$controller, $routeConfiguration['action']]);
+        $controller->callActionMethod($routeConfiguration);
         return $response;
     }
 }

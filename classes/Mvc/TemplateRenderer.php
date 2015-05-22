@@ -1,5 +1,5 @@
 <?php
-namespace VerteXVaaR\BlueSprints\View;
+namespace VerteXVaaR\BlueSprints\Mvc;
 
 use VerteXVaaR\BlueSprints\Http\Response;
 use VerteXVaaR\BlueSprints\Utility\Files;
@@ -28,6 +28,11 @@ class TemplateRenderer
     protected $response = null;
 
     /**
+     * @var array
+     */
+    protected $routeConfiguration = [];
+
+    /**
      * @param Response $response
      * @return TemplateRenderer
      */
@@ -43,9 +48,12 @@ class TemplateRenderer
      */
     public function render($templateName = '')
     {
+        if ($templateName === '') {
+            $templateName = $this->getDefaultTemplateName();
+        }
         $this->setVariable('templateHelper', $this->templateHelper);
         ob_start();
-        Files::requireOnceFile('html/Template/' . $templateName . '.php', $this->variables);
+        Files::requireOnceFile('view/Template/' . $templateName . '.php', $this->variables);
         $body = ob_get_contents();
         $this->response->appendContent($this->templateHelper->renderLayoutContent($body));
         ob_end_clean();
@@ -60,4 +68,34 @@ class TemplateRenderer
     {
         $this->variables[$key] = $value;
     }
+
+    /**
+     * @return string
+     */
+    protected function getDefaultTemplateName()
+    {
+        $templateName = ucfirst($this->routeConfiguration['action']);
+        $controllerClassNameParts = explode('\\', $this->routeConfiguration['controller']);
+        $templatePath = end($controllerClassNameParts);
+        return $templatePath . DIRECTORY_SEPARATOR . $templateName;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRouteConfiguration()
+    {
+        return $this->routeConfiguration;
+    }
+
+    /**
+     * @param array $routeConfiguration
+     * @return TemplateRenderer
+     */
+    public function setRouteConfiguration($routeConfiguration)
+    {
+        $this->routeConfiguration = $routeConfiguration;
+        return $this;
+    }
+
 }

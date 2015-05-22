@@ -1,5 +1,5 @@
 <?php
-namespace VerteXVaaR\BlueSprints\Model;
+namespace VerteXVaaR\BlueSprints\Mvc;
 
 use VerteXVaaR\BlueSprints\Utility\Folders;
 use VerteXVaaR\BlueSprints\Utility\Strings;
@@ -15,7 +15,7 @@ class AbstractModel
     /**
      * @var string[]
      */
-    static protected $classFolders = [];
+    static private $classFolders = [];
 
     /**
      * @var string

@@ -6,7 +6,7 @@ namespace VerteXVaaR\BlueSprints\Http;
  *
  * @package VerteXVaaR\BlueSprints\Http
  */
-class Request
+class Request implements RequestInterface
 {
 
     /**
