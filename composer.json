@@ -15,5 +15,8 @@
     "psr-4": {
       "VerteXVaaR\\BlueSprints\\": "source/"
     }
+  },
+  "require": {
+    "php": ">=5.5.0"
   }
 }
