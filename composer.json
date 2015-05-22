@@ -19,5 +19,13 @@
   "require": {
     "php": ">=5.5.0",
     "vertexvaar/bluewelcome": "dev-master"
+  },
+  "scripts": {
+    "post-package-install": [
+      "cp -r vendor/vertexvaar/bluesprints/configuration ./configuration",
+      "cp -r vendor/vertexvaar/bluesprints/public ./public",
+      "cp -r vendor/vertexvaar/bluesprints/view ./view",
+      "cp -r vendor/vertexvaar/bluesprints/configuration ./configuration",
+    ]
   }
 }
