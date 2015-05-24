@@ -7,24 +7,29 @@ $templateHelper->requireLayout('Basic/Html', ['pageTitle' => 'Hi dude!']);
 
     <h1>Some Fruits freshly picked from persistence</h1>
 
+    <p>
+        Hint: click on a fruit to edit it!
+    </p>
+
     <ul>
         <?php
         /** @var \VerteXVaaR\BlueWelcome\Model\Fruit[] $fruits */
         foreach ($fruits as $fruit) {
             ?>
             <li>
-                I am a<?php
-                $name = $fruit->getName();
-                if (strlen($name) > 0) {
-                    if (in_array(strtolower($name[0]), ['a', 'e', 'i', 'o', 'u', 'h'])) {
-                        echo 'n';
+                <a href="editFruit?fruit=<?= $fruit->getUuid() ?>">
+                    I am a<?php
+                    $name = $fruit->getName();
+                    if (strlen($name) > 0) {
+                        if (in_array(strtolower($name[0]), ['a', 'e', 'i', 'o', 'u', 'h'])) {
+                            echo 'n';
+                        }
+                        echo ' ' . $name;
+                    } else {
+                        echo ' nameless fruit';
                     }
-                    echo ' ' . $name;
-                } else {
-                    echo ' nameless fruit';
-                }
-                ?> and my color is <?= $fruit->getColor(); ?>
-            </li>
+                    ?> and my color is <?= $fruit->getColor(); ?>
+                </a></li>
             <?php
         }
         ?>
