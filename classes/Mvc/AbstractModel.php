@@ -57,7 +57,7 @@ class AbstractModel
             $className = get_called_class();
         }
         if (!array_key_exists($className, self::$classFolders)) {
-            self::$classFolders[$className] = Folders::createFolderForClassName($className);
+            self::$classFolders[$className] = Folders::createFolderForClassName('database', $className);
         }
         return self::$classFolders[$className];
     }

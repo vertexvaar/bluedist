@@ -3,6 +3,7 @@ namespace VerteXVaaR\BlueSprints\Mvc;
 
 use VerteXVaaR\BlueSprints\Http\Response;
 use VerteXVaaR\BlueSprints\Utility\Files;
+use VerteXVaaR\BlueSprints\Utility\Folders;
 
 /**
  * Class TemplateRenderer
@@ -75,9 +76,8 @@ class TemplateRenderer
     protected function getDefaultTemplateName()
     {
         $templateName = ucfirst($this->routeConfiguration['action']);
-        $controllerClassNameParts = explode('\\', $this->routeConfiguration['controller']);
-        $templatePath = end($controllerClassNameParts);
-        return $templatePath . DIRECTORY_SEPARATOR . $templateName;
+        $templatePath = Folders::classNameToFolderName($this->routeConfiguration['controller']);
+        return $templatePath . $templateName;
     }
 
     /**
