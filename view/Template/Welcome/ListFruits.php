@@ -15,10 +15,14 @@ $templateHelper->requireLayout('Basic/Html', ['pageTitle' => 'Hi dude!']);
             <li>
                 I am a<?php
                 $name = $fruit->getName();
-                if (in_array(strtolower($name[0]), ['a', 'e', 'i', 'o', 'u', 'h'])) {
-                    echo 'n';
+                if (strlen($name) > 0) {
+                    if (in_array(strtolower($name[0]), ['a', 'e', 'i', 'o', 'u', 'h'])) {
+                        echo 'n';
+                    }
+                    echo ' ' . $name;
+                } else {
+                    echo ' nameless fruit';
                 }
-                echo ' ' . $name;
                 ?> and my color is <?= $fruit->getColor(); ?>
             </li>
             <?php

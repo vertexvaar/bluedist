@@ -25,8 +25,8 @@ class Error
      */
     public static function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
     {
-        self::printErrorPage($errstr, $errno, $errfile, $errline, $errcontext);
-        return FALSE;
+        self::printErrorPage($errstr, $errno, $errfile, $errline, []);
+        return false;
     }
 
     /**
@@ -44,7 +44,7 @@ class Error
         );
     }
 
-    protected static function printErrorPage($message, $code, $file, $line, array $trace = [])
+    protected static function printErrorPage($message, $code, $file, $line, array $callStack = [])
     {
         $additionalException = null;
         try {
@@ -61,22 +61,24 @@ class Error
                 echo '<h1>An error occured.</h1>';
                 echo '<p>Message: ' . $message . ' (Code: ' . $code . ')</p>';
                 echo '<p>Error occured in: ' . $file . ' @ ' . $line . '</p>';
-                echo '<p>Call Stack:';
-                echo '<ul>';
-                foreach ($trace as $trace) {
-                    echo '<li>';
-                    echo $trace['file'] . ' @ ' . $trace['line'] . '<br/>';
-                    echo $trace['class'] . $trace['type'] . $trace['function'] . '(';
-                    foreach ($trace['args'] as $argument) {
-                        if (is_object($argument)) {
-                            echo get_class($argument);
-                        } else {
-                            var_dump($argument);
+                if (!empty($callStack)) {
+                    echo '<p>Call Stack:';
+                    echo '<ul>';
+                    foreach ($callStack as $trace) {
+                        echo '<li>';
+                        echo $trace['file'] . ' @ ' . $trace['line'] . '<br/>';
+                        echo $trace['class'] . $trace['type'] . $trace['function'] . '(';
+                        foreach ($trace['args'] as $argument) {
+                            if (is_object($argument)) {
+                                echo get_class($argument);
+                            } else {
+                                var_dump($argument);
+                            }
                         }
+                        echo ')';
                     }
-                    echo ')';
+                    echo '</ul>';
                 }
-                echo '</ul>';
             }
         }
         die;
