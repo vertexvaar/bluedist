@@ -102,6 +102,7 @@ class AbstractModel
      */
     final public function save()
     {
+        $this->checkRequestType();
         if (empty($this->uuid)) {
             $this->uuid = Strings::generateUuid();
         }
@@ -110,5 +111,16 @@ class AbstractModel
         }
         $this->lastModification = new \DateTime();
         file_put_contents(self::getFolder($this) . $this->uuid, serialize($this));
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    final protected function checkRequestType()
+    {
+        if (!in_array(VXVR_BS_REQUEST_METHOD, ['PUT', 'POST', 'DELETE'])) {
+            throw new \Exception('You may not persist objects in safe requests');
+        }
     }
 }
