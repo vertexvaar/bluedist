@@ -65,4 +65,23 @@ class Files
         }
         return require($absoluteFilePath);
     }
+
+    /**
+     * @param string $fileName
+     * @param string $fileContents
+     * @return void
+     */
+    public static function writeFileContents($fileName, $fileContents)
+    {
+        file_put_contents(VXVR_BS_ROOT . $fileName, $fileContents);
+    }
+
+    /**
+     * @param string $fileName
+     * @return string
+     */
+    public static function readFileContents($fileName)
+    {
+        return file_get_contents(VXVR_BS_ROOT . $fileName);
+    }
 }

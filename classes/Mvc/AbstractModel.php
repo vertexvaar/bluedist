@@ -1,6 +1,7 @@
 <?php
 namespace VerteXVaaR\BlueSprints\Mvc;
 
+use VerteXVaaR\BlueSprints\Utility\Files;
 use VerteXVaaR\BlueSprints\Utility\Folders;
 use VerteXVaaR\BlueSprints\Utility\Strings;
 
@@ -38,9 +39,9 @@ class AbstractModel
      */
     final public static function findByUuid($uuid)
     {
-        $fileName = self::getFolder() . $uuid;
-        if (file_exists($fileName)) {
-            return unserialize(file_get_contents($fileName));
+        $fileContents = Files::readFileContents(self::getFolder() . $uuid);
+        if ($fileContents) {
+            return unserialize($fileContents);
         }
         return null;
     }
@@ -64,11 +65,10 @@ class AbstractModel
 
     final public static function findAll()
     {
+        $files = Folders::getAllFilesInFolder(self::getFolder());
         $results = [];
-        /** @var \SplFileInfo[] $fileSystemIterator */
-        $fileSystemIterator = new \FilesystemIterator(self::getFolder(), \FilesystemIterator::SKIP_DOTS);
-        foreach ($fileSystemIterator as $file) {
-            $results[] = unserialize(file_get_contents($file->getPathname()));
+        foreach ($files as $file) {
+            $results[] = unserialize(file_get_contents($file));
         }
         return $results;
     }
@@ -110,7 +110,7 @@ class AbstractModel
             $this->creationTime = new \DateTime();
         }
         $this->lastModification = new \DateTime();
-        file_put_contents(self::getFolder($this) . $this->uuid, serialize($this));
+        Files::writeFileContents(self::getFolder($this) . $this->uuid, serialize($this));
     }
 
     /**
