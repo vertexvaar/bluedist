@@ -120,7 +120,7 @@ class AbstractModel
     final protected function checkRequestType()
     {
         if (!in_array(VXVR_BS_REQUEST_METHOD, ['PUT', 'POST', 'DELETE'])) {
-            throw new \Exception('You may not persist objects in safe requests');
+            throw new \Exception('You may not persist objects in safe requests', 1432469288);
         }
     }
 }
