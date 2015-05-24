@@ -9,6 +9,9 @@ namespace VerteXVaaR\BlueSprints\Utility;
 class Error
 {
 
+    /**
+     * @return void
+     */
     public static function registerErrorHandler()
     {
         set_exception_handler(array(Error::class, 'handleException'));
@@ -20,15 +23,22 @@ class Error
      * @param string $errstr
      * @param string $errfile
      * @param int $errline
-     * @param array $errcontext
      * @return bool
      */
-    public static function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
+    public static function handleError($errno, $errstr, $errfile, $errline)
     {
         self::printErrorPage($errstr, $errno, $errfile, $errline, []);
         return false;
     }
 
+    /**
+     * @param string $message
+     * @param int $code
+     * @param string $file
+     * @param int $line
+     * @param array $callStack
+     * @return void
+     */
     protected static function printErrorPage($message, $code, $file, $line, array $callStack = [])
     {
         $additionalException = null;
@@ -46,33 +56,41 @@ class Error
                 echo '<h1>An error occured.</h1>';
                 echo '<p>Message: ' . $message . ' (Code: ' . $code . ')</p>';
                 echo '<p>Error occured in: ' . $file . ' @ ' . $line . '</p>';
-                if (!empty($callStack)) {
-                    echo '<p>Call Stack:';
-                    echo '<ul>';
-                    foreach ($callStack as $trace) {
-                        echo '<li>';
-                        echo $trace['file'] . ' @ ' . $trace['line'] . '<br/>';
-                        echo $trace['class'] . $trace['type'] . $trace['function'] . '(';
-                        foreach ($trace['args'] as $argument) {
-                            if (is_object($argument)) {
-                                echo get_class($argument);
-                            } elseif (is_array($argument)) {
-                                $argumentArray = [];
-                                foreach ($argument as $key => $value) {
-                                    $argumentArray[] = "'" . $key . "'" . ' => ' . $value;
-                                }
-                                echo implode(', ', $argumentArray);
-                            } else {
-                                var_dump($argument);
-                            }
-                        }
-                        echo ')';
-                    }
-                    echo '</ul>';
-                }
+                self::printCallStack($callStack);
             }
         }
-        die;
+    }
+
+    /**
+     * @param array $callStack
+     * @return void
+     */
+    protected static function printCallStack(array $callStack)
+    {
+        if (!empty($callStack)) {
+            echo '<p>Call Stack:';
+            echo '<ul>';
+            foreach ($callStack as $trace) {
+                echo '<li>';
+                echo $trace['file'] . ' @ ' . $trace['line'] . '<br/>';
+                echo $trace['class'] . $trace['type'] . $trace['function'] . '(';
+                foreach ($trace['args'] as $argument) {
+                    if (is_object($argument)) {
+                        echo get_class($argument);
+                    } elseif (is_array($argument)) {
+                        $argumentArray = [];
+                        foreach ($argument as $key => $value) {
+                            $argumentArray[] = "'" . $key . "'" . ' => ' . $value;
+                        }
+                        echo implode(', ', $argumentArray);
+                    } else {
+                        var_dump($argument);
+                    }
+                }
+                echo ')';
+            }
+            echo '</ul>';
+        }
     }
 
     /**
@@ -89,5 +107,4 @@ class Error
             $exception->getTrace()
         );
     }
-
 }

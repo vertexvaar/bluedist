@@ -63,6 +63,9 @@ class AbstractModel
         return self::$classFolders[$className];
     }
 
+    /**
+     * @return $this[]
+     */
     final public static function findAll()
     {
         $files = Folders::getAllFilesInFolder(self::getFolder());

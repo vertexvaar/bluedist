@@ -50,13 +50,11 @@ class Request implements RequestInterface
 
     /**
      * @param string $method
-     * @return Request
      */
     public function setMethod($method)
     {
         define('VXVR_BS_REQUEST_METHOD', $method);
         $this->method = $method;
-        return $this;
     }
 
     /**
@@ -69,12 +67,10 @@ class Request implements RequestInterface
 
     /**
      * @param string $path
-     * @return Request
      */
     public function setPath($path)
     {
         $this->path = $path;
-        return $this;
     }
 
     /**
@@ -87,12 +83,10 @@ class Request implements RequestInterface
 
     /**
      * @param array $arguments
-     * @return Request
      */
     public function setArguments(array $arguments)
     {
         $this->arguments = $arguments;
-        return $this;
     }
 
     /**

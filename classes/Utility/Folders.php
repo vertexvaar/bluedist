@@ -16,13 +16,10 @@ class Folders
      */
     public static function createFolderForClassName($relativeRoot, $className)
     {
-        $configuration = Files::requireFile('configuration/system.php');
-        $relativePath = $relativeRoot .
-            DIRECTORY_SEPARATOR .
-            self::classNameToFolderName($className);
-        $folderName = VXVR_BS_ROOT . $relativePath;
+        $relativePath = $relativeRoot . DIRECTORY_SEPARATOR . self::classNameToFolderName($className);
+        $folderName = Files::getAbsoluteFilePath($relativePath);
         if (!is_dir($folderName)) {
-            mkdir($folderName, $configuration['permissions']['folders'], true);
+            mkdir($folderName, Files::requireFile('configuration/system.php')['permissions']['folders'], true);
         }
         return $relativePath;
     }
@@ -44,7 +41,10 @@ class Folders
     {
         $files = [];
         /** @var \SplFileInfo[] $fileSystemIterator */
-        $fileSystemIterator = new \FilesystemIterator(VXVR_BS_ROOT . $folderName, \FilesystemIterator::SKIP_DOTS);
+        $fileSystemIterator = new \FilesystemIterator(
+            Files::getAbsoluteFilePath($folderName),
+            \FilesystemIterator::SKIP_DOTS
+        );
         foreach ($fileSystemIterator as $file) {
             $files[] = $file->getPathname();
         }

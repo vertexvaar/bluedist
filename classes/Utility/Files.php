@@ -45,11 +45,10 @@ class Files
      */
     public static function requireOnceFile($fileName = '', array $variables = [])
     {
-        $absoluteFilePath = self::getAbsoluteFilePath($fileName);
         foreach ($variables as $variableName => $variable) {
             $$variableName = $variable;
         }
-        return require_once($absoluteFilePath);
+        return require_once(self::getAbsoluteFilePath($fileName));
     }
 
     /**
@@ -59,11 +58,10 @@ class Files
      */
     public static function requireFile($fileName = '', array $variables = [])
     {
-        $absoluteFilePath = self::getAbsoluteFilePath($fileName);
         foreach ($variables as $variableName => $variable) {
             $$variableName = $variable;
         }
-        return require($absoluteFilePath);
+        return require(self::getAbsoluteFilePath($fileName));
     }
 
     /**
@@ -73,7 +71,7 @@ class Files
      */
     public static function writeFileContents($fileName, $fileContents)
     {
-        file_put_contents(VXVR_BS_ROOT . $fileName, $fileContents);
+        file_put_contents(self::getAbsoluteFilePath($fileName), $fileContents);
     }
 
     /**
@@ -82,6 +80,6 @@ class Files
      */
     public static function readFileContents($fileName)
     {
-        return file_get_contents(VXVR_BS_ROOT . $fileName);
+        return file_get_contents(self::getAbsoluteFilePath($fileName));
     }
 }

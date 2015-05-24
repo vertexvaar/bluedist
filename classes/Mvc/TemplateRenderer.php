@@ -81,21 +81,11 @@ class TemplateRenderer
     }
 
     /**
-     * @return array
-     */
-    public function getRouteConfiguration()
-    {
-        return $this->routeConfiguration;
-    }
-
-    /**
      * @param array $routeConfiguration
-     * @return TemplateRenderer
      */
     public function setRouteConfiguration($routeConfiguration)
     {
         $this->routeConfiguration = $routeConfiguration;
-        return $this;
     }
 
 }
