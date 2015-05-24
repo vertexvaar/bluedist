@@ -29,21 +29,6 @@ class Error
         return false;
     }
 
-    /**
-     * @param \Exception $exception
-     * @return void
-     */
-    public static function handleException(\Exception $exception)
-    {
-        self::printErrorPage(
-            $exception->getMessage(),
-            $exception->getCode(),
-            $exception->getFile(),
-            $exception->getLine(),
-            $exception->getTrace()
-        );
-    }
-
     protected static function printErrorPage($message, $code, $file, $line, array $callStack = [])
     {
         $additionalException = null;
@@ -88,6 +73,21 @@ class Error
             }
         }
         die;
+    }
+
+    /**
+     * @param \Exception $exception
+     * @return void
+     */
+    public static function handleException(\Exception $exception)
+    {
+        self::printErrorPage(
+            $exception->getMessage(),
+            $exception->getCode(),
+            $exception->getFile(),
+            $exception->getLine(),
+            $exception->getTrace()
+        );
     }
 
 }

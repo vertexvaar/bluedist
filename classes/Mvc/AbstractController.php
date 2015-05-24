@@ -56,15 +56,6 @@ abstract class AbstractController
     }
 
     /**
-     * @param string $url
-     * @return void
-     */
-    protected function redirect($url)
-    {
-        $this->response->setHeader('Location', $url);
-    }
-
-    /**
      * @param array $configuration
      * @return void
      */
@@ -72,5 +63,14 @@ abstract class AbstractController
     {
         $this->templateRenderer->setRouteConfiguration($configuration);
         $this->{$configuration['action']}();
+    }
+
+    /**
+     * @param string $url
+     * @return void
+     */
+    protected function redirect($url)
+    {
+        $this->response->setHeader('Location', $url);
     }
 }
