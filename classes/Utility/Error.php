@@ -71,6 +71,12 @@ class Error
                         foreach ($trace['args'] as $argument) {
                             if (is_object($argument)) {
                                 echo get_class($argument);
+                            } elseif (is_array($argument)) {
+                                $argumentArray = [];
+                                foreach ($argument as $key => $value) {
+                                    $argumentArray[] = "'" . $key . "'" . ' => ' . $value;
+                                }
+                                echo implode(', ', $argumentArray);
                             } else {
                                 var_dump($argument);
                             }
