@@ -54,7 +54,7 @@ class TemplateRenderer
         }
         $this->setVariable('templateHelper', $this->templateHelper);
         ob_start();
-        Files::requireOnceFile('view/Template/' . $templateName . '.php', $this->variables);
+        Files::requireFile('view/Template/' . $templateName . '.php', $this->variables);
         $body = ob_get_contents();
         $this->response->appendContent($this->templateHelper->renderLayoutContent($body));
         ob_end_clean();
