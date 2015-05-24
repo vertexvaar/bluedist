@@ -92,6 +92,6 @@ $templateHelper->requireLayout('Basic/Html', ['pageTitle' => 'Hi dude!']);
     </p>
 
     <p>
-        <a href="">Back to the index</a>
+        <a href="./">Back to the index</a>
     </p>
 </section>
