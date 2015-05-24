@@ -54,6 +54,7 @@ class Request implements RequestInterface
      */
     public function setMethod($method)
     {
+        define('VXVR_BS_REQUEST_METHOD', $method);
         $this->method = $method;
         return $this;
     }
