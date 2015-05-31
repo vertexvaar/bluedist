@@ -42,26 +42,44 @@ class Files
      * @param string $fileName
      * @param array $variables
      * @return mixed
+     * @throws \Exception
      */
     public static function requireOnceFile($fileName = '', array $variables = [])
     {
+        $absoluteFilePath = self::getAbsoluteFilePath($fileName);
+        if (!is_file($absoluteFilePath)) {
+            throw new \Exception(
+                'Error: require_once(' . htmlspecialchars($absoluteFilePath) . '): failed to open stream: ' .
+                'No such file or directory in ' . __FILE__ . ' on line ' . __LINE__,
+                1432841751
+            );
+        }
         foreach ($variables as $variableName => $variable) {
             $$variableName = $variable;
         }
-        return require_once(self::getAbsoluteFilePath($fileName));
+        return require_once($absoluteFilePath);
     }
 
     /**
      * @param string $fileName
      * @param array $variables
      * @return mixed
+     * @throws \Exception
      */
     public static function requireFile($fileName = '', array $variables = [])
     {
+        $absoluteFilePath = self::getAbsoluteFilePath($fileName);
+        if (!is_file($absoluteFilePath)) {
+            throw new \Exception(
+                'Error: require(' . htmlspecialchars($absoluteFilePath) . '): failed to open stream: ' .
+                'No such file or directory in ' . __FILE__ . ' on line ' . __LINE__,
+                1432841754
+            );
+        }
         foreach ($variables as $variableName => $variable) {
             $$variableName = $variable;
         }
-        return require(self::getAbsoluteFilePath($fileName));
+        return require($absoluteFilePath);
     }
 
     /**
@@ -81,5 +99,19 @@ class Files
     public static function readFileContents($fileName)
     {
         return file_get_contents(self::getAbsoluteFilePath($fileName));
+    }
+
+    /**
+     * @param string $fileName
+     * @param string $fileContents
+     * @return int
+     */
+    public static function touch($fileName, $fileContents = '')
+    {
+        $absolutePath = self::getAbsoluteFilePath($fileName);
+        if (!is_file($absolutePath)) {
+            return file_put_contents($absolutePath, $fileContents);
+        }
+        return 0;
     }
 }

@@ -80,9 +80,12 @@ class Error
                     } elseif (is_array($argument)) {
                         $argumentArray = [];
                         foreach ($argument as $key => $value) {
-                            $argumentArray[] = "'" . $key . "'" . ' => ' . $value;
+                            $argumentArray[] = "'" . $key . "'" . ' => ' .
+                                (is_object($value) ? get_class($value) : $value);
                         }
                         echo implode(', ', $argumentArray);
+                    } elseif (is_string($argument)) {
+                        echo $argument;
                     } else {
                         var_dump($argument);
                     }

@@ -19,6 +19,11 @@ class AbstractModel
     static private $classFolders = [];
 
     /**
+     * @var mixed[]
+     */
+    protected $indexColumns = [];
+
+    /**
      * @var string
      */
     protected $uuid = '';
@@ -71,7 +76,27 @@ class AbstractModel
         $files = Folders::getAllFilesInFolder(self::getFolder());
         $results = [];
         foreach ($files as $file) {
-            $results[] = unserialize(file_get_contents($file));
+            if (Strings::isValidUuid(basename($file))) {
+                $results[] = unserialize(file_get_contents($file));
+            }
+        }
+        return $results;
+    }
+
+    /**
+     * @param string $property
+     * @param string $value
+     * @return array
+     */
+    final public static function findByProperty($property, $value)
+    {
+        $indicesFile = self::getFolder() . 'Indices';
+        $indices = unserialize(Files::readFileContents($indicesFile));
+        $results = [];
+        foreach ($indices as $uuid => $index) {
+            if ($index[$property] === $value) {
+                $results[] = self::findByUuid($uuid);
+            }
         }
         return $results;
     }
@@ -113,7 +138,28 @@ class AbstractModel
             $this->creationTime = new \DateTime();
         }
         $this->lastModification = new \DateTime();
+        $this->updateIndices();
         Files::writeFileContents(self::getFolder($this) . $this->uuid, serialize($this));
+    }
+
+    /**
+     * @return void
+     */
+    final protected function updateIndices()
+    {
+        $indicesFile = self::getFolder($this) . 'Indices';
+        Files::touch($indicesFile, serialize([]));
+        $indices = unserialize(Files::readFileContents($indicesFile));
+        if (array_key_exists($this->uuid, $indices)) {
+            $indexEntry = $indices[$this->uuid];
+        } else {
+            $indexEntry = [];
+        }
+        foreach ($this->indexColumns as $columnName) {
+            $indexEntry[$columnName] = $this->{$columnName};
+        }
+        $indices[$this->uuid] = $indexEntry;
+        Files::writeFileContents($indicesFile, serialize($indices));
     }
 
     /**
