@@ -33,11 +33,24 @@ class Request implements RequestInterface
         $request = new self;
         $request->setMethod($_SERVER['REQUEST_METHOD']);
         $request->setPath(explode('?', $_SERVER['REQUEST_URI'])[0]);
-        foreach ($_REQUEST as &$value) {
-            $value = htmlspecialchars($value);
-        }
-        $request->setArguments($_REQUEST);
+        $request->setArguments(self::escapeRequestArguments($_REQUEST));
         return $request;
+    }
+
+    /**
+     * @param array|string $argument
+     * @return array|string
+     */
+    protected static function escapeRequestArguments($argument)
+    {
+        if (is_string($argument)) {
+            $argument = htmlspecialchars($argument);
+        } elseif (is_array($argument)) {
+            foreach ($argument as $index => $arg) {
+                $argument[$index] = self::escapeRequestArguments($arg);
+            }
+        }
+        return $argument;
     }
 
     /**
@@ -91,7 +104,7 @@ class Request implements RequestInterface
 
     /**
      * @param string $key
-     * @return string
+     * @return string|array
      */
     public function getArgument($key = '')
     {

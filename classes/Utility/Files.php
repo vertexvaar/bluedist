@@ -114,4 +114,13 @@ class Files
         }
         return 0;
     }
+
+    /**
+     * @param string $fileName
+     * @return bool
+     */
+    public static function delete($fileName)
+    {
+        return unlink(self::getAbsoluteFilePath($fileName));
+    }
 }

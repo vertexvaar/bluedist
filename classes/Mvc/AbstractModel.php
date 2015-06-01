@@ -145,6 +145,15 @@ class AbstractModel
     /**
      * @return void
      */
+    final public function delete()
+    {
+        $this->checkRequestType();
+        Files::delete(self::getFolder($this) . $this->uuid);
+    }
+
+    /**
+     * @return void
+     */
     final protected function updateIndices()
     {
         $indicesFile = self::getFolder($this) . 'Indices';

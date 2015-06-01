@@ -32,6 +32,12 @@ $templateHelper->requireLayout('Basic/Html', ['pageTitle' => 'Hi dude!']);
         <input type="submit" value="Update it!">
     </form>
 
+    <form action="deleteFruit" method="post">
+        <input type="hidden" name="fruit" value="<?= $fruit->getUuid() ?>"/>
+        <input type="submit" value="Or delete it :)">
+    </form>
+
+
     <h2>The code behind this object update</h2>
 
     <pre>
