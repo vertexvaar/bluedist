@@ -7,34 +7,47 @@ $templateHelper->requireLayout('Basic/Html', ['pageTitle' => 'Hi dude!']);
 
     <h1>Some Fruits freshly picked from persistence</h1>
 
-    <p>
-        Hint: click on a fruit to edit it!
-    </p>
-
-    <ul>
-        <?php
-        /** @var \VerteXVaaR\BlueWelcome\Model\Fruit[] $fruits */
-        foreach ($fruits as $fruit) {
-            ?>
-            <li>
-                <a href="editFruit?fruit=<?= $fruit->getUuid() ?>">
-                    I am a<?php
-                    $name = $fruit->getName();
-                    if (strlen($name) > 0) {
-                        if (in_array(strtolower($name[0]), ['a', 'e', 'i', 'o', 'u', 'h'])) {
-                            echo 'n';
-                        }
-                        echo ' ' . $name;
-                    } else {
-                        echo ' nameless fruit';
-                    }
-                    ?> and my color is <?= $fruit->getColor(); ?>
-                </a></li>
-            <?php
-        }
+    <?php
+    if (empty($fruits)) {
         ?>
-    </ul>
+        <h3>OH WAIT! There is no Fruit yet.</h3>
+        <form action="createDemoFruits" method="post">
+            <input type="submit" value="Create a bunch of fruits">
+        </form>
+        <?php
+    } else {
+        ?>
+        <p>
+            Hint: click on a fruit to edit it!
+        </p>
 
+        <ul>
+            <?php
+            /** @var \VerteXVaaR\BlueWelcome\Model\Fruit[] $fruits */
+            foreach ($fruits as $fruit) {
+                ?>
+                <li>
+                    <a href="editFruit?fruit=<?= $fruit->getUuid() ?>">
+                        I am a<?php
+                        $name = $fruit->getName();
+                        if (strlen($name) > 0) {
+                            if (in_array(strtolower($name[0]), ['a', 'e', 'i', 'o', 'u', 'h'])) {
+                                echo 'n';
+                            }
+                            echo ' ' . $name;
+                        } else {
+                            echo ' nameless fruit';
+                        }
+                        ?> and my color is <?= $fruit->getColor(); ?>
+                    </a></li>
+                <?php
+            }
+            ?>
+        </ul>
+
+        <?php
+    }
+    ?>
     <p>
         Not enough fruits? Just create your own fruit here:
     </p>

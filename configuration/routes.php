@@ -34,6 +34,10 @@ return [
     RequestInterface::HTTP_METHOD_HEAD => [],
     // not safe methods
     RequestInterface::HTTP_METHOD_POST => [
+        '/createDemoFruits' => [
+            'controller' => Welcome::class,
+            'action' => 'createDemoFruits',
+        ],
         '/deleteFruit' => [
             'controller' => Welcome::class,
             'action' => 'deleteFruit',
