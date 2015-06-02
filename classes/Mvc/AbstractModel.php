@@ -126,11 +126,14 @@ class AbstractModel
     }
 
     /**
+     * @param bool $force Do not validate if the Request is considered safe
      * @return void
      */
-    final public function save()
+    final public function save($force = false)
     {
-        $this->checkRequestType();
+        if ($force !== true) {
+            $this->checkRequestType();
+        }
         if (empty($this->uuid)) {
             $this->uuid = Strings::generateUuid();
         }
@@ -156,19 +159,21 @@ class AbstractModel
      */
     final protected function updateIndices()
     {
-        $indicesFile = self::getFolder($this) . 'Indices';
-        Files::touch($indicesFile, serialize([]));
-        $indices = unserialize(Files::readFileContents($indicesFile));
-        if (array_key_exists($this->uuid, $indices)) {
-            $indexEntry = $indices[$this->uuid];
-        } else {
-            $indexEntry = [];
+        if (!empty($this->indexColumns)) {
+            $indicesFile = self::getFolder($this) . 'Indices';
+            Files::touch($indicesFile, serialize([]));
+            $indices = unserialize(Files::readFileContents($indicesFile));
+            if (array_key_exists($this->uuid, $indices)) {
+                $indexEntry = $indices[$this->uuid];
+            } else {
+                $indexEntry = [];
+            }
+            foreach ($this->indexColumns as $columnName) {
+                $indexEntry[$columnName] = $this->{$columnName};
+            }
+            $indices[$this->uuid] = $indexEntry;
+            Files::writeFileContents($indicesFile, serialize($indices));
         }
-        foreach ($this->indexColumns as $columnName) {
-            $indexEntry[$columnName] = $this->{$columnName};
-        }
-        $indices[$this->uuid] = $indexEntry;
-        Files::writeFileContents($indicesFile, serialize($indices));
     }
 
     /**
