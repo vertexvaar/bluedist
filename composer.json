@@ -18,6 +18,7 @@
   },
   "require": {
     "php": ">=5.5.0",
-    "vertexvaar/bluewelcome": "dev-master"
+    "vertexvaar/bluewelcome": "dev-master",
+    "vertexvaar/blueinstaller": "dev-master"
   }
 }
