@@ -146,11 +146,14 @@ class AbstractModel
     }
 
     /**
+     * @param bool $force
      * @return void
      */
-    final public function delete()
+    final public function delete($force = false)
     {
-        $this->checkRequestType();
+        if ($force !== true) {
+            $this->checkRequestType();
+        }
         Files::delete(self::getFolder($this) . $this->uuid);
     }
 
