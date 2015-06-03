@@ -14,8 +14,8 @@ class Error
      */
     public static function registerErrorHandler()
     {
-        set_exception_handler(array(Error::class, 'handleException'));
-        set_error_handler(array(Error::class, 'handleError'), E_ALL);
+        set_exception_handler([Error::class, 'handleException']);
+        set_error_handler([Error::class, 'handleError'], E_ALL);
     }
 
     /**
