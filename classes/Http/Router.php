@@ -17,6 +17,11 @@ class Router
     const CONFIGURATION_FILENAME = 'configuration/routes.php';
 
     /**
+     * @var array
+     */
+    protected static $routeStorage = [];
+
+    /**
      * @var array[][]
      */
     protected $configuration = [];
@@ -49,4 +54,35 @@ class Router
         }
         throw new \Exception('Could not resolve a route for path "' . $path . '"', 1431887428);
     }
+
+    /**
+     * @param string $identifier
+     * @return void
+     */
+    public static function collectRoutes($identifier)
+    {
+        list($vendor, $package) = explode('.', $identifier);
+        $routes = Files::requireFile(
+            implode(
+                DIRECTORY_SEPARATOR,
+                ['vendor', strtolower($vendor), strtolower($package), 'configuration', 'routes.php']
+            )
+        );
+        foreach ($routes as $method => $route) {
+            foreach ($route as $path => $configuration) {
+                self::$routeStorage[$method][$path] = $configuration;
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public static function ejectRoutes()
+    {
+        $routes = self::$routeStorage;
+        self::$routeStorage = [];
+        return $routes;
+    }
+
 }
