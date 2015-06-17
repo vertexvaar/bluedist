@@ -19,11 +19,6 @@ class AbstractModel
     static private $classFolders = [];
 
     /**
-     * @var mixed[]
-     */
-    protected $indexColumns = [];
-
-    /**
      * @var string
      */
     protected $uuid = '';
@@ -162,7 +157,7 @@ class AbstractModel
      */
     final protected function updateIndices()
     {
-        if (!empty($this->indexColumns)) {
+        if (!empty($this->getIndexColumns())) {
             $indicesFile = self::getFolder($this) . 'Indices';
             Files::touch($indicesFile, serialize([]));
             $indices = unserialize(Files::readFileContents($indicesFile));
@@ -171,7 +166,7 @@ class AbstractModel
             } else {
                 $indexEntry = [];
             }
-            foreach ($this->indexColumns as $columnName) {
+            foreach ($this->getIndexColumns() as $columnName) {
                 $indexEntry[$columnName] = $this->{$columnName};
             }
             $indices[$this->uuid] = $indexEntry;
@@ -188,5 +183,13 @@ class AbstractModel
         if (!in_array(VXVR_BS_REQUEST_METHOD, ['PUT', 'POST', 'DELETE'])) {
             throw new \Exception('You may not persist objects in safe requests', 1432469288);
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getIndexColumns()
+    {
+        return [];
     }
 }
