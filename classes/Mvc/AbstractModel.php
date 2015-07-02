@@ -126,9 +126,7 @@ class AbstractModel
      */
     final public function save($force = false)
     {
-        if ($force !== true) {
-            $this->checkRequestType();
-        }
+        $this->checkRequestType($force);
         if (empty($this->uuid)) {
             $this->uuid = Strings::generateUuid();
         }
@@ -146,9 +144,7 @@ class AbstractModel
      */
     final public function delete($force = false)
     {
-        if ($force !== true) {
-            $this->checkRequestType();
-        }
+        $this->checkRequestType($force);
         Files::delete(self::getFolder($this) . $this->uuid);
     }
 
@@ -175,13 +171,16 @@ class AbstractModel
     }
 
     /**
+     * @param bool $force
      * @return void
      * @throws \Exception
      */
-    final protected function checkRequestType()
+    final protected function checkRequestType($force = false)
     {
-        if (!in_array(VXVR_BS_REQUEST_METHOD, ['PUT', 'POST', 'DELETE'])) {
-            throw new \Exception('You may not persist objects in safe requests', 1432469288);
+        if ($force !== true) {
+            if (!in_array(VXVR_BS_REQUEST_METHOD, ['PUT', 'POST', 'DELETE'])) {
+                throw new \Exception('You may not persist objects in safe requests', 1432469288);
+            }
         }
     }
 
