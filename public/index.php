@@ -1,6 +1,6 @@
 <?php
 
-define('VXVR_BS_ROOT', dirname(dirname(realpath(__FILE__))) . DIRECTORY_SEPARATOR);
+define('VXVR_BS_ROOT', dirname(realpath(__DIR__)) . DIRECTORY_SEPARATOR);
 
 require_once(VXVR_BS_ROOT . 'vendor/autoload.php');
 
