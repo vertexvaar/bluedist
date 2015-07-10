@@ -1,12 +1,19 @@
 <?php
+
 define('VXVR_BS_ROOT', dirname(dirname(realpath(__FILE__))) . DIRECTORY_SEPARATOR);
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-\VerteXVaaR\BlueSprints\Utility\Error::registerErrorHandler();
+if (PHP_SAPI === 'cli') {
 
-use VerteXVaaR\BlueSprints\Http;
+    $scheduler = new \VerteXVaaR\BlueSprints\Task\Scheduler(
+        \VerteXVaaR\BlueSprints\Task\CliRequest::createFromEnvironment()
+    );
+    $scheduler->run();
+} else {
+    \VerteXVaaR\BlueSprints\Utility\Error::registerErrorHandler();
 
-$requestHandler = new Http\RequestHandler();
-$response = $requestHandler->handleRequest(Http\Request::createFromEnvironment());
-$response->respond();
+    $requestHandler = new \VerteXVaaR\BlueSprints\Http\RequestHandler();
+    $response = $requestHandler->handleRequest(\VerteXVaaR\BlueSprints\Http\Request::createFromEnvironment());
+    $response->respond();
+}
