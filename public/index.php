@@ -2,7 +2,7 @@
 
 define('VXVR_BS_ROOT', dirname(dirname(realpath(__FILE__))) . DIRECTORY_SEPARATOR);
 
-require_once(__DIR__ . '/../vendor/autoload.php');
+require_once(VXVR_BS_ROOT . 'vendor/autoload.php');
 
 if (PHP_SAPI === 'cli') {
 
