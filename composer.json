@@ -15,5 +15,8 @@
     "psr-4": {
       "VerteXVaaR\\BlueSprints\\": "classes/"
     }
+  },
+  "require": {
+    "vertexvaar/blueinstaller": "^1.0.3"
   }
 }
