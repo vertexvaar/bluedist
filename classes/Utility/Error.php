@@ -97,10 +97,10 @@ class Error
     }
 
     /**
-     * @param \Exception $exception
+     * @param \Exception|\Throwable $exception
      * @return void
      */
-    public static function handleException(\Exception $exception)
+    public static function handleException( $exception)
     {
         self::printErrorPage(
             $exception->getMessage(),
