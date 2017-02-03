@@ -1,6 +1,7 @@
 <?php
 namespace VerteXVaaR\BlueSprints\Mvc;
 
+use VerteXVaaR\BlueFluid\Mvc\FluidAdapter;
 use VerteXVaaR\BlueSprints\Http\Request;
 use VerteXVaaR\BlueSprints\Http\Response;
 
@@ -40,7 +41,11 @@ abstract class AbstractController
     {
         $this->request = $request;
         $this->response = $response;
-        $this->templateRenderer = new TemplateRenderer($this->response);
+        if (class_exists(FluidAdapter::class)) {
+            $this->templateRenderer = new FluidAdapter($this->response);
+        } else {
+            $this->templateRenderer = new TemplateRenderer($this->response);
+        }
     }
 
     /**

@@ -10,9 +10,8 @@ use VerteXVaaR\BlueSprints\Utility\Folders;
  *
  * @package VerteXVaaR\BlueSprints\View
  */
-class TemplateRenderer
+class TemplateRenderer implements TemplateRendererInterface
 {
-
     /**
      * @var array
      */
@@ -83,9 +82,8 @@ class TemplateRenderer
     /**
      * @param array $routeConfiguration
      */
-    public function setRouteConfiguration($routeConfiguration)
+    public function setRouteConfiguration(array $routeConfiguration)
     {
         $this->routeConfiguration = $routeConfiguration;
     }
-
 }
