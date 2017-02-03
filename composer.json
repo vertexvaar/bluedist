@@ -15,12 +15,5 @@
     "psr-4": {
       "VerteXVaaR\\BlueSprints\\": "classes/"
     }
-  },
-  "require": {
-    "php": ">=5.5.0",
-    "vertexvaar/blueinstaller": "dev-master"
-  },
-  "require-dev": {
-    "vertexvaar/bluewelcome": "dev-master"
   }
 }
