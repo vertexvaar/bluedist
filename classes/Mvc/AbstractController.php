@@ -11,7 +11,6 @@ use VerteXVaaR\BlueSprints\Http\Response;
  */
 abstract class AbstractController
 {
-
     /**
      * @var Request
      */
@@ -26,6 +25,11 @@ abstract class AbstractController
      * @var TemplateRenderer
      */
     protected $templateRenderer = null;
+
+    /**
+     * @var bool Indicates if the template should be rendered after the action has been called
+     */
+    private $renderTemplate = true;
 
     /**
      * @param Request $request
@@ -63,6 +67,9 @@ abstract class AbstractController
     {
         $this->templateRenderer->setRouteConfiguration($configuration);
         $this->{$configuration['action']}();
+        if (true === $this->renderTemplate) {
+            $this->templateRenderer->render();
+        }
     }
 
     /**
@@ -71,6 +78,7 @@ abstract class AbstractController
      */
     protected function redirect($url)
     {
+        $this->renderTemplate = false;
         $this->response->setHeader('Location', $url);
     }
 }
