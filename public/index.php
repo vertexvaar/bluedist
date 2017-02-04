@@ -15,7 +15,5 @@ if (PHP_SAPI === 'cli') {
     $scheduler->run();
 } else {
     \VerteXVaaR\BlueSprints\Utility\Error::registerErrorHandler();
-    $requestHandler = new \VerteXVaaR\BlueSprints\Http\RequestHandler();
-    $response = $requestHandler->handleRequest(\VerteXVaaR\BlueSprints\Http\Request::createFromEnvironment());
-    $response->respond();
+    \VerteXVaaR\BlueSprints\Http\Request::createFromEnvironment()->process()->respond();
 }

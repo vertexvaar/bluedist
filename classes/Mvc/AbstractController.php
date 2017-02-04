@@ -40,9 +40,9 @@ abstract class AbstractController
         $this->request = $request;
         $this->response = $response;
         if (class_exists(FluidAdapter::class)) {
-            $this->templateRenderer = new FluidAdapter($this->response);
+            $this->templateRenderer = new FluidAdapter();
         } else {
-            $this->templateRenderer = new TemplateRenderer($this->response);
+            $this->templateRenderer = new TemplateRenderer();
         }
     }
 
@@ -64,15 +64,16 @@ abstract class AbstractController
 
     /**
      * @param array $configuration
-     * @return void
+     * @return string
      */
-    public function callActionMethod(array $configuration)
+    public function callActionMethod(array $configuration): string
     {
         $this->templateRenderer->setRouteConfiguration($configuration);
         $this->{$configuration['action']}();
         if (true === $this->renderTemplate) {
-            $this->templateRenderer->render();
+            return $this->templateRenderer->render();
         }
+        return '';
     }
 
     /**

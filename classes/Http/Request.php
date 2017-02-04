@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Http;
 
+use VerteXVaaR\BlueSprints\Mvc\AbstractController;
+
 /**
  * Class Request
  */
@@ -47,6 +49,21 @@ class Request
         $this->method = VXVR_BS_REQUEST_METHOD;
         $this->path = explode('?', $_SERVER['REQUEST_URI'])[0];
         $this->arguments = self::escapeRequestArguments($_REQUEST);
+    }
+
+    /**
+     * @return Response
+     */
+    public function process(): Response
+    {
+        $router = new Router();
+        $routeConfiguration = $router->findMatchingRouteConfigurationForRequest($this);
+        $response = new Response();
+        /** @var AbstractController $controller */
+        $controller = new $routeConfiguration['controller']($this, $response);
+        $content = $controller->callActionMethod($routeConfiguration);
+        $response->appendContent($content);
+        return $response;
     }
 
     /**

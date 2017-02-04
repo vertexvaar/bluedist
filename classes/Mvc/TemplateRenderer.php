@@ -22,60 +22,25 @@ class TemplateRenderer implements TemplateRendererInterface
     protected $templateHelper = null;
 
     /**
-     * @var Response
-     */
-    protected $response = null;
-
-    /**
      * @var array
      */
     protected $routeConfiguration = [];
 
     /**
-     * @param Response $response
-     * @return TemplateRenderer
+     * TemplateRenderer constructor.
      */
-    public function __construct(Response $response)
+    public function __construct()
     {
-        $this->response = $response;
         $this->templateHelper = new TemplateHelper();
-    }
-
-    /**
-     * @param string $templateName
-     * @return void
-     */
-    public function render($templateName = '')
-    {
-        if ($templateName === '') {
-            $templateName = $this->getDefaultTemplateName();
-        }
-        $this->setVariable('templateHelper', $this->templateHelper);
-        ob_start();
-        Files::requireFile('view/Template/' . $templateName . '.php', $this->variables);
-        $body = ob_get_contents();
-        $this->response->appendContent($this->templateHelper->renderLayoutContent($body));
-        ob_end_clean();
     }
 
     /**
      * @param string $key
      * @param mixed $value
-     * @return void
      */
-    public function setVariable($key = '', $value = null)
+    public function setVariable(string $key, $value = null)
     {
         $this->variables[$key] = $value;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getDefaultTemplateName()
-    {
-        $templateName = ucfirst($this->routeConfiguration['action']);
-        $templatePath = Folders::classNameToFolderName($this->routeConfiguration['controller']);
-        return $templatePath . $templateName;
     }
 
     /**
@@ -84,5 +49,33 @@ class TemplateRenderer implements TemplateRendererInterface
     public function setRouteConfiguration(array $routeConfiguration)
     {
         $this->routeConfiguration = $routeConfiguration;
+    }
+
+    /**
+     * @param string $templateName
+     * @return string
+     */
+    public function render(string $templateName = ''): string
+    {
+        if ($templateName === '') {
+            $templateName = $this->getDefaultTemplateName();
+        }
+        $this->setVariable('templateHelper', $this->templateHelper);
+        ob_start();
+        Files::requireFile('view/Template/' . $templateName . '.php', $this->variables);
+        $body = ob_get_contents();
+        $content = $this->templateHelper->renderLayoutContent($body);
+        ob_end_clean();
+        return $content;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDefaultTemplateName(): string
+    {
+        $templateName = ucfirst($this->routeConfiguration['action']);
+        $templatePath = Folders::classNameToFolderName($this->routeConfiguration['controller']);
+        return $templatePath . $templateName;
     }
 }

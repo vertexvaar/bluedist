@@ -2,8 +2,6 @@
 declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Mvc;
 
-use VerteXVaaR\BlueSprints\Http\Response;
-
 /**
  * Interface TemplateRendererInterface
  */
@@ -11,22 +9,21 @@ interface TemplateRendererInterface
 {
     /**
      * TemplateRendererInterface constructor.
-     * @param Response $response
      */
-    public function __construct(Response $response);
+    public function __construct();
 
     /**
      * @param string $templateName
-     * @return mixed
+     * @return string
      */
-    public function render($templateName = '');
+    public function render(string $templateName = ''): string;
 
     /**
      * @param string $key
      * @param null $value
-     * @return mixed
+     * @return void
      */
-    public function setVariable($key = '', $value = null);
+    public function setVariable(string $key, $value = null);
 
     /**
      * @param array $routeConfiguration
