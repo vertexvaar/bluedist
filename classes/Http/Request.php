@@ -4,11 +4,15 @@ namespace VerteXVaaR\BlueSprints\Http;
 
 /**
  * Class Request
- *
- * @package VerteXVaaR\BlueSprints\Http
  */
-class Request implements RequestInterface
+class Request
 {
+    const HTTP_METHOD_GET = 'GET';
+    const HTTP_METHOD_HEAD = 'HEAD';
+    const HTTP_METHOD_POST = 'POST';
+    const HTTP_METHOD_PUT = 'PUT';
+    const HTTP_METHOD_DELETE = 'DELETE';
+
     /**
      * @var string
      */
@@ -56,7 +60,7 @@ class Request implements RequestInterface
     /**
      * @return string
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
@@ -64,7 +68,7 @@ class Request implements RequestInterface
     /**
      * @param string $method
      */
-    protected function setMethod($method)
+    protected function setMethod(string $method)
     {
         define('VXVR_BS_REQUEST_METHOD', $method);
         $this->method = $method;
@@ -73,7 +77,7 @@ class Request implements RequestInterface
     /**
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -81,7 +85,7 @@ class Request implements RequestInterface
     /**
      * @param string $path
      */
-    protected function setPath($path)
+    protected function setPath(string $path)
     {
         $this->path = $path;
     }
@@ -89,7 +93,7 @@ class Request implements RequestInterface
     /**
      * @return array
      */
-    public function getArguments()
+    public function getArguments(): array
     {
         return $this->arguments;
     }
@@ -106,7 +110,7 @@ class Request implements RequestInterface
      * @param string $key
      * @return string|array
      */
-    public function getArgument($key = '')
+    public function getArgument(string $key)
     {
         return $this->arguments[$key];
     }
@@ -115,7 +119,7 @@ class Request implements RequestInterface
      * @param string $key
      * @return bool
      */
-    public function hasArgument($key = '')
+    public function hasArgument(string $key): bool
     {
         return array_key_exists($key, $this->arguments);
     }
