@@ -2,7 +2,6 @@
 namespace VerteXVaaR\BlueFluid\Mvc;
 
 use TYPO3Fluid\Fluid\View\TemplateView;
-use VerteXVaaR\BlueSprints\Http\Response;
 use VerteXVaaR\BlueSprints\Mvc\TemplateRendererInterface;
 
 /**
@@ -10,11 +9,6 @@ use VerteXVaaR\BlueSprints\Mvc\TemplateRendererInterface;
  */
 class FluidAdapter implements TemplateRendererInterface
 {
-    /**
-     * @var Response
-     */
-    protected $response = null;
-
     /**
      * @var array
      */
@@ -25,13 +19,19 @@ class FluidAdapter implements TemplateRendererInterface
      */
     protected $view = null;
 
-    public function __construct(Response $response)
+    /**
+     * FluidAdapter constructor.
+     */
+    public function __construct()
     {
-        $this->response = $response;
         $this->view = new TemplateView();
     }
 
-    public function render($templateName = '')
+    /**
+     * @param string $templateName
+     * @return string
+     */
+    public function render(string $templateName = ''): string
     {
         $controllerPath = strtr($this->routeConfiguration['controller'], '\\', '/');
         $this->view->getTemplatePaths()->setTemplateRootPaths(
@@ -45,7 +45,7 @@ class FluidAdapter implements TemplateRendererInterface
         if (empty($templateName)) {
             $templateName = $this->routeConfiguration['action'];
         }
-        $this->response->appendContent($this->view->render($templateName));
+        return $this->view->render($templateName);
     }
 
     /**
@@ -53,7 +53,7 @@ class FluidAdapter implements TemplateRendererInterface
      * @param null $value
      * @return void
      */
-    public function setVariable($key = '', $value = null)
+    public function setVariable(string $key, $value = null)
     {
         $this->view->assign($key, $value);
     }
