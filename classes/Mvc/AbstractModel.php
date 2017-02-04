@@ -32,10 +32,10 @@ class AbstractModel
     protected $lastModification = null;
 
     /**
-     * @param $uuid
-     * @return $this
+     * @param string $uuid
+     * @return $this|null
      */
-    final public static function findByUuid($uuid)
+    final public static function findByUuid(string $uuid)
     {
         $fileContents = Files::readFileContents(self::getFolder() . $uuid);
         if ($fileContents) {
@@ -48,7 +48,7 @@ class AbstractModel
      * @param AbstractModel $object
      * @return string
      */
-    final protected static function getFolder(AbstractModel $object = null)
+    final protected static function getFolder(AbstractModel $object = null): string
     {
         if ($object !== null) {
             $className = get_class($object);
@@ -64,7 +64,7 @@ class AbstractModel
     /**
      * @return $this[]
      */
-    final public static function findAll()
+    final public static function findAll(): array
     {
         $files = Folders::getAllFilesInFolder(self::getFolder());
         $results = [];
@@ -81,7 +81,7 @@ class AbstractModel
      * @param string $value
      * @return array
      */
-    final public static function findByProperty($property, $value)
+    final public static function findByProperty(string $property, string $value): array
     {
         $indicesFile = self::getFolder() . 'Indices';
         $indices = unserialize(Files::readFileContents($indicesFile));
@@ -97,7 +97,7 @@ class AbstractModel
     /**
      * @return string
      */
-    public function getUuid()
+    public function getUuid(): string
     {
         return $this->uuid;
     }
@@ -105,7 +105,7 @@ class AbstractModel
     /**
      * @return \DateTime
      */
-    public function getCreationTime()
+    public function getCreationTime(): \DateTime
     {
         return $this->creationTime;
     }
@@ -113,16 +113,15 @@ class AbstractModel
     /**
      * @return \DateTime
      */
-    public function getLastModification()
+    public function getLastModification(): \DateTime
     {
         return $this->lastModification;
     }
 
     /**
      * @param bool $force Do not validate if the Request is considered safe
-     * @return void
      */
-    final public function save($force = false)
+    final public function save(bool $force = false)
     {
         $this->checkRequestType($force);
         if (empty($this->uuid)) {
@@ -138,16 +137,15 @@ class AbstractModel
 
     /**
      * @param bool $force
-     * @return void
      */
-    final public function delete($force = false)
+    final public function delete(bool $force = false)
     {
         $this->checkRequestType($force);
         Files::delete(self::getFolder($this) . $this->uuid);
     }
 
     /**
-     * @return void
+     * Regenerates the indices file with updated object properties
      */
     final protected function updateIndices()
     {
@@ -170,10 +168,9 @@ class AbstractModel
 
     /**
      * @param bool $force
-     * @return void
      * @throws \Exception
      */
-    final protected function checkRequestType($force = false)
+    final protected function checkRequestType(bool $force = false)
     {
         if ($force !== true) {
             if (!in_array(VXVR_BS_REQUEST_METHOD, ['PUT', 'POST', 'DELETE'])) {
@@ -185,7 +182,7 @@ class AbstractModel
     /**
      * @return array
      */
-    protected function getIndexColumns()
+    protected function getIndexColumns(): array
     {
         return [];
     }

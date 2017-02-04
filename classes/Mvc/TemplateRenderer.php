@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Mvc;
 
-use VerteXVaaR\BlueSprints\Http\Response;
 use VerteXVaaR\BlueSprints\Utility\Files;
 use VerteXVaaR\BlueSprints\Utility\Folders;
 

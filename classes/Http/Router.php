@@ -26,7 +26,6 @@ class Router
 
     /**
      * @throws \Exception
-     * @return Router
      */
     public function __construct()
     {

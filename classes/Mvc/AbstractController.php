@@ -22,7 +22,7 @@ abstract class AbstractController
     protected $response = null;
 
     /**
-     * @var TemplateRenderer
+     * @var TemplateRendererInterface
      */
     protected $templateRenderer = null;
 

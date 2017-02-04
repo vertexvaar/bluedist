@@ -9,7 +9,6 @@ class ExampleTask extends AbstractTask
 {
     /**
      * @param string $optionalString
-     * @return void
      */
     public function run(string $optionalString = '')
     {

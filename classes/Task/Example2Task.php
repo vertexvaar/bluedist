@@ -13,7 +13,7 @@ class Example2Task extends AbstractTask
     protected $verbose = false;
 
     /**
-     * @return void
+     *
      */
     public function run()
     {

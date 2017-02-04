@@ -22,7 +22,6 @@ class TemplateHelper
     /**
      * @param string $fileName
      * @param array $variables
-     * @return void
      */
     public function requireLayout($fileName = '', array $variables = [])
     {
@@ -34,7 +33,7 @@ class TemplateHelper
      * @param string $body
      * @return string
      */
-    public function renderLayoutContent($body = '')
+    public function renderLayoutContent(string $body = ''): string
     {
         if (!empty($this->fileName)) {
             ob_start();

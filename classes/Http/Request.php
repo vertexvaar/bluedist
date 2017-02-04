@@ -62,8 +62,7 @@ class Request
         /** @var AbstractController $controller */
         $controller = new $routeConfiguration['controller']($this, $response);
         $content = $controller->callActionMethod($routeConfiguration);
-        $response->appendContent($content);
-        return $response;
+        return $response->appendContent($content);
     }
 
     /**

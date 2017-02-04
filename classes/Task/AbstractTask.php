@@ -14,7 +14,6 @@ abstract class AbstractTask
 
     /**
      * @param CliRequest $cliRequest
-     * @return AbstractTask
      */
     public function __construct(CliRequest $cliRequest)
     {
@@ -22,7 +21,7 @@ abstract class AbstractTask
     }
 
     /**
-     * @return string
+     * Does not return anything. Write with ->printLine() instead.
      */
     abstract public function run();
 
@@ -30,7 +29,7 @@ abstract class AbstractTask
      * @param string $line
      * @return void
      */
-    final protected function printLine($line)
+    final protected function printLine(string $line)
     {
         echo $line . PHP_EOL;
     }
