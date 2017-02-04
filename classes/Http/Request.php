@@ -50,22 +50,6 @@ class Request
     }
 
     /**
-     * @param array|string $argument
-     * @return array|string
-     */
-    protected static function escapeRequestArguments($argument)
-    {
-        if (is_string($argument)) {
-            $argument = htmlspecialchars($argument);
-        } elseif (is_array($argument)) {
-            foreach ($argument as $index => $arg) {
-                $argument[$index] = self::escapeRequestArguments($arg);
-            }
-        }
-        return $argument;
-    }
-
-    /**
      * @return string
      */
     public function getMethod(): string
@@ -105,5 +89,21 @@ class Request
     public function hasArgument(string $key): bool
     {
         return array_key_exists($key, $this->arguments);
+    }
+
+    /**
+     * @param array|string $argument
+     * @return array|string
+     */
+    protected static function escapeRequestArguments($argument)
+    {
+        if (is_string($argument)) {
+            $argument = htmlspecialchars($argument);
+        } elseif (is_array($argument)) {
+            foreach ($argument as $index => $arg) {
+                $argument[$index] = self::escapeRequestArguments($arg);
+            }
+        }
+        return $argument;
     }
 }
