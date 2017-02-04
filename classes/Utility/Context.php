@@ -1,24 +1,20 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Utility;
 
 /**
  * Class Context
- *
- * @package VerteXVaaR\BlueSprints\Utility
  */
 class Context
 {
-
     const CONTEXT_PRODUCTION = 'Production';
-
     const CONTEXT_DEVELOPMENT = 'Development';
 
     /**
-     * @return mixed
+     * @return string
      */
-    public static function getCurrentContext()
+    public static function getCurrentContext(): string
     {
         return Files::requireFile('configuration/system.php')['context'];
     }
-
 }

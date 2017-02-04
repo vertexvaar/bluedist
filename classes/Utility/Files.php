@@ -1,19 +1,17 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Utility;
 
 /**
  * Class Files
- *
- * @package VerteXVaaR\BlueSprints\Utility
  */
 class Files
 {
-
     /**
      * @param string $fileName
      * @return bool
      */
-    public static function fileExists($fileName = '')
+    public static function fileExists(string $fileName): bool
     {
         $absoluteFilePath = self::getAbsoluteFilePath($fileName);
         self::clearStateCache($absoluteFilePath);
@@ -24,7 +22,7 @@ class Files
      * @param string $fileName
      * @return string
      */
-    public static function getAbsoluteFilePath($fileName = '')
+    public static function getAbsoluteFilePath(string $fileName): string
     {
         return VXVR_BS_ROOT . $fileName;
     }
@@ -33,7 +31,7 @@ class Files
      * @param string $absolutePath
      * @return void
      */
-    protected static function clearStateCache($absolutePath = '')
+    protected static function clearStateCache(string $absolutePath)
     {
         clearstatcache(true, $absolutePath);
     }
@@ -44,7 +42,7 @@ class Files
      * @return mixed
      * @throws \Exception
      */
-    public static function requireOnceFile($fileName = '', array $variables = [])
+    public static function requireOnceFile(string $fileName, array $variables = [])
     {
         $absoluteFilePath = self::getAbsoluteFilePath($fileName);
         if (!is_file($absoluteFilePath)) {
@@ -66,7 +64,7 @@ class Files
      * @return mixed
      * @throws \Exception
      */
-    public static function requireFile($fileName = '', array $variables = [])
+    public static function requireFile(string $fileName, array $variables = [])
     {
         $absoluteFilePath = self::getAbsoluteFilePath($fileName);
         if (!is_file($absoluteFilePath)) {
@@ -87,7 +85,7 @@ class Files
      * @param string $fileContents
      * @return void
      */
-    public static function writeFileContents($fileName, $fileContents)
+    public static function writeFileContents(string $fileName, string $fileContents)
     {
         file_put_contents(self::getAbsoluteFilePath($fileName), $fileContents);
     }
@@ -96,7 +94,7 @@ class Files
      * @param string $fileName
      * @return string
      */
-    public static function readFileContents($fileName)
+    public static function readFileContents(string $fileName): string
     {
         return file_get_contents(self::getAbsoluteFilePath($fileName));
     }
@@ -106,7 +104,7 @@ class Files
      * @param string $fileContents
      * @return int
      */
-    public static function touch($fileName, $fileContents = '')
+    public static function touch(string $fileName, string $fileContents = '')
     {
         $absolutePath = self::getAbsoluteFilePath($fileName);
         if (!is_file($absolutePath)) {
@@ -119,7 +117,7 @@ class Files
      * @param string $fileName
      * @return bool
      */
-    public static function delete($fileName)
+    public static function delete(string $fileName): bool
     {
         return unlink(self::getAbsoluteFilePath($fileName));
     }

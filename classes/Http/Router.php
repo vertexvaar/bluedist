@@ -1,16 +1,14 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Http;
 
 use VerteXVaaR\BlueSprints\Utility\Files;
 
 /**
  * Class Router
- *
- * @package VerteXVaaR\BlueSprints\Http
  */
 class Router
 {
-
     /**
      * @var string
      */
@@ -84,5 +82,4 @@ class Router
         self::$routeStorage = [];
         return $routes;
     }
-
 }

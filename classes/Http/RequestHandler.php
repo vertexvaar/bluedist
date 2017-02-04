@@ -1,23 +1,21 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Http;
 
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
 
 /**
  * Class RequestHandler
- *
- * @package VerteXVaaR\BlueSprints\Http
  */
 class RequestHandler
 {
-
     /**
      * @var Router
      */
     protected $router = null;
 
     /**
-     * @return RequestHandler
+     * RequestHandler constructor.
      */
     public function __construct()
     {

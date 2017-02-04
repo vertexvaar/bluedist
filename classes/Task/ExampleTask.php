@@ -1,10 +1,9 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Task;
 
 /**
  * Class ExampleTask
- *
- * @package VerteXVaaR\BlueSprints\Task
  */
 class ExampleTask extends AbstractTask
 {
@@ -12,9 +11,8 @@ class ExampleTask extends AbstractTask
      * @param string $optionalString
      * @return void
      */
-    public function run($optionalString = '')
+    public function run(string $optionalString = '')
     {
         $this->printLine('Stuff' . $optionalString);
     }
-
 }

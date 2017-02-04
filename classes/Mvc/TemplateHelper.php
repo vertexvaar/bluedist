@@ -1,16 +1,14 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Mvc;
 
 use VerteXVaaR\BlueSprints\Utility\Files;
 
 /**
  * Class TemplateHelper
- *
- * @package VerteXVaaR\BlueSprints\View
  */
 class TemplateHelper
 {
-
     /**
      * @var string
      */

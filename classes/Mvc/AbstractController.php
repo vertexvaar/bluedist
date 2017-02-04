@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Mvc;
 
 use VerteXVaaR\BlueFluid\Mvc\FluidAdapter;
@@ -7,8 +8,6 @@ use VerteXVaaR\BlueSprints\Http\Response;
 
 /**
  * Class AbstractController
- *
- * @package VerteXVaaR\BlueSprints\Mvc
  */
 abstract class AbstractController
 {
@@ -35,7 +34,6 @@ abstract class AbstractController
     /**
      * @param Request $request
      * @param Response $response
-     * @return AbstractController
      */
     final public function __construct(Request $request, Response $response)
     {

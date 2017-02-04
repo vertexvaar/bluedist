@@ -1,10 +1,9 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Task;
 
 /**
  * Class ExampleTask
- *
- * @package VerteXVaaR\BlueSprints\Task
  */
 class Example2Task extends AbstractTask
 {
@@ -27,5 +26,4 @@ class Example2Task extends AbstractTask
             $this->verbose ? $this->printLine('arg "string" does not exist') : null;
         }
     }
-
 }

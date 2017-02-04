@@ -5,30 +5,30 @@ $templateHelper->requireLayout('Basic/Html', ['pageTitle' => 'Hi dude!']);
 
 <section>
 
-    <h1>Some Fruits freshly picked from persistence</h1>
+	<h1>Some Fruits freshly picked from persistence</h1>
 
     <?php
     if (empty($fruits)) {
         ?>
-        <h3>OH WAIT! There is no Fruit yet.</h3>
-        <form action="createDemoFruits" method="post">
-            <input type="submit" value="Create a bunch of fruits">
-        </form>
+		<h3>OH WAIT! There is no Fruit yet.</h3>
+		<form action="createDemoFruits" method="post">
+			<input type="submit" value="Create a bunch of fruits">
+		</form>
         <?php
     } else {
         ?>
-        <p>
-            Hint: click on a fruit to edit it!
-        </p>
+		<p>
+			Hint: click on a fruit to edit it!
+		</p>
 
-        <ul>
+		<ul>
             <?php
             /** @var \VerteXVaaR\BlueWelcome\Model\Fruit[] $fruits */
             foreach ($fruits as $fruit) {
                 ?>
-                <li>
-                    <a href="editFruit?fruit=<?= $fruit->getUuid() ?>">
-                        I am a<?php
+				<li>
+					<a href="editFruit?fruit=<?= $fruit->getUuid() ?>">
+						I am a<?php
                         $name = $fruit->getName();
                         if (strlen($name) > 0) {
                             if (in_array(strtolower($name[0]), ['a', 'e', 'i', 'o', 'u', 'h'])) {
@@ -39,72 +39,72 @@ $templateHelper->requireLayout('Basic/Html', ['pageTitle' => 'Hi dude!']);
                             echo ' nameless fruit';
                         }
                         ?> and my color is <?= $fruit->getColor(); ?>
-                    </a></li>
+					</a></li>
                 <?php
             }
             ?>
-        </ul>
+		</ul>
 
         <?php
     }
     ?>
-    <p>
-        Not enough fruits? Just create your own fruit here:
-    </p>
+	<p>
+		Not enough fruits? Just create your own fruit here:
+	</p>
 
-    <form action="createFruit" method="post">
-        <p>
-            <label>
-                Name
-                <input type="text" name="name"/>
-            </label>
-        </p>
+	<form action="createFruit" method="post">
+		<p>
+			<label>
+				Name
+				<input type="text" name="name"/>
+			</label>
+		</p>
 
-        <p>
-            <label>
-                Color
-                <input type="text" name="color"/>
-            </label>
-        </p>
-        <input type="submit" value="Create it!">
-    </form>
+		<p>
+			<label>
+				Color
+				<input type="text" name="color"/>
+			</label>
+		</p>
+		<input type="submit" value="Create it!">
+	</form>
 
-    <h2>The NoDB Storage</h2>
+	<h2>The NoDB Storage</h2>
 
-    <p>
-        Since there is no configuration for any storage or database i owe you an explanation.
-        BlueSprints just uses the file system. The full qualified class name of a model is converted into a directory
-        structure. Inside the last directory all models are stored in files named by their automatically created uuid.
-        The objects are serialized, since this is the fastest option to store all simple values without reflection,
-        additional configuration or such.
-    </p>
+	<p>
+		Since there is no configuration for any storage or database i owe you an explanation.
+		BlueSprints just uses the file system. The full qualified class name of a model is converted into a directory
+		structure. Inside the last directory all models are stored in files named by their automatically created uuid.
+		The objects are serialized, since this is the fastest option to store all simple values without reflection,
+		additional configuration or such.
+	</p>
 
-    <h2>WIP !</h2>
+	<h2>WIP !</h2>
 
-    <p>
-        The Storage function is currently work in progress. Some missing features are automatic index tables for
-        searching
-        models by their properties or the deletion of those.
-    </p>
+	<p>
+		The Storage function is currently work in progress. Some missing features are automatic index tables for
+		searching
+		models by their properties or the deletion of those.
+	</p>
 
-    <h2>Like it? Or not?</h2>
+	<h2>Like it? Or not?</h2>
 
-    <p>
-        Have a look at the code which creates a fruit from the form above:
-    </p>
+	<p>
+		Have a look at the code which creates a fruit from the form above:
+	</p>
 
-    <pre>
+	<pre>
             $fruit = new Fruit();
             $fruit->setColor($this->request->getArgument('color'));
             $fruit->setName($this->request->getArgument('name'));
             $fruit->save();
     </pre>
 
-    <p>
-        As i promised you, it is easy as pie. If you want to alter the Model, say add a new property, just do it.
-    </p>
+	<p>
+		As i promised you, it is easy as pie. If you want to alter the Model, say add a new property, just do it.
+	</p>
 
-    <p>
-        <a href="./">Back to the index</a>
-    </p>
+	<p>
+		<a href="./">Back to the index</a>
+	</p>
 </section>

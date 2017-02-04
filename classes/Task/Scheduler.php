@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Task;
 
 use VerteXVaaR\BlueSprints\Utility\Files;
@@ -6,12 +7,9 @@ use VerteXVaaR\BlueSprints\Utility\Folders;
 
 /**
  * Class Scheduler
- *
- * @package VerteXVaaR\BlueSprints\Task
  */
 class Scheduler
 {
-
     /**
      * @var CliRequest
      */
@@ -23,7 +21,7 @@ class Scheduler
     protected $tasks = [];
 
     /**
-     * @return void
+     * Starts all the scheduled tasks. They are not executed in parallel.
      */
     public function run()
     {
@@ -32,7 +30,7 @@ class Scheduler
                 /** @var AbstractTask $task */
                 $task = new $taskConfiguration['task']($this->cliRequest);
                 if (!empty($taskConfiguration['arguments'])) {
-                    echo call_user_func_array(array($task, 'run'), $taskConfiguration['arguments']);
+                    echo call_user_func_array([$task, 'run'], $taskConfiguration['arguments']);
                 } else {
                     echo $task->run();
                 }
@@ -55,7 +53,7 @@ class Scheduler
      * @param array $taskConfiguration
      * @return bool
      */
-    protected function isScheduled($taskName, $taskConfiguration)
+    protected function isScheduled(string $taskName, array $taskConfiguration): bool
     {
         $scheduled = false;
         $taskInformation = $this->getTaskInformation($taskName, $taskConfiguration['task']);
@@ -74,14 +72,14 @@ class Scheduler
      * @param string $taskClassName
      * @return string
      */
-    protected function getTaskInformationFile($taskName, $taskClassName)
+    protected function getTaskInformationFile(string $taskName, string $taskClassName): string
     {
         $taskFolder = Folders::createFolderForClassName(
             'database' . DIRECTORY_SEPARATOR . 'tasks',
             $taskClassName
         );
         $taskInformationFile = $taskFolder . DIRECTORY_SEPARATOR . $taskName;
-        Files::touch($taskInformationFile, serialize([]));
+        Files::touch($taskInformationFile, 'a:0:{}');
         return $taskInformationFile;
     }
 
@@ -90,17 +88,16 @@ class Scheduler
      * @param string $taskClassName
      * @return mixed
      */
-    protected function getTaskInformation($taskName, $taskClassName)
+    protected function getTaskInformation(string $taskName, string $taskClassName)
     {
         return unserialize(Files::readFileContents($this->getTaskInformationFile($taskName, $taskClassName)));
     }
 
     /**
-     * @param $taskName
-     * @param $taskConfiguration
-     * @return void
+     * @param string $taskName
+     * @param array $taskConfiguration
      */
-    protected function update($taskName, $taskConfiguration)
+    protected function update(string $taskName, array $taskConfiguration)
     {
         $taskInformation = $this->getTaskInformation($taskName, $taskConfiguration['task']);
         $taskInformation['lastRun'] = time();
@@ -110,10 +107,9 @@ class Scheduler
     /**
      * @param string $taskName
      * @param string $taskClassName
-     * @param string $taskInformation
-     * @return void
+     * @param array $taskInformation
      */
-    protected function writeTaskInformation($taskName, $taskClassName, $taskInformation)
+    protected function writeTaskInformation(string $taskName, string $taskClassName, array $taskInformation)
     {
         $taskInformationFile = $this->getTaskInformationFile($taskName, $taskClassName);
         Files::writeFileContents($taskInformationFile, serialize($taskInformation));
@@ -122,7 +118,7 @@ class Scheduler
     /**
      * @return array
      */
-    protected function collectTasks()
+    protected function collectTasks(): array
     {
         return Files::requireFile('configuration/tasks.php');
     }

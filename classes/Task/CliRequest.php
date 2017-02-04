@@ -1,10 +1,9 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Task;
 
 /**
  * Class CliRequest
- *
- * @package VerteXVaaR\BlueSprints\Task
  */
 class CliRequest
 {

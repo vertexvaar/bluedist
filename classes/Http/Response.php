@@ -1,14 +1,12 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Http;
 
 /**
  * Class Response
- *
- * @package VerteXVaaR\BlueSprints\Http
  */
 class Response
 {
-
     /**
      * @var array
      */
@@ -60,9 +58,8 @@ class Response
     /**
      * @param string $key
      * @param string $value
-     * @return void
      */
-    public function setHeader($key = '', $value = '')
+    public function setHeader(string $key, string $value)
     {
         $this->headers[$key] = $value;
     }

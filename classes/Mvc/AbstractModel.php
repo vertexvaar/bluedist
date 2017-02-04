@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Mvc;
 
 use VerteXVaaR\BlueSprints\Utility\Files;
@@ -7,12 +8,9 @@ use VerteXVaaR\BlueSprints\Utility\Strings;
 
 /**
  * Class AbstractModel
- *
- * @package VerteXVaaR\BlueSprints\Model
  */
 class AbstractModel
 {
-
     /**
      * @var string[]
      */

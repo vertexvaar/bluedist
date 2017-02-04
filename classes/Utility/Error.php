@@ -1,14 +1,12 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Utility;
 
 /**
  * Class Error
- *
- * @package VerteXVaaR\BlueSprints\Utility
  */
 class Error
 {
-
     /**
      * @return void
      */
@@ -25,7 +23,7 @@ class Error
      * @param int $errline
      * @return bool
      */
-    public static function handleError($errno, $errstr, $errfile, $errline)
+    public static function handleError(int $errno, string $errstr, string $errfile, int $errline)
     {
         self::printErrorPage($errstr, $errno, $errfile, $errline, []);
         return false;
@@ -39,7 +37,7 @@ class Error
      * @param array $callStack
      * @return void
      */
-    protected static function printErrorPage($message, $code, $file, $line, array $callStack = [])
+    protected static function printErrorPage(string $message, int $code, string $file, int $line, array $callStack = [])
     {
         $additionalException = null;
         try {
@@ -81,7 +79,7 @@ class Error
                         $argumentArray = [];
                         foreach ($argument as $key => $value) {
                             $argumentArray[] = "'" . $key . "'" . ' => ' .
-                                (is_object($value) ? get_class($value) : $value);
+                                               (is_object($value) ? get_class($value) : $value);
                         }
                         echo implode(', ', $argumentArray);
                     } elseif (is_string($argument)) {
@@ -97,17 +95,16 @@ class Error
     }
 
     /**
-     * @param \Exception|\Throwable $exception
-     * @return void
+     * @param \Throwable $throwable
      */
-    public static function handleException( $exception)
+    public static function handleException(\Throwable $throwable)
     {
         self::printErrorPage(
-            $exception->getMessage(),
-            $exception->getCode(),
-            $exception->getFile(),
-            $exception->getLine(),
-            $exception->getTrace()
+            $throwable->getMessage(),
+            $throwable->getCode(),
+            $throwable->getFile(),
+            $throwable->getLine(),
+            $throwable->getTrace()
         );
     }
 }

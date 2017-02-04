@@ -1,20 +1,18 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Utility;
 
 /**
  * Class Folders
- *
- * @package VerteXVaaR\BlueSprints\Utility
  */
 class Folders
 {
-
     /**
      * @param string $relativeRoot
      * @param string $className
      * @return string
      */
-    public static function createFolderForClassName($relativeRoot, $className)
+    public static function createFolderForClassName(string $relativeRoot, string $className): string
     {
         $relativePath = $relativeRoot . DIRECTORY_SEPARATOR . self::classNameToFolderName($className);
         $folderName = Files::getAbsoluteFilePath($relativePath);
@@ -28,16 +26,16 @@ class Folders
      * @param string $className
      * @return string
      */
-    public static function classNameToFolderName($className)
+    public static function classNameToFolderName(string $className): string
     {
         return str_replace('\\', DIRECTORY_SEPARATOR, $className) . DIRECTORY_SEPARATOR;
     }
 
     /**
      * @param string $folderName
-     * @return string[]
+     * @return array
      */
-    public static function getAllFilesInFolder($folderName)
+    public static function getAllFilesInFolder(string $folderName): array
     {
         $files = [];
         /** @var \SplFileInfo[] $fileSystemIterator */

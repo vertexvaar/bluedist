@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Http;
 
 /**
@@ -8,7 +9,6 @@ namespace VerteXVaaR\BlueSprints\Http;
  */
 class Request implements RequestInterface
 {
-
     /**
      * @var string
      */
@@ -64,7 +64,7 @@ class Request implements RequestInterface
     /**
      * @param string $method
      */
-    public function setMethod($method)
+    protected function setMethod($method)
     {
         define('VXVR_BS_REQUEST_METHOD', $method);
         $this->method = $method;
@@ -81,7 +81,7 @@ class Request implements RequestInterface
     /**
      * @param string $path
      */
-    public function setPath($path)
+    protected function setPath($path)
     {
         $this->path = $path;
     }
@@ -97,7 +97,7 @@ class Request implements RequestInterface
     /**
      * @param array $arguments
      */
-    public function setArguments(array $arguments)
+    protected function setArguments(array $arguments)
     {
         $this->arguments = $arguments;
     }
