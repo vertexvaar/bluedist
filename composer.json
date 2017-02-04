@@ -1,22 +1,24 @@
 {
-  "name": "vertexvaar/bluefluid",
-  "description": "BlueFluids provides an adapter for the TYPO3 templating engine Fluid",
-  "type": "project",
-  "license": "GPL-3.0+",
-  "authors": [
-    {
-      "name": "Oliver Eglseder",
-      "email": "bluesprints@vxvr.de",
-      "homepage": "http://vxvr.de/",
-      "role": "Developer"
-    }
-  ],
-  "autoload": {
-    "psr-4": {
-      "VerteXVaaR\\BlueFluid\\": "classes/"
-    }
-  },
-  "require": {
-    "typo3fluid/fluid": "^2.2"
-  }
+	"name": "vertexvaar/bluefluid",
+	"description": "BlueFluids provides an adapter for the TYPO3 templating engine Fluid",
+	"type": "project",
+	"license": "GPL-3.0+",
+	"authors": [
+		{
+			"name": "Oliver Eglseder",
+			"email": "bluesprints@vxvr.de",
+			"homepage": "http://vxvr.de/",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"VerteXVaaR\\BlueFluid\\": "classes/"
+		}
+	},
+	"require": {
+		"php": "^7.0",
+		"typo3fluid/fluid": "^2.2",
+		"vertexvaar/bluesprints": "dev-master"
+	}
 }
