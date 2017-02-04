@@ -34,11 +34,19 @@ class Request
      */
     public static function createFromEnvironment()
     {
-        $request = new self;
-        $request->setMethod($_SERVER['REQUEST_METHOD']);
-        $request->setPath(explode('?', $_SERVER['REQUEST_URI'])[0]);
-        $request->setArguments(self::escapeRequestArguments($_REQUEST));
-        return $request;
+        define('VXVR_BS_REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
+        return new static;
+    }
+
+    /**
+     * Request constructor.
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    protected function __construct()
+    {
+        $this->method = VXVR_BS_REQUEST_METHOD;
+        $this->path = explode('?', $_SERVER['REQUEST_URI'])[0];
+        $this->arguments = self::escapeRequestArguments($_REQUEST);
     }
 
     /**
@@ -66,15 +74,6 @@ class Request
     }
 
     /**
-     * @param string $method
-     */
-    protected function setMethod(string $method)
-    {
-        define('VXVR_BS_REQUEST_METHOD', $method);
-        $this->method = $method;
-    }
-
-    /**
      * @return string
      */
     public function getPath(): string
@@ -83,27 +82,11 @@ class Request
     }
 
     /**
-     * @param string $path
-     */
-    protected function setPath(string $path)
-    {
-        $this->path = $path;
-    }
-
-    /**
      * @return array
      */
     public function getArguments(): array
     {
         return $this->arguments;
-    }
-
-    /**
-     * @param array $arguments
-     */
-    protected function setArguments(array $arguments)
-    {
-        $this->arguments = $arguments;
     }
 
     /**
