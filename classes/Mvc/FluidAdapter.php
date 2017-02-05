@@ -33,15 +33,11 @@ class FluidAdapter implements TemplateRendererInterface
      */
     public function render(string $templateName = ''): string
     {
-        $controllerPath = strtr($this->routeConfiguration['controller'], '\\', '/');
-        $this->view->getTemplatePaths()->setTemplateRootPaths(
-            [VXVR_BS_ROOT . 'view/Template/' . $controllerPath . '/']
-        );
-        $this->view->getTemplatePaths()->setLayoutRootPaths([VXVR_BS_ROOT . 'view/Layout/' . $controllerPath . '/']);
-        $this->view->getTemplatePaths()->setPartialRootPaths([VXVR_BS_ROOT . 'view/Partial/' . $controllerPath . '/']);
-        $this->view->getRenderingContext()->setControllerName(
-            substr($controllerPath, strrpos($controllerPath, '/') + 1)
-        );
+        $controller = strtr($this->routeConfiguration['controller'], '\\', '/');
+        $this->view->getTemplatePaths()->setTemplateRootPaths([VXVR_BS_APP . 'view/Template/' . $controller . '/']);
+        $this->view->getTemplatePaths()->setLayoutRootPaths([VXVR_BS_APP . 'view/Layout/' . $controller . '/']);
+        $this->view->getTemplatePaths()->setPartialRootPaths([VXVR_BS_APP . 'view/Partial/' . $controller . '/']);
+        $this->view->getRenderingContext()->setControllerName(substr($controller, strrpos($controller, '/') + 1));
         if (empty($templateName)) {
             $templateName = $this->routeConfiguration['action'];
         }
