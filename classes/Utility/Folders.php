@@ -17,7 +17,7 @@ class Folders
         $relativePath = $relativeRoot . DIRECTORY_SEPARATOR . self::classNameToFolderName($className);
         $folderName = Files::getAbsoluteFilePath($relativePath);
         if (!is_dir($folderName)) {
-            mkdir($folderName, Files::requireFile('configuration/system.php')['permissions']['folders'], true);
+            mkdir($folderName, Files::requireFile('app/config/system.php')['permissions']['folders'], true);
         }
         return $relativePath;
     }

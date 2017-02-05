@@ -120,6 +120,6 @@ class Scheduler
      */
     protected function collectTasks(): array
     {
-        return Files::requireFile('configuration/tasks.php');
+        return Files::requireFile('app/configuration/tasks.php');
     }
 }

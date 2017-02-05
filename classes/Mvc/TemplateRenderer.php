@@ -61,7 +61,7 @@ class TemplateRenderer implements TemplateRendererInterface
         }
         $this->setVariable('templateHelper', $this->templateHelper);
         ob_start();
-        Files::requireFile('view/Template/' . $templateName . '.php', $this->variables);
+        Files::requireFile('app/view/Template/' . $templateName . '.php', $this->variables);
         $body = ob_get_contents();
         $content = $this->templateHelper->renderLayoutContent($body);
         ob_end_clean();

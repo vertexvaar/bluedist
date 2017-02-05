@@ -15,6 +15,6 @@ class Context
      */
     public static function getCurrentContext(): string
     {
-        return Files::requireFile('configuration/system.php')['context'];
+        return Files::requireFile('app/config/system.php')['context'];
     }
 }

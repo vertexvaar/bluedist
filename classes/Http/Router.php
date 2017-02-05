@@ -12,7 +12,7 @@ class Router
     /**
      * @var string
      */
-    const CONFIGURATION_FILENAME = 'configuration/routes.php';
+    const CONFIGURATION_FILENAME = 'app/config/routes.php';
 
     /**
      * @var array[][]
