@@ -21,6 +21,15 @@ class Scheduler
     protected $tasks = [];
 
     /**
+     * @param CliRequest $cliRequest
+     */
+    public function __construct(CliRequest $cliRequest)
+    {
+        $this->cliRequest = $cliRequest;
+        $this->tasks = $this->collectTasks();
+    }
+
+    /**
      * Starts all the scheduled tasks. They are not executed in parallel.
      */
     public function run()
@@ -37,15 +46,6 @@ class Scheduler
                 $this->update($taskName, $taskConfiguration);
             }
         }
-    }
-
-    /**
-     * @param CliRequest $cliRequest
-     */
-    public function __construct(CliRequest $cliRequest)
-    {
-        $this->cliRequest = $cliRequest;
-        $this->tasks = $this->collectTasks();
     }
 
     /**
