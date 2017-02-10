@@ -34,10 +34,13 @@ class FluidAdapter implements TemplateRendererInterface
     public function render(string $templateName = ''): string
     {
         $controller = strtr($this->routeConfiguration['controller'], '\\', '/');
-        $this->view->getTemplatePaths()->setTemplateRootPaths([VXVR_BS_APP . 'view/Template/' . $controller . '/']);
-        $this->view->getTemplatePaths()->setLayoutRootPaths([VXVR_BS_APP . 'view/Layout/' . $controller . '/']);
-        $this->view->getTemplatePaths()->setPartialRootPaths([VXVR_BS_APP . 'view/Partial/' . $controller . '/']);
+        $viewRootPath = VXVR_BS_ROOT . 'app/view/';
+
+        $this->view->getTemplatePaths()->setTemplateRootPaths([$viewRootPath . 'Template/' . $controller . '/']);
+        $this->view->getTemplatePaths()->setLayoutRootPaths([$viewRootPath . 'Layout/' . $controller . '/']);
+        $this->view->getTemplatePaths()->setPartialRootPaths([$viewRootPath . 'Partial/' . $controller . '/']);
         $this->view->getRenderingContext()->setControllerName(substr($controller, strrpos($controller, '/') + 1));
+
         if (empty($templateName)) {
             $templateName = $this->routeConfiguration['action'];
         }
