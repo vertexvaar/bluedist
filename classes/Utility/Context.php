@@ -11,10 +11,23 @@ class Context
     const CONTEXT_DEVELOPMENT = 'Development';
 
     /**
+     * @var string
+     */
+    protected $context = self::CONTEXT_PRODUCTION;
+
+    /**
+     * Context constructor.
+     */
+    public function __construct()
+    {
+        $this->context = Files::requireFile('app/config/system.php')['context'];
+    }
+
+    /**
      * @return string
      */
-    public static function getCurrentContext(): string
+    public function getCurrentContext(): string
     {
-        return Files::requireFile('app/config/system.php')['context'];
+        return $this->context;
     }
 }

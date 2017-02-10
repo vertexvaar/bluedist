@@ -41,7 +41,7 @@ class Error
     {
         $additionalException = null;
         try {
-            $context = Context::getCurrentContext();
+            $context = (new Context())->getCurrentContext();
         } catch (\Exception $additionalException) {
             $context = Context::CONTEXT_PRODUCTION;
         }
