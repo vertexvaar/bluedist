@@ -10,12 +10,6 @@ if (empty(ini_get('date.timezone'))) {
     date_default_timezone_set('UTC');
 }
 
-if (PHP_SAPI === 'cli') {
-    $scheduler = new \VerteXVaaR\BlueSprints\Task\Scheduler(
-        \VerteXVaaR\BlueSprints\Task\CliRequest::createFromEnvironment()
-    );
-    $scheduler->run();
-} else {
-    \VerteXVaaR\BlueSprints\Utility\Error::registerErrorHandler();
-    \VerteXVaaR\BlueSprints\Http\Request::createFromEnvironment()->process()->respond();
-}
+\VerteXVaaR\BlueSprints\Utility\Error::registerErrorHandler();
+\VerteXVaaR\BlueSprints\Http\Request::createFromEnvironment()->process()->respond();
+

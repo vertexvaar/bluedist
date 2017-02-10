@@ -1,0 +1,6 @@
+#!/usr/bin/env php
+<?php
+require_once(__DIR__ . '/../autoload.php');
+$cliRequest = \VerteXVaaR\BlueSprints\Task\CliRequest::createFromEnvironment();
+$scheduler = new \VerteXVaaR\BlueSprints\Task\Scheduler($cliRequest);
+$scheduler->run();
