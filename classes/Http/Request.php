@@ -31,24 +31,15 @@ class Request
     protected $arguments = [];
 
     /**
-     * @return Request
-     * @SuppressWarnings(PHPMD.Superglobals)
-     */
-    public static function createFromEnvironment()
-    {
-        define('VXVR_BS_REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
-        return new static;
-    }
-
-    /**
      * Request constructor.
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    protected function __construct()
+    public function __construct()
     {
+        define('VXVR_BS_REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
         $this->method = VXVR_BS_REQUEST_METHOD;
         $this->path = explode('?', $_SERVER['REQUEST_URI'])[0];
-        $this->arguments = self::escapeRequestArguments($_REQUEST);
+        $this->arguments = $this->escapeRequestArguments($_REQUEST);
     }
 
     /**
@@ -111,13 +102,13 @@ class Request
      * @param array|string $argument
      * @return array|string
      */
-    protected static function escapeRequestArguments($argument)
+    protected function escapeRequestArguments($argument)
     {
         if (is_string($argument)) {
             $argument = htmlspecialchars($argument);
         } elseif (is_array($argument)) {
             foreach ($argument as $index => $arg) {
-                $argument[$index] = self::escapeRequestArguments($arg);
+                $argument[$index] = $this->escapeRequestArguments($arg);
             }
         }
         return $argument;

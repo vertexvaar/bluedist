@@ -11,5 +11,4 @@ if (empty(ini_get('date.timezone'))) {
 }
 
 \VerteXVaaR\BlueSprints\Utility\Error::registerErrorHandler();
-\VerteXVaaR\BlueSprints\Http\Request::createFromEnvironment()->process()->respond();
-
+(new \VerteXVaaR\BlueSprints\Http\Request())->process()->respond();
