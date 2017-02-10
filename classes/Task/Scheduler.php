@@ -26,7 +26,7 @@ class Scheduler
     public function __construct(CliRequest $cliRequest)
     {
         $this->cliRequest = $cliRequest;
-        $this->tasks = $this->collectTasks();
+        $this->tasks = Files::requireFile('app/configuration/tasks.php');
     }
 
     /**
@@ -113,13 +113,5 @@ class Scheduler
     {
         $taskInformationFile = $this->getTaskInformationFile($taskName, $taskClassName);
         Files::writeFileContents($taskInformationFile, serialize($taskInformation));
-    }
-
-    /**
-     * @return array
-     */
-    protected function collectTasks(): array
-    {
-        return Files::requireFile('app/configuration/tasks.php');
     }
 }
