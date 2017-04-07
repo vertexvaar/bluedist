@@ -1,8 +1,6 @@
-VerteXVaaR.BlueSprints
-======================
+# VerteXVaaR.BlueSprints
 
-Quickstart & Documentation ;)
------------------------------
+## Quickstart & Documentation ;)
 
 The "create-project" way (more quick):
 
@@ -19,3 +17,8 @@ The "require" way (uses BlueSprints as library):
     php -S localhost:8000 -t public/
 
 open http://localhost:8000 in your favorite browser
+
+## Problems ?
+
+You might find some help in the documentation (especially if you get exceptions).
+If you did not find what you were searching for you can open a question issue on github.
