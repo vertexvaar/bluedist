@@ -63,6 +63,7 @@ class Error
         } catch (\Exception $additionalException) {
             $context = Context::CONTEXT_PRODUCTION;
         }
+        echo '<div class="c-error">';
         if ($additionalException !== null) {
             echo '<h1>An error occured. Additionally an exception was thrown.</h1>';
         } else {
@@ -76,6 +77,7 @@ class Error
                 self::printHelp($code);
             }
         }
+        echo '</div>';
     }
 
     /**
@@ -128,7 +130,7 @@ class Error
                 echo nl2br($helpFileContents);
             }
         } else {
-            echo '<span style="color: orange">No help file available</span>';
+            echo '<span>No help file available</span>';
         }
     }
 
