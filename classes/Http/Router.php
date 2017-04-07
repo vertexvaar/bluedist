@@ -17,7 +17,16 @@ class Router
     /**
      * @var array[][]
      */
-    protected $configuration = [];
+    protected $configuration = [
+        Request::HTTP_METHOD_GET => [],
+        Request::HTTP_METHOD_HEAD => [],
+        Request::HTTP_METHOD_POST => [],
+        Request::HTTP_METHOD_PUT => [],
+        Request::HTTP_METHOD_DELETE => [],
+        Request::HTTP_METHOD_CONNECT => [],
+        Request::HTTP_METHOD_OPTIONS => [],
+        Request::HTTP_METHOD_TRACE => [],
+    ];
 
     /**
      * @throws \Exception
@@ -25,7 +34,10 @@ class Router
     public function __construct()
     {
         if (Files::fileExists(self::CONFIGURATION_FILENAME)) {
-            $this->configuration = Files::requireFile(self::CONFIGURATION_FILENAME);
+            $this->configuration = array_merge_recursive(
+                $this->configuration,
+                Files::requireFile(self::CONFIGURATION_FILENAME)
+            );
         } else {
             throw new \Exception('The Router configuration does not exist', 1431886993);
         }
