@@ -72,7 +72,7 @@ class Error
             foreach ($callStack as $trace) {
                 echo '<li>';
                 echo $trace['file'] . ' @ ' . $trace['line'] . '<br/>';
-                echo $trace['class'] . $trace['type'] . $trace['function'] . '(';
+                echo ($trace['class'] ?? '') . ($trace['type'] ?? '') . $trace['function'] . '(';
                 foreach ($trace['args'] as $argument) {
                     if (is_object($argument)) {
                         echo get_class($argument);
