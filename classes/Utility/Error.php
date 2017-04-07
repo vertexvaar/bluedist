@@ -26,7 +26,7 @@ class Error
     public static function handleError(int $errno, string $errstr, string $errfile, int $errline): bool
     {
         self::printErrorPage($errstr, $errno, $errfile, $errline, []);
-        return false;
+        return true;
     }
 
     /**
