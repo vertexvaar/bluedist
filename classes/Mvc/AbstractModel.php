@@ -79,7 +79,7 @@ class AbstractModel
     /**
      * @param string $property
      * @param string $value
-     * @return array
+     * @return $this[]
      */
     final public static function findByProperty(string $property, string $value): array
     {
