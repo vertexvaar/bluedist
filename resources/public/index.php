@@ -12,7 +12,7 @@ if (!class_exists(\Composer\Autoload\ClassLoader::class, false)) {
         // library level
         require('../../../../autoload.php');
     } else {
-        throw new \Exception('Autoloader not found');
+        throw new \Exception('Autoloader not found', 1491561093);
     }
 }
 if (empty(ini_get('date.timezone'))) {
