@@ -44,6 +44,9 @@ abstract class AbstractController
         } else {
             $this->templateRenderer = new TemplateRenderer();
         }
+        if (is_callable([$this, 'initialize'])) {
+            call_user_func([$this, 'initialize']);
+        }
     }
 
     /**
