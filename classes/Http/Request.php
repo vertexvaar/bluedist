@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Http;
 
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
+use VerteXVaaR\BlueSprints\Utility\Context;
 
 /**
  * Class Request
@@ -39,6 +40,7 @@ class Request
      */
     public function __construct()
     {
+        ob_start();
         define('VXVR_BS_REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
         $this->method = VXVR_BS_REQUEST_METHOD;
         $this->path = explode('?', $_SERVER['REQUEST_URI'])[0];
@@ -56,6 +58,10 @@ class Request
         /** @var AbstractController $controller */
         $controller = new $routeConfiguration['controller']($this, $response);
         $content = $controller->callActionMethod($routeConfiguration);
+        if ((new Context())->getCurrentContext() === Context::CONTEXT_DEVELOPMENT) {
+            $content = ob_get_contents() . $content;
+        }
+        ob_end_clean();
         return $response->appendContent($content);
     }
 
