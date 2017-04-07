@@ -15,10 +15,7 @@ class Folders
     public static function createFolderForClassName(string $relativeRoot, string $className): string
     {
         $relativePath = $relativeRoot . DIRECTORY_SEPARATOR . self::classNameToFolderName($className);
-        $folderName = Files::getAbsoluteFilePath($relativePath);
-        if (!is_dir($folderName)) {
-            mkdir($folderName, Files::requireFile('app/config/system.php')['permissions']['folders'], true);
-        }
+        self::createFolderRecursive($relativePath);
         return $relativePath;
     }
 
@@ -47,5 +44,22 @@ class Folders
             $files[] = $file->getPathname();
         }
         return $files;
+    }
+
+    /**
+     * @param string $folder
+     * @return bool If the folder exists or was created
+     */
+    public static function createFolderRecursive(string $folder): bool
+    {
+        $absolutePath = Files::getAbsoluteFilePath($folder);
+        if (!is_dir($absolutePath)) {
+            return mkdir(
+                $absolutePath,
+                Files::requireFile('app/config/system.php')['permissions']['folders'],
+                true
+            );
+        }
+        return true;
     }
 }
