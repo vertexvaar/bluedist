@@ -8,6 +8,22 @@ namespace VerteXVaaR\BlueSprints\Utility;
 class Error
 {
     /**
+     * @var bool
+     */
+    protected static $cssIncluded = false;
+
+    /**
+     *
+     */
+    protected static function includeCss()
+    {
+        if (false === self::$cssIncluded) {
+            self::$cssIncluded = true;
+            echo '<link href="/css/error.css" rel="stylesheet">';
+        }
+    }
+
+    /**
      * @return void
      */
     public static function registerErrorHandler()
@@ -25,6 +41,7 @@ class Error
      */
     public static function handleError(int $errno, string $errstr, string $errfile, int $errline): bool
     {
+        self::includeCss();
         self::printErrorPage($errstr, $errno, $errfile, $errline, []);
         return true;
     }
@@ -39,6 +56,7 @@ class Error
      */
     protected static function printErrorPage(string $message, int $code, string $file, int $line, array $callStack = [])
     {
+        self::includeCss();
         $additionalException = null;
         try {
             $context = (new Context())->getCurrentContext();
