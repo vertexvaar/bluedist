@@ -23,7 +23,7 @@ class Error
      * @param int $errline
      * @return bool
      */
-    public static function handleError(int $errno, string $errstr, string $errfile, int $errline)
+    public static function handleError(int $errno, string $errstr, string $errfile, int $errline): bool
     {
         self::printErrorPage($errstr, $errno, $errfile, $errline, []);
         return false;
@@ -96,9 +96,9 @@ class Error
     }
 
     /**
-     *
+     * @param int $code
      */
-    protected static function printHelp($code)
+    protected static function printHelp(int $code)
     {
         $helpFile = __DIR__ . '/../../docs/exception/' . $code . '.md';
         if (file_exists($helpFile)) {
