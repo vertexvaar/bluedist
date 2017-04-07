@@ -14,6 +14,9 @@ class Request
     const HTTP_METHOD_POST = 'POST';
     const HTTP_METHOD_PUT = 'PUT';
     const HTTP_METHOD_DELETE = 'DELETE';
+    const HTTP_METHOD_CONNECT = 'CONNECT';
+    const HTTP_METHOD_OPTIONS = 'OPTIONS';
+    const HTTP_METHOD_TRACE = 'TRACE';
 
     /**
      * @var string
