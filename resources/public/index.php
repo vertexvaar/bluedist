@@ -1,9 +1,19 @@
 <?php
+
 if (!defined('VXVR_BS_ROOT')) {
     define('VXVR_BS_ROOT', dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR);
 }
+
 if (!class_exists(\Composer\Autoload\ClassLoader::class, false)) {
-    require_once(VXVR_BS_ROOT . 'vendor/autoload.php');
+    if (file_exists('../../../vendor/autoload.php')) {
+        // project level
+        require('../../../vendor/autoload.php');
+    } elseif (file_exists('../../../../autoload.php')) {
+        // library level
+        require('../../../../autoload.php');
+    } else {
+        throw new \Exception('Autoloader not found');
+    }
 }
 if (empty(ini_get('date.timezone'))) {
     date_default_timezone_set('UTC');
