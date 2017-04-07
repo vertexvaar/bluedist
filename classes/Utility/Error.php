@@ -55,6 +55,7 @@ class Error
                 echo '<p>Message: ' . $message . ' (Code: ' . $code . ')</p>';
                 echo '<p>Error occured in: ' . $file . ' @ ' . $line . '</p>';
                 self::printCallStack($callStack);
+                self::printHelp($code);
             }
         }
     }
@@ -91,6 +92,25 @@ class Error
                 echo ')';
             }
             echo '</ul>';
+        }
+    }
+
+    /**
+     *
+     */
+    protected static function printHelp($code)
+    {
+        $helpFile = __DIR__ . '/../../docs/exception/' . $code . '.md';
+        if (file_exists($helpFile)) {
+            $helpFileContents = file_get_contents($helpFile);
+            echo '<h2>This might help you:</h2>';
+            if (class_exists(\Parsedown::class)) {
+                echo (new \Parsedown())->text($helpFileContents);
+            } else {
+                echo nl2br($helpFileContents);
+            }
+        } else {
+            echo '<span style="color: orange">No help file available</span>';
         }
     }
 
