@@ -65,14 +65,16 @@ class Error
         }
         echo '<div class="c-error">';
         if ($additionalException !== null) {
-            echo '<h1>An error occured. Additionally an exception was thrown.</h1>';
+            echo '<h1 class="c-error__title">An error occured. Additionally an exception was thrown.</h1>';
         } else {
             if ($context === Context::CONTEXT_PRODUCTION) {
                 echo '<h1>An error occured. Please contact your administator</h1>';
             } else {
                 echo '<h1>An error occured.</h1>';
-                echo '<p>Message: ' . $message . ' (Code: ' . $code . ')</p>';
-                echo '<p>Error occured in: ' . $file . ' @ ' . $line . '</p>';
+                echo '<div class="c-error__report">';
+                echo '<p>Message: </p><code class="c-error__message">' . $message . ' (Code: ' . $code . ')</code>';
+                echo '<p>Error occured in:</p><code>' . $file . ' @ ' . $line . '</code>';
+                echo '</div>';
                 self::printCallStack($callStack);
                 self::printHelp($code);
             }
@@ -87,10 +89,10 @@ class Error
     protected static function printCallStack(array $callStack)
     {
         if (!empty($callStack)) {
-            echo '<p>Call Stack:';
-            echo '<ul>';
+            echo '<h3>Call Stack:</h3>';
+            echo '<ul class="c-error__call-stack">';
             foreach ($callStack as $trace) {
-                echo '<li>';
+                echo '<li><code>';
                 echo $trace['file'] . ' @ ' . $trace['line'] . '<br/>';
                 echo ($trace['class'] ?? '') . ($trace['type'] ?? '') . $trace['function'] . '(';
                 foreach ($trace['args'] as $argument) {
@@ -110,6 +112,7 @@ class Error
                     }
                 }
                 echo ')';
+                echo '</code></li>';
             }
             echo '</ul>';
         }
@@ -127,7 +130,9 @@ class Error
             if (class_exists(\Parsedown::class)) {
                 echo (new \Parsedown())->text($helpFileContents);
             } else {
+                echo '<div class="c-error__md">';
                 echo nl2br($helpFileContents);
+                echo '</div>';
             }
         } else {
             echo '<span>No help file available</span>';
