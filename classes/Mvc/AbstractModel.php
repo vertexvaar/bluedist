@@ -83,7 +83,7 @@ class AbstractModel
      */
     final public static function findByProperty(string $property, string $value): array
     {
-        $indicesFile = self::getFolder() . 'Indices';
+        $indicesFile = self::getIndicesFile();
         $indices = unserialize(Files::readFileContents($indicesFile));
         $results = [];
         foreach ($indices as $uuid => $index) {
@@ -150,8 +150,7 @@ class AbstractModel
     final protected function updateIndices()
     {
         if (!empty($this->getIndexColumns())) {
-            $indicesFile = self::getFolder($this) . 'Indices';
-            Files::touch($indicesFile, serialize([]));
+            $indicesFile = self::getIndicesFile($this);
             $indices = unserialize(Files::readFileContents($indicesFile));
             if (array_key_exists($this->uuid, $indices)) {
                 $indexEntry = $indices[$this->uuid];
@@ -185,5 +184,16 @@ class AbstractModel
     protected function getIndexColumns(): array
     {
         return [];
+    }
+
+    /**
+     * @param AbstractModel|null $object
+     * @return string
+     */
+    protected static function getIndicesFile(AbstractModel $object = null): string
+    {
+        $indicesFile = self::getFolder($object) . 'Indices';
+        Files::touch($indicesFile, serialize([]));
+        return $indicesFile;
     }
 }
