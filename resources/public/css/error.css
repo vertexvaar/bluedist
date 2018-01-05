@@ -1,13 +1,13 @@
-.c-error{
-    color:#333;
+.c-error {
+    color: #333;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 0.875rem;
-    line-height:1.2;
-    margin:0;
-    padding:0;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
 }
 
-.c-error h1{
+.c-error h1 {
     background: #d34434;
     border-left: 4px solid #d34434;
     color: white;
@@ -20,7 +20,7 @@
     text-transform: uppercase;
 }
 
-.c-error h2{
+.c-error h2 {
     background: #efefef;
     border-left: 4px solid darkgreen;
     font-size: 1rem;
@@ -32,7 +32,7 @@
     text-transform: uppercase;
 }
 
-.c-error h3{
+.c-error h3 {
     background: #efefef;
     border-left: 4px solid #ccc;
     font-size: 1rem;
@@ -45,12 +45,11 @@
     text-transform: uppercase;
 }
 
-
-.c-error p{
-    margin:0.5rem 0;
+.c-error p {
+    margin: 0.5rem 0;
 }
 
-.c-error code{
+.c-error code {
     margin: 0 2px;
     padding: 0px 5px;
     border: 1px solid #ddd;
@@ -59,30 +58,30 @@
     font-size: 1em;
 }
 
-.c-error__call-stack{
+.c-error__call-stack {
     margin: 1rem 0 2rem;
     padding-left: 1.5rem;
 }
 
-.c-error__call-stack li{
-    margin-bottom:0.5em;
+.c-error__call-stack li {
+    margin-bottom: 0.5em;
 }
 
-.c-error__report{
+.c-error__report {
     background-color: #f65c48;
     border-left: 4px solid #d34434;
-    padding:1em;
+    padding: 1em;
     color: #333;
 }
 
-.c-error__report code{
+.c-error__report code {
     color: #444;
 }
 
-.c-error__md{
+.c-error__md {
     background-color: #fafafa;
-    border:1px solid #efefef;
+    border: 1px solid #efefef;
     border-left: 4px solid darkgreen;
     border-top: 0;
-    padding:1em;
+    padding: 1em;
 }
