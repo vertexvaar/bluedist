@@ -15,7 +15,7 @@ class TemplateHelper
     protected $fileName = '';
 
     /**
-     * @var array[]
+     * @var mixed[]
      */
     protected $variables = [];
 
