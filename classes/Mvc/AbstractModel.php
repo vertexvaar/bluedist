@@ -62,7 +62,7 @@ class AbstractModel
     }
 
     /**
-     * @return $this[]
+     * @return static[]
      */
     final public static function findAll(): array
     {
