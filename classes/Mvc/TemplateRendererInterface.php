@@ -20,10 +20,10 @@ interface TemplateRendererInterface
 
     /**
      * @param string $key
-     * @param null $value
+     * @param mixed $value
      * @return void
      */
-    public function setVariable(string $key, $value = null);
+    public function setVariable(string $key, $value);
 
     /**
      * @param array $routeConfiguration

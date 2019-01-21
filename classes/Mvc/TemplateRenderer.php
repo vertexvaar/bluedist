@@ -37,7 +37,7 @@ class TemplateRenderer implements TemplateRendererInterface
      * @param string $key
      * @param mixed $value
      */
-    public function setVariable(string $key, $value = null)
+    public function setVariable(string $key, $value)
     {
         $this->variables[$key] = $value;
     }
