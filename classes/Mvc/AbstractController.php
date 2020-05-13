@@ -1,29 +1,18 @@
 <?php
+
 declare(strict_types=1);
+
 namespace VerteXVaaR\BlueSprints\Mvc;
 
+use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueFluid\Mvc\FluidAdapter;
-use VerteXVaaR\BlueSprints\Http\Request;
-use VerteXVaaR\BlueSprints\Http\Response;
 
-/**
- * Class AbstractController
- */
 abstract class AbstractController
 {
-    /**
-     * @var Request
-     */
+    /** @var ServerRequestInterface */
     protected $request = null;
 
-    /**
-     * @var Response
-     */
-    protected $response = null;
-
-    /**
-     * @var TemplateRendererInterface
-     */
+    /** @var TemplateRendererInterface */
     protected $templateRenderer = null;
 
     /**
@@ -31,14 +20,9 @@ abstract class AbstractController
      */
     private $renderTemplate = true;
 
-    /**
-     * @param Request $request
-     * @param Response $response
-     */
-    final public function __construct(Request $request, Response $response)
+    final public function __construct(ServerRequestInterface $request)
     {
         $this->request = $request;
-        $this->response = $response;
         if (class_exists(FluidAdapter::class)) {
             $this->templateRenderer = new FluidAdapter();
         } else {
@@ -50,24 +34,11 @@ abstract class AbstractController
     }
 
     /**
-     * @return Request
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * @return Response
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
      * @param array $configuration
+     *
      * @return string
+     *
+     * @throws RedirectException
      */
     public function callActionMethod(array $configuration): string
     {
@@ -79,13 +50,8 @@ abstract class AbstractController
         return '';
     }
 
-    /**
-     * @param string $url
-     * @return void
-     */
-    protected function redirect($url)
+    protected function redirect($url, $code = RedirectException::SEE_OTHER): void
     {
-        $this->renderTemplate = false;
-        $this->response->setHeader('Location', $url);
+        throw RedirectException::forUrl($url, $code);
     }
 }
