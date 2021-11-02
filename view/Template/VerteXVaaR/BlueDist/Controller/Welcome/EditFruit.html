@@ -48,15 +48,15 @@
 			$this->redirect('listFruits');
 		</pre>
 
-		<h2>About save requests</h2>
+		<h2>About safe requests</h2>
 
 		<p>
-			HTTP requests are divided into two different types. Save and not save requests.
-			A safe request may not initiate modify an object nor save it to persistence.
+			HTTP requests are divided into two different types. Safe and not safe requests.
+			A safe request must not modify an object or persist changes.
 			Safe requests exist to retrieve information from a service or website without changing any data.
-			To change the name of a fruit you must make a non save request, e.g. POST. PUT, POST and DELETE are
-			considered
-			not safe because they change objects and initiate their persistence.
+			Safe requests are idempotent.
+			To change the name of a fruit you must make a non-safe request, e.g. POST.
+			PUT, POST, and DELETE are considered non-safe because they may change data.
 		</p>
 
 		<h2>Try it</h2>
