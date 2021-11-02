@@ -4,19 +4,10 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Task;
 
-/**
- * Class AbstractTask
- */
 abstract class AbstractTask
 {
-    /**
-     * @var CliRequest
-     */
-    protected $cliRequest = null;
+    protected CliRequest $cliRequest;
 
-    /**
-     * @param CliRequest $cliRequest
-     */
     public function __construct(CliRequest $cliRequest)
     {
         $this->cliRequest = $cliRequest;
@@ -25,13 +16,9 @@ abstract class AbstractTask
     /**
      * Does not return anything. Write with ->printLine() instead.
      */
-    abstract public function run();
+    abstract public function run(): void;
 
-    /**
-     * @param string $line
-     * @return void
-     */
-    final protected function printLine(string $line)
+    final protected function printLine(string $line): void
     {
         echo $line . PHP_EOL;
     }

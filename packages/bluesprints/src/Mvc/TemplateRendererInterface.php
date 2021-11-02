@@ -4,20 +4,10 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Mvc;
 
-/**
- * Interface TemplateRendererInterface
- */
 interface TemplateRendererInterface
 {
-    /**
-     * TemplateRendererInterface constructor.
-     */
     public function __construct();
 
-    /**
-     * @param string $templateName
-     * @return string
-     */
     public function render(string $templateName = ''): string;
 
     /**
@@ -25,11 +15,7 @@ interface TemplateRendererInterface
      * @param mixed $value
      * @return void
      */
-    public function setVariable(string $key, $value);
+    public function setVariable(string $key, $value): void;
 
-    /**
-     * @param array $routeConfiguration
-     * @return void
-     */
-    public function setRouteConfiguration(array $routeConfiguration);
+    public function setRouteConfiguration(array $routeConfiguration): void;
 }

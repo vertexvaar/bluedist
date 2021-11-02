@@ -6,20 +6,14 @@ namespace VerteXVaaR\BlueDist\Model\SubFolder;
 
 use VerteXVaaR\BlueSprints\Mvc\AbstractModel;
 
-/**
- * Class Branch
- */
 class Branch extends AbstractModel
 {
     /**
      * @var Leaf[]
      */
-    protected $leaves = [];
+    protected array $leaves = [];
 
-    /**
-     * @var int
-     */
-    protected $length = 0;
+    protected int $length = 0;
 
     /**
      * @return Leaf[]
@@ -39,18 +33,11 @@ class Branch extends AbstractModel
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getLength(): int
     {
         return $this->length;
     }
 
-    /**
-     * @param int $length
-     * @return self
-     */
     public function setLength(int $length): self
     {
         $this->length = $length;

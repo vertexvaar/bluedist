@@ -18,7 +18,7 @@ class Application
         RoutingMiddleware::class,
     ];
 
-    public function run()
+    public function run(): void
     {
         $defaultHandler = self::HANDLER;
         $middlewareChain = new MiddlewareChain(new $defaultHandler());

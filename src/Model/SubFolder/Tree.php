@@ -6,37 +6,22 @@ namespace VerteXVaaR\BlueDist\Model\SubFolder;
 
 use VerteXVaaR\BlueSprints\Mvc\AbstractModel;
 
-/**
- * Class Tree
- */
 class Tree extends AbstractModel
 {
-    /**
-     * @var Branch
-     */
-    protected $mainBranch = null;
+    protected ?Branch $mainBranch = null;
 
     /**
      * @var Branch[]
      */
-    protected $branches = [];
+    protected array $branches = [];
 
-    /**
-     * @var string
-     */
-    protected $genus = '';
+    protected string $genus = '';
 
-    /**
-     * @return Branch
-     */
     public function getMainBranch(): Branch
     {
         return $this->mainBranch;
     }
 
-    /**
-     * @param Branch $mainBranch
-     */
     public function setMainBranch(Branch $mainBranch)
     {
         $this->mainBranch = $mainBranch;
@@ -58,17 +43,11 @@ class Tree extends AbstractModel
         $this->branches = $branches;
     }
 
-    /**
-     * @return string
-     */
     public function getGenus(): string
     {
         return $this->genus;
     }
 
-    /**
-     * @param string $genus
-     */
     public function setGenus(string $genus)
     {
         $this->genus = $genus;

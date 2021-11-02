@@ -6,15 +6,8 @@ namespace VerteXVaaR\BlueSprints\Utility;
 
 use Exception;
 
-/**
- * Class Files
- */
 class Files
 {
-    /**
-     * @param string $fileName
-     * @return bool
-     */
     public static function fileExists(string $fileName): bool
     {
         $absoluteFilePath = self::getAbsoluteFilePath($fileName);
@@ -22,20 +15,12 @@ class Files
         return file_exists($absoluteFilePath);
     }
 
-    /**
-     * @param string $fileName
-     * @return string
-     */
     public static function getAbsoluteFilePath(string $fileName): string
     {
         return VXVR_BS_ROOT . $fileName;
     }
 
-    /**
-     * @param string $absolutePath
-     * @return void
-     */
-    protected static function clearStateCache(string $absolutePath)
+    protected static function clearStateCache(string $absolutePath): void
     {
         clearstatcache(true, $absolutePath);
     }
@@ -84,31 +69,17 @@ class Files
         return require($absoluteFilePath);
     }
 
-    /**
-     * @param string $fileName
-     * @param string $fileContents
-     * @return void
-     */
-    public static function writeFileContents(string $fileName, string $fileContents)
+    public static function writeFileContents(string $fileName, string $fileContents): void
     {
         file_put_contents(self::getAbsoluteFilePath($fileName), $fileContents);
     }
 
-    /**
-     * @param string $fileName
-     * @return string
-     */
     public static function readFileContents(string $fileName): string
     {
         return file_get_contents(self::getAbsoluteFilePath($fileName));
     }
 
-    /**
-     * @param string $fileName
-     * @param string $fileContents
-     * @return int
-     */
-    public static function touch(string $fileName, string $fileContents = '')
+    public static function touch(string $fileName, string $fileContents = ''): int
     {
         $absolutePath = self::getAbsoluteFilePath($fileName);
         if (!is_file($absolutePath)) {
@@ -117,10 +88,6 @@ class Files
         return 0;
     }
 
-    /**
-     * @param string $fileName
-     * @return bool
-     */
     public static function delete(string $fileName): bool
     {
         return unlink(self::getAbsoluteFilePath($fileName));

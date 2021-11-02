@@ -7,33 +7,17 @@ namespace VerteXVaaR\BlueFluid\Mvc;
 use TYPO3Fluid\Fluid\View\TemplateView;
 use VerteXVaaR\BlueSprints\Mvc\TemplateRendererInterface;
 
-/**
- * Class FluidAdapter
- */
 class FluidAdapter implements TemplateRendererInterface
 {
-    /**
-     * @var array
-     */
-    protected $routeConfiguration = [];
+    protected array $routeConfiguration = [];
 
-    /**
-     * @var TemplateView
-     */
-    protected $view = null;
+    protected TemplateView $view;
 
-    /**
-     * FluidAdapter constructor.
-     */
     public function __construct()
     {
         $this->view = new TemplateView();
     }
 
-    /**
-     * @param string $templateName
-     * @return string
-     */
     public function render(string $templateName = ''): string
     {
         $controller = strtr($this->routeConfiguration['controller'], '\\', '/');
@@ -50,20 +34,12 @@ class FluidAdapter implements TemplateRendererInterface
         return $this->view->render($templateName);
     }
 
-    /**
-     * @param string $key
-     * @param null $value
-     * @return void
-     */
-    public function setVariable(string $key, $value = null)
+    public function setVariable(string $key, $value = null): void
     {
         $this->view->assign($key, $value);
     }
 
-    /**
-     * @param array $routeConfiguration
-     */
-    public function setRouteConfiguration(array $routeConfiguration)
+    public function setRouteConfiguration(array $routeConfiguration): void
     {
         $this->routeConfiguration = $routeConfiguration;
     }

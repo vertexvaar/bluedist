@@ -14,13 +14,11 @@ class RedirectException extends Exception
     public const TEMPORARY_REDIRECT = 307;
     public const PERMANENT_REDIRECT = 308;
 
-    /** @var string */
-    protected $url;
+    protected string $url;
 
-    /** @var int */
-    protected $status;
+    protected int $status;
 
-    public static function forUrl(string $url, int $status = self::SEE_OTHER)
+    public static function forUrl(string $url, int $status = self::SEE_OTHER): self
     {
         $self = new RedirectException('Redirect', 1589410111);
         $self->url = $url;

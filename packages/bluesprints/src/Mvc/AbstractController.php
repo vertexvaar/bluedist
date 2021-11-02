@@ -9,16 +9,14 @@ use VerteXVaaR\BlueFluid\Mvc\FluidAdapter;
 
 abstract class AbstractController
 {
-    /** @var ServerRequestInterface */
-    protected $request = null;
+    protected ServerRequestInterface $request;
 
-    /** @var TemplateRendererInterface */
-    protected $templateRenderer = null;
+    protected TemplateRendererInterface $templateRenderer;
 
     /**
      * @var bool Indicates if the template should be rendered after the action has been called
      */
-    private $renderTemplate = true;
+    private bool $renderTemplate = true;
 
     final public function __construct(ServerRequestInterface $request)
     {

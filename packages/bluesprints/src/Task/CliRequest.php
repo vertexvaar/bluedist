@@ -4,31 +4,18 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Task;
 
-/**
- * Class CliRequest
- */
 class CliRequest
 {
-    /**
-     * @var array
-     */
-    protected $flags = [];
+    protected array $flags = [];
 
-    /**
-     * @var array
-     */
-    protected $arguments = [];
+    protected array $arguments = [];
 
-    /**
-     * @return CliRequest
-     */
-    public static function createFromEnvironment()
+    public static function createFromEnvironment(): self
     {
         return new self;
     }
 
     /**
-     * CliRequest constructor.
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     protected function __construct()
@@ -46,10 +33,6 @@ class CliRequest
         unset($_SERVER['argv']);
     }
 
-    /**
-     * @param string $name
-     * @return bool
-     */
     public function hasArgument(string $name): bool
     {
         return isset($this->arguments[$name]);

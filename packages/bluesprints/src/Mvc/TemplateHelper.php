@@ -6,35 +6,19 @@ namespace VerteXVaaR\BlueSprints\Mvc;
 
 use VerteXVaaR\BlueSprints\Utility\Files;
 
-/**
- * Class TemplateHelper
- */
 class TemplateHelper
 {
-    /**
-     * @var string
-     */
-    protected $fileName = '';
+    protected string $fileName = '';
 
-    /**
-     * @var mixed[]
-     */
-    protected $variables = [];
+    /** @var mixed[] */
+    protected array $variables = [];
 
-    /**
-     * @param string $fileName
-     * @param array $variables
-     */
-    public function requireLayout($fileName = '', array $variables = [])
+    public function requireLayout(string $fileName = '', array $variables = []): void
     {
         $this->fileName = $fileName;
         $this->variables = $variables;
     }
 
-    /**
-     * @param string $body
-     * @return string
-     */
     public function renderLayoutContent(string $body = ''): string
     {
         if (!empty($this->fileName)) {

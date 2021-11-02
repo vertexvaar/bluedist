@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Mvc;
 
 use DateTime;
+use DateTimeInterface;
 use Exception;
 use VerteXVaaR\BlueSprints\Utility\Files;
 use VerteXVaaR\BlueSprints\Utility\Folders;
@@ -15,31 +16,16 @@ use VerteXVaaR\BlueSprints\Utility\Strings;
  */
 class AbstractModel
 {
-    /**
-     * @var string[]
-     */
-    static private $classFolders = [];
+    /** @var string[] */
+    static private array $classFolders = [];
 
-    /**
-     * @var string
-     */
-    protected $uuid = '';
+    protected string $uuid = '';
 
-    /**
-     * @var DateTime
-     */
-    protected $creationTime = null;
+    protected ?DateTimeInterface $creationTime = null;
 
-    /**
-     * @var DateTime
-     */
-    protected $lastModification = null;
+    protected ?DateTimeInterface $lastModification = null;
 
-    /**
-     * @param string $uuid
-     * @return $this|null
-     */
-    final public static function findByUuid(string $uuid)
+    final public static function findByUuid(string $uuid): ?self
     {
         $fileContents = Files::readFileContents(self::getFolder() . $uuid);
         if ($fileContents) {
@@ -48,10 +34,6 @@ class AbstractModel
         return null;
     }
 
-    /**
-     * @param AbstractModel $object
-     * @return string
-     */
     final protected static function getFolder(AbstractModel $object = null): string
     {
         if ($object !== null) {
@@ -65,9 +47,7 @@ class AbstractModel
         return self::$classFolders[$className];
     }
 
-    /**
-     * @return static[]
-     */
+    /** @return static[] */
     final public static function findAll(): array
     {
         $files = Folders::getAllFilesInFolder(self::getFolder());
@@ -98,26 +78,17 @@ class AbstractModel
         return $results;
     }
 
-    /**
-     * @return string
-     */
     public function getUuid(): string
     {
         return $this->uuid;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getCreationTime(): DateTime
+    public function getCreationTime(): ?DateTimeInterface
     {
         return $this->creationTime;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getLastModification(): DateTime
+    public function getLastModification(): ?DateTimeInterface
     {
         return $this->lastModification;
     }
@@ -125,7 +96,7 @@ class AbstractModel
     /**
      * @param bool $force Do not validate if the Request is considered safe
      */
-    final public function save(bool $force = false)
+    final public function save(bool $force = false): void
     {
         $this->checkRequestType($force);
         if (empty($this->uuid)) {
@@ -139,10 +110,7 @@ class AbstractModel
         Files::writeFileContents(self::getFolder($this) . $this->uuid, serialize($this));
     }
 
-    /**
-     * @param bool $force
-     */
-    final public function delete(bool $force = false)
+    final public function delete(bool $force = false): void
     {
         $this->checkRequestType($force);
         Files::delete(self::getFolder($this) . $this->uuid);
@@ -151,7 +119,7 @@ class AbstractModel
     /**
      * Regenerates the indices file with updated object properties
      */
-    final protected function updateIndices()
+    final protected function updateIndices(): void
     {
         if (!empty($this->getIndexColumns())) {
             $indicesFile = self::getIndicesFile($this);
@@ -173,7 +141,7 @@ class AbstractModel
      * @param bool $force
      * @throws Exception
      */
-    final protected function checkRequestType(bool $force = false)
+    final protected function checkRequestType(bool $force = false): void
     {
         if ($force !== true) {
             if (!in_array(VXVR_BS_REQUEST_METHOD, ['PUT', 'POST', 'DELETE'])) {
@@ -182,9 +150,6 @@ class AbstractModel
         }
     }
 
-    /**
-     * @return array
-     */
     protected function getIndexColumns(): array
     {
         return [];

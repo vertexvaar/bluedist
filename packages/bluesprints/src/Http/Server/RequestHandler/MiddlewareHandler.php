@@ -11,11 +11,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class MiddlewareHandler implements RequestHandlerInterface
 {
-    /** @var MiddlewareInterface */
-    protected $middleware;
+    protected MiddlewareInterface $middleware;
 
-    /** @var RequestHandlerInterface */
-    protected $handler;
+    protected RequestHandlerInterface $handler;
 
     public function __construct(MiddlewareInterface $middleware, RequestHandlerInterface $handler)
     {

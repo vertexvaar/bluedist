@@ -7,24 +7,12 @@ namespace VerteXVaaR\BlueSprints\Task;
 use VerteXVaaR\BlueSprints\Utility\Files;
 use VerteXVaaR\BlueSprints\Utility\Folders;
 
-/**
- * Class Scheduler
- */
 class Scheduler
 {
-    /**
-     * @var CliRequest
-     */
-    protected $cliRequest = null;
+    protected CliRequest $cliRequest;
 
-    /**
-     * @var array
-     */
-    protected $tasks = [];
+    protected array $tasks = [];
 
-    /**
-     * @param CliRequest $cliRequest
-     */
     public function __construct(CliRequest $cliRequest)
     {
         $this->cliRequest = $cliRequest;
@@ -34,7 +22,7 @@ class Scheduler
     /**
      * Starts all the scheduled tasks. They are not executed in parallel.
      */
-    public function run()
+    public function run(): void
     {
         foreach ($this->tasks as $taskName => $taskConfiguration) {
             if ($this->isScheduled($taskName, $taskConfiguration)) {
@@ -99,7 +87,7 @@ class Scheduler
      * @param string $taskName
      * @param array $taskConfiguration
      */
-    protected function update(string $taskName, array $taskConfiguration)
+    protected function update(string $taskName, array $taskConfiguration): void
     {
         $taskInformation = $this->getTaskInformation($taskName, $taskConfiguration['task']);
         $taskInformation['lastRun'] = time();
@@ -111,7 +99,7 @@ class Scheduler
      * @param string $taskClassName
      * @param array $taskInformation
      */
-    protected function writeTaskInformation(string $taskName, string $taskClassName, array $taskInformation)
+    protected function writeTaskInformation(string $taskName, string $taskClassName, array $taskInformation): void
     {
         $taskInformationFile = $this->getTaskInformationFile($taskName, $taskClassName);
         Files::writeFileContents($taskInformationFile, serialize($taskInformation));

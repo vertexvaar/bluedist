@@ -14,11 +14,10 @@ use function array_reverse;
 
 class MiddlewareChain
 {
-    /** @var RequestHandlerInterface */
-    protected $requestHandler;
+    protected RequestHandlerInterface $requestHandler;
 
     /** @var MiddlewareInterface[] */
-    protected $chain = [];
+    protected array $chain = [];
 
     public function __construct(RequestHandlerInterface $requestHandler)
     {

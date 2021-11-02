@@ -16,18 +16,18 @@ use function preg_match;
 
 class RoutingMiddleware implements MiddlewareInterface
 {
-    const CONFIGURATION_FILENAME = 'config/routes.php';
-    const HTTP_METHOD_GET = 'GET';
-    const HTTP_METHOD_HEAD = 'HEAD';
-    const HTTP_METHOD_POST = 'POST';
-    const HTTP_METHOD_PUT = 'PUT';
-    const HTTP_METHOD_DELETE = 'DELETE';
-    const HTTP_METHOD_CONNECT = 'CONNECT';
-    const HTTP_METHOD_OPTIONS = 'OPTIONS';
-    const HTTP_METHOD_TRACE = 'TRACE';
+    public const CONFIGURATION_FILENAME = 'config/routes.php';
+    public const HTTP_METHOD_GET = 'GET';
+    public const HTTP_METHOD_HEAD = 'HEAD';
+    public const HTTP_METHOD_POST = 'POST';
+    public const HTTP_METHOD_PUT = 'PUT';
+    public const HTTP_METHOD_DELETE = 'DELETE';
+    public const HTTP_METHOD_CONNECT = 'CONNECT';
+    public const HTTP_METHOD_OPTIONS = 'OPTIONS';
+    public const HTTP_METHOD_TRACE = 'TRACE';
 
     /** @var array[][] */
-    protected $configuration = [
+    protected array $configuration = [
         self::HTTP_METHOD_GET => [],
         self::HTTP_METHOD_HEAD => [],
         self::HTTP_METHOD_POST => [],

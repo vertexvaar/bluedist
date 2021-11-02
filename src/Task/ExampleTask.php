@@ -6,20 +6,11 @@ namespace VerteXVaaR\BlueDist\Task;
 
 use VerteXVaaR\BlueSprints\Task\AbstractTask;
 
-/**
- * Class ExampleTask
- */
 class ExampleTask extends AbstractTask
 {
-    /**
-     * @var bool
-     */
-    protected $verbose = false;
+    protected bool $verbose = false;
 
-    /**
-     *
-     */
-    public function run()
+    public function run(): void
     {
         $this->verbose = $this->cliRequest->flagExists('--verbose');
         $this->verbose ? $this->printLine('Checking if arg "string" exists') : null;

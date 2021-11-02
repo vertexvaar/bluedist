@@ -7,29 +7,14 @@ namespace VerteXVaaR\BlueSprints\Mvc;
 use VerteXVaaR\BlueSprints\Utility\Files;
 use VerteXVaaR\BlueSprints\Utility\Folders;
 
-/**
- * Class TemplateRenderer
- */
 class TemplateRenderer implements TemplateRendererInterface
 {
-    /**
-     * @var array
-     */
-    protected $variables = [];
+    protected TemplateHelper $templateHelper;
 
-    /**
-     * @var TemplateHelper
-     */
-    protected $templateHelper = null;
+    protected array $variables = [];
 
-    /**
-     * @var array
-     */
-    protected $routeConfiguration = [];
+    protected array $routeConfiguration = [];
 
-    /**
-     * TemplateRenderer constructor.
-     */
     public function __construct()
     {
         $this->templateHelper = new TemplateHelper();
@@ -39,7 +24,7 @@ class TemplateRenderer implements TemplateRendererInterface
      * @param string $key
      * @param mixed $value
      */
-    public function setVariable(string $key, $value)
+    public function setVariable(string $key, $value): void
     {
         $this->variables[$key] = $value;
     }
@@ -47,15 +32,11 @@ class TemplateRenderer implements TemplateRendererInterface
     /**
      * @param array $routeConfiguration
      */
-    public function setRouteConfiguration(array $routeConfiguration)
+    public function setRouteConfiguration(array $routeConfiguration): void
     {
         $this->routeConfiguration = $routeConfiguration;
     }
 
-    /**
-     * @param string $templateName
-     * @return string
-     */
     public function render(string $templateName = ''): string
     {
         if ($templateName === '') {
@@ -70,9 +51,6 @@ class TemplateRenderer implements TemplateRendererInterface
         return $content;
     }
 
-    /**
-     * @return string
-     */
     protected function getDefaultTemplateName(): string
     {
         $templateName = ucfirst($this->routeConfiguration['action']);

@@ -8,20 +8,11 @@ use Exception;
 use Parsedown;
 use Throwable;
 
-/**
- * Class Error
- */
 class Error
 {
-    /**
-     * @var bool
-     */
-    protected static $cssIncluded = false;
+    protected static bool $cssIncluded = false;
 
-    /**
-     *
-     */
-    protected static function includeCss()
+    protected static function includeCss(): void
     {
         if (false === self::$cssIncluded) {
             self::$cssIncluded = true;
@@ -29,22 +20,12 @@ class Error
         }
     }
 
-    /**
-     * @return void
-     */
-    public static function registerErrorHandler()
+    public static function registerErrorHandler(): void
     {
         set_exception_handler([Error::class, 'handleException']);
         set_error_handler([Error::class, 'handleError'], E_ALL);
     }
 
-    /**
-     * @param int $errno
-     * @param string $errstr
-     * @param string $errfile
-     * @param int $errline
-     * @return bool
-     */
     public static function handleError(int $errno, string $errstr, string $errfile, int $errline): bool
     {
         self::includeCss();
@@ -52,16 +33,13 @@ class Error
         return true;
     }
 
-    /**
-     * @param string $message
-     * @param int $code
-     * @param string $file
-     * @param int $line
-     * @param array $callStack
-     * @return void
-     */
-    protected static function printErrorPage(string $message, int $code, string $file, int $line, array $callStack = [])
-    {
+    protected static function printErrorPage(
+        string $message,
+        int $code,
+        string $file,
+        int $line,
+        array $callStack = []
+    ): void {
         self::includeCss();
         $additionalException = null;
         try {
@@ -88,11 +66,7 @@ class Error
         echo '</div>';
     }
 
-    /**
-     * @param array $callStack
-     * @return void
-     */
-    protected static function printCallStack(array $callStack)
+    protected static function printCallStack(array $callStack): void
     {
         if (!empty($callStack)) {
             echo '<h3>Call Stack:</h3>';
@@ -108,7 +82,7 @@ class Error
                         $argumentArray = [];
                         foreach ($argument as $key => $value) {
                             $argumentArray[] = "'" . $key . "'" . ' => ' .
-                                               (is_object($value) ? get_class($value) : $value);
+                                (is_object($value) ? get_class($value) : $value);
                         }
                         echo implode(', ', $argumentArray);
                     } elseif (is_string($argument)) {
@@ -124,10 +98,7 @@ class Error
         }
     }
 
-    /**
-     * @param int $code
-     */
-    protected static function printHelp(int $code)
+    protected static function printHelp(int $code): void
     {
         $helpFile = __DIR__ . '/../../docs/exception/' . $code . '.md';
         if (file_exists($helpFile)) {
@@ -145,10 +116,7 @@ class Error
         }
     }
 
-    /**
-     * @param Throwable $throwable
-     */
-    public static function handleException(Throwable $throwable)
+    public static function handleException(Throwable $throwable): void
     {
         self::printErrorPage(
             $throwable->getMessage(),

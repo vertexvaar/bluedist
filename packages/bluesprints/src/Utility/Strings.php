@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Utility;
 
-/**
- * Class Strings
- */
 class Strings
 {
-    const UUID_PATTERN = '~^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$~';
-    const UUID_FORMAT = '%04X%04X-%04X-%04X-%04X-%04X%04X%04X';
+    private const UUID_PATTERN = '~^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$~';
+    private const UUID_FORMAT = '%04X%04X-%04X-%04X-%04X-%04X%04X%04X';
 
-    /**
-     * @return string
-     */
     public static function generateUuid(): string
     {
         return sprintf(
