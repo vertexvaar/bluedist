@@ -1,0 +1,12 @@
+{
+    "name": "vertexvaar/bluesprints",
+    "description": "BlueSprints development distribution",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Oliver Eglseder",
+            "email": "php@vxvr.de"
+        }
+    ],
+    "require": {}
+}
