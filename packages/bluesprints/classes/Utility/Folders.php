@@ -56,7 +56,7 @@ class Folders
         if (!is_dir($absolutePath)) {
             return mkdir(
                 $absolutePath,
-                Files::requireFile('app/config/system.php')['permissions']['folders'],
+                Files::requireFile('config/system.php')['permissions']['folders'],
                 true
             );
         }

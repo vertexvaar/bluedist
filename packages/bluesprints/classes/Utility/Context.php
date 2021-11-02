@@ -20,7 +20,7 @@ class Context
      */
     public function __construct()
     {
-        $this->context = Files::requireFile('app/config/system.php')['context'];
+        $this->context = Files::requireFile('config/system.php')['context'];
     }
 
     /**

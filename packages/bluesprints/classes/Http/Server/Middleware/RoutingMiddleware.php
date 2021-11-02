@@ -15,7 +15,7 @@ use function preg_match;
 
 class RoutingMiddleware implements MiddlewareInterface
 {
-    const CONFIGURATION_FILENAME = 'app/config/routes.php';
+    const CONFIGURATION_FILENAME = 'config/routes.php';
     const HTTP_METHOD_GET = 'GET';
     const HTTP_METHOD_HEAD = 'HEAD';
     const HTTP_METHOD_POST = 'POST';

@@ -26,7 +26,7 @@ class Scheduler
     public function __construct(CliRequest $cliRequest)
     {
         $this->cliRequest = $cliRequest;
-        $this->tasks = Files::requireFile('app/config/tasks.php');
+        $this->tasks = Files::requireFile('config/tasks.php');
     }
 
     /**
