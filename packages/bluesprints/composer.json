@@ -1,0 +1,31 @@
+{
+	"name": "vertexvaar/bluesprints",
+	"description": "BlueSprints is a small experimental PHP Project which evolved to a framework",
+	"type": "project",
+	"license": "GPL-3.0+",
+	"authors": [
+		{
+			"name": "Oliver Eglseder",
+			"email": "bluesprints@vxvr.de",
+			"homepage": "http://vxvr.de/",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"VerteXVaaR\\BlueSprints\\": "classes/"
+		}
+	},
+	"require": {
+		"php": "^7.1",
+		"psr/http-server-middleware": "^1.0",
+		"psr/http-server-handler": "^1.0",
+		"guzzlehttp/psr7": "^1.6"
+	},
+	"bin": [
+		"bin/bluesprints"
+	],
+	"suggest": {
+		"erusev/parsedown": "Is used to print exception help pages in HTML instead of pure markdown (development context only)."
+	}
+}
