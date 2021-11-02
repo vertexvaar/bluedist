@@ -376,7 +376,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/bluefluid",
-                "reference": "f8cd5b6e190a624c61c4b239e4ce61d7384d386b"
+                "reference": "97e542775d95659a0760dc500ed8cb07a1f10207"
             },
             "require": {
                 "php": "^7.0",
@@ -386,7 +386,7 @@
             "type": "project",
             "autoload": {
                 "psr-4": {
-                    "VerteXVaaR\\BlueFluid\\": "classes/"
+                    "VerteXVaaR\\BlueFluid\\": "src/"
                 }
             },
             "license": [
@@ -411,7 +411,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/bluesprints",
-                "reference": "9ef15eed509375adcd355a0bae458852be686d21"
+                "reference": "699faeb56b6a8f55785c9ee6dd6dc25234a6e92f"
             },
             "require": {
                 "guzzlehttp/psr7": "^1.6",
@@ -428,7 +428,7 @@
             "type": "project",
             "autoload": {
                 "psr-4": {
-                    "VerteXVaaR\\BlueSprints\\": "classes/"
+                    "VerteXVaaR\\BlueSprints\\": "src/"
                 }
             },
             "license": [
