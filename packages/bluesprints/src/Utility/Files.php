@@ -1,6 +1,10 @@
 <?php
+
 declare(strict_types=1);
+
 namespace VerteXVaaR\BlueSprints\Utility;
+
+use Exception;
 
 /**
  * Class Files
@@ -40,13 +44,13 @@ class Files
      * @param string $fileName
      * @param array $variables
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public static function requireOnceFile(string $fileName, array $variables = [])
     {
         $absoluteFilePath = self::getAbsoluteFilePath($fileName);
         if (!is_file($absoluteFilePath)) {
-            throw new \Exception(
+            throw new Exception(
                 'Error: require_once(' . htmlspecialchars($absoluteFilePath) . '): failed to open stream: ' .
                 'No such file or directory in ' . __FILE__ . ' on line ' . __LINE__,
                 1432841751
@@ -62,13 +66,13 @@ class Files
      * @param string $fileName
      * @param array $variables
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     public static function requireFile(string $fileName, array $variables = [])
     {
         $absoluteFilePath = self::getAbsoluteFilePath($fileName);
         if (!is_file($absoluteFilePath)) {
-            throw new \Exception(
+            throw new Exception(
                 'Error: require(' . htmlspecialchars($absoluteFilePath) . '): failed to open stream: ' .
                 'No such file or directory in ' . __FILE__ . ' on line ' . __LINE__,
                 1432841754

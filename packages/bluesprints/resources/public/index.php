@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Composer\Autoload\ClassLoader;
 use VerteXVaaR\BlueSprints\Http\Application;
 use VerteXVaaR\BlueSprints\Utility\Error;

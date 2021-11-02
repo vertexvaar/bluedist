@@ -1,6 +1,11 @@
 <?php
+
 declare(strict_types=1);
+
 namespace VerteXVaaR\BlueSprints\Utility;
+
+use FilesystemIterator;
+use SplFileInfo;
 
 /**
  * Class Folders
@@ -35,10 +40,10 @@ class Folders
     public static function getAllFilesInFolder(string $folderName): array
     {
         $files = [];
-        /** @var \SplFileInfo[] $fileSystemIterator */
-        $fileSystemIterator = new \FilesystemIterator(
+        /** @var SplFileInfo[] $fileSystemIterator */
+        $fileSystemIterator = new FilesystemIterator(
             Files::getAbsoluteFilePath($folderName),
-            \FilesystemIterator::SKIP_DOTS
+            FilesystemIterator::SKIP_DOTS
         );
         foreach ($fileSystemIterator as $file) {
             $files[] = $file->getPathname();

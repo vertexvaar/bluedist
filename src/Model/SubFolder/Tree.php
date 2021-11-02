@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace VerteXVaaR\BlueDist\Model\SubFolder;
 
 use VerteXVaaR\BlueSprints\Mvc\AbstractModel;

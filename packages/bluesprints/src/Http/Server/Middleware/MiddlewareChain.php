@@ -20,9 +20,15 @@ class MiddlewareChain
     /** @var MiddlewareInterface[] */
     protected $chain = [];
 
-    public function __construct(RequestHandlerInterface $requestHandler) { $this->requestHandler = $requestHandler; }
+    public function __construct(RequestHandlerInterface $requestHandler)
+    {
+        $this->requestHandler = $requestHandler;
+    }
 
-    public function add(MiddlewareInterface $middleware): void { $this->chain[] = $middleware; }
+    public function add(MiddlewareInterface $middleware): void
+    {
+        $this->chain[] = $middleware;
+    }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

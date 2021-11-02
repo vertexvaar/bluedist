@@ -8,7 +8,6 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
 use VerteXVaaR\BlueSprints\Mvc\RedirectException;
 use VerteXVaaR\BlueSprints\Utility\Context;
@@ -32,7 +31,7 @@ class ControllerDispatcher implements RequestHandlerInterface
         $controller = new $route['controller']($request);
         try {
             $content = $controller->callActionMethod($route);
-        } catch (RedirectException $exception)  {
+        } catch (RedirectException $exception) {
             $response = $response->withHeader('Location', $exception->getUrl())->withStatus($exception->getStatus());
         }
         if ((new Context())->getCurrentContext() === Context::CONTEXT_DEVELOPMENT) {

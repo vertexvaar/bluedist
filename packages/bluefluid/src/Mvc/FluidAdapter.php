@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace VerteXVaaR\BlueFluid\Mvc;
 
 use TYPO3Fluid\Fluid\View\TemplateView;

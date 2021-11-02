@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace VerteXVaaR\BlueSprints\Task;
 
 use VerteXVaaR\BlueSprints\Utility\Files;

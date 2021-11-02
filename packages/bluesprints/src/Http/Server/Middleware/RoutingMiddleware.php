@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Http\Server\Middleware;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -45,7 +46,7 @@ class RoutingMiddleware implements MiddlewareInterface
                 Files::requireFile(self::CONFIGURATION_FILENAME)
             );
         } else {
-            throw new \Exception('The Router configuration does not exist', 1431886993);
+            throw new Exception('The Router configuration does not exist', 1431886993);
         }
     }
 
@@ -58,6 +59,6 @@ class RoutingMiddleware implements MiddlewareInterface
                 return $handler->handle($request);
             }
         }
-        throw new \Exception('Could not resolve a route for path "' . $path . '"', 1431887428);
+        throw new Exception('Could not resolve a route for path "' . $path . '"', 1431887428);
     }
 }

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace VerteXVaaR\BlueDist\Task;
 
 use VerteXVaaR\BlueSprints\Task\AbstractTask;

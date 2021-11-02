@@ -1,6 +1,12 @@
 <?php
+
 declare(strict_types=1);
+
 namespace VerteXVaaR\BlueSprints\Utility;
+
+use Exception;
+use Parsedown;
+use Throwable;
 
 /**
  * Class Error
@@ -60,7 +66,7 @@ class Error
         $additionalException = null;
         try {
             $context = (new Context())->getCurrentContext();
-        } catch (\Exception $additionalException) {
+        } catch (Exception $additionalException) {
             $context = Context::CONTEXT_PRODUCTION;
         }
         echo '<div class="c-error">';
@@ -127,8 +133,8 @@ class Error
         if (file_exists($helpFile)) {
             $helpFileContents = file_get_contents($helpFile);
             echo '<h2>This might help you:</h2>';
-            if (class_exists(\Parsedown::class)) {
-                echo (new \Parsedown())->text($helpFileContents);
+            if (class_exists(Parsedown::class)) {
+                echo (new Parsedown())->text($helpFileContents);
             } else {
                 echo '<div class="c-error__md">';
                 echo nl2br($helpFileContents);
@@ -140,9 +146,9 @@ class Error
     }
 
     /**
-     * @param \Throwable $throwable
+     * @param Throwable $throwable
      */
-    public static function handleException(\Throwable $throwable)
+    public static function handleException(Throwable $throwable)
     {
         self::printErrorPage(
             $throwable->getMessage(),

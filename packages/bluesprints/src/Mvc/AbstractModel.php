@@ -1,7 +1,11 @@
 <?php
+
 declare(strict_types=1);
+
 namespace VerteXVaaR\BlueSprints\Mvc;
 
+use DateTime;
+use Exception;
 use VerteXVaaR\BlueSprints\Utility\Files;
 use VerteXVaaR\BlueSprints\Utility\Folders;
 use VerteXVaaR\BlueSprints\Utility\Strings;
@@ -22,12 +26,12 @@ class AbstractModel
     protected $uuid = '';
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $creationTime = null;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     protected $lastModification = null;
 
@@ -103,17 +107,17 @@ class AbstractModel
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreationTime(): \DateTime
+    public function getCreationTime(): DateTime
     {
         return $this->creationTime;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getLastModification(): \DateTime
+    public function getLastModification(): DateTime
     {
         return $this->lastModification;
     }
@@ -128,9 +132,9 @@ class AbstractModel
             $this->uuid = Strings::generateUuid();
         }
         if (empty($this->creationTime)) {
-            $this->creationTime = new \DateTime();
+            $this->creationTime = new DateTime();
         }
-        $this->lastModification = new \DateTime();
+        $this->lastModification = new DateTime();
         $this->updateIndices();
         Files::writeFileContents(self::getFolder($this) . $this->uuid, serialize($this));
     }
@@ -167,13 +171,13 @@ class AbstractModel
 
     /**
      * @param bool $force
-     * @throws \Exception
+     * @throws Exception
      */
     final protected function checkRequestType(bool $force = false)
     {
         if ($force !== true) {
             if (!in_array(VXVR_BS_REQUEST_METHOD, ['PUT', 'POST', 'DELETE'])) {
-                throw new \Exception('You may not persist objects in safe requests', 1432469288);
+                throw new Exception('You may not persist objects in safe requests', 1432469288);
             }
         }
     }

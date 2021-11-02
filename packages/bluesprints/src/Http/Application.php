@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Http;
 
 use GuzzleHttp\Psr7\ServerRequest;
-use Psr\Http\Message\ResponseInterface;
 use VerteXVaaR\BlueSprints\Http\Server\Middleware\MiddlewareChain;
 use VerteXVaaR\BlueSprints\Http\Server\Middleware\RoutingMiddleware;
 use VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher;
