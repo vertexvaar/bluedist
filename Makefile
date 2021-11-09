@@ -1,6 +1,7 @@
 # SETTINGS
 MAKEFLAGS += --silent
 SHELL := /bin/bash
+VERSION := 1.0.0
 
 RED     := $(shell tput -Txterm setaf 1)
 GREEN   := $(shell tput -Txterm setaf 2)
@@ -34,15 +35,6 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
-## Install the project with DDEV and all dependencies
-install:
-	ddev start
-	ddev composer install
-
-## Run the projects tests in the DDEV docker environment
-test:
-	ddev exec vendor/bin/codecept run --steps
-
 ## Start the project, must be installed before
 start:
 	ddev start
@@ -50,3 +42,7 @@ start:
 ## Stop the running project (Stops all container for this project)
 stop:
 	ddev stop
+
+## Run the projects tests in the DDEV docker environment
+test:
+	ddev exec vendor/bin/codecept run --steps
