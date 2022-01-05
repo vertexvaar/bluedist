@@ -20,7 +20,7 @@ class CliRequest
      */
     protected function __construct()
     {
-        foreach ($_SERVER['argv'] as $argument) {
+        foreach ($_SERVER['argv'] ?? [] as $argument) {
             $delimiterPosition = strpos($argument, '=');
             if ($delimiterPosition === false) {
                 $this->flags[] = $argument;
