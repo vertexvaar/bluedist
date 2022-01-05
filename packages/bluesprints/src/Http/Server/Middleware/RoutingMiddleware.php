@@ -40,14 +40,13 @@ class RoutingMiddleware implements MiddlewareInterface
 
     public function __construct()
     {
-        if (Files::fileExists(self::CONFIGURATION_FILENAME)) {
-            $this->configuration = array_merge_recursive(
-                $this->configuration,
-                Files::requireFile(self::CONFIGURATION_FILENAME)
-            );
-        } else {
+        if (!Files::fileExists(self::CONFIGURATION_FILENAME)) {
             throw new Exception('The Router configuration does not exist', 1431886993);
         }
+        $this->configuration = array_merge_recursive(
+            $this->configuration,
+            Files::requireFile(self::CONFIGURATION_FILENAME)
+        );
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
