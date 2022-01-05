@@ -29,9 +29,9 @@ class Scheduler
                 /** @var AbstractTask $task */
                 $task = new $taskConfiguration['task']($this->cliRequest);
                 if (!empty($taskConfiguration['arguments'])) {
-                    echo call_user_func_array([$task, 'run'], $taskConfiguration['arguments']);
+                    $task->run(...$taskConfiguration['arguments']);
                 } else {
-                    echo $task->run();
+                    $task->run();
                 }
                 $this->update($taskName, $taskConfiguration);
             }
