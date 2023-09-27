@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Http;
 
-use GuzzleHttp\Psr7\ServerRequest;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueSprints\Http\Server\Middleware\MiddlewareChain;
 use VerteXVaaR\BlueSprints\Http\Server\Middleware\RoutingMiddleware;
 use VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher;
-
-use function header;
 
 class Application
 {
@@ -18,7 +17,7 @@ class Application
         RoutingMiddleware::class,
     ];
 
-    public function run(): void
+    public function run(ServerRequestInterface $request): ResponseInterface
     {
         $defaultHandler = self::HANDLER;
         $middlewareChain = new MiddlewareChain(new $defaultHandler());
@@ -26,16 +25,6 @@ class Application
             $middlewareChain->add(new $middleware);
         }
 
-        $request = ServerRequest::fromGlobals();
-
-        $response = $middlewareChain->handle($request);
-
-        foreach ($response->getHeaders() as $name => $lines) {
-            foreach ($lines as $line) {
-                header($name . ':' . $line);
-            }
-        }
-        $response->getBody()->rewind();
-        echo $response->getBody()->getContents();
+        return $middlewareChain->handle($request);
     }
 }

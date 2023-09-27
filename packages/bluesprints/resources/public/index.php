@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 use Composer\Autoload\ClassLoader;
+use GuzzleHttp\Psr7\ServerRequest;
 use VerteXVaaR\BlueSprints\Http\Application;
+use VerteXVaaR\BlueSprints\Http\HttpResponseEmitter;
 use VerteXVaaR\BlueSprints\Utility\Error;
 
 if (!defined('VXVR_BS_ROOT')) {
@@ -25,5 +27,8 @@ if (empty(ini_get('date.timezone'))) {
     date_default_timezone_set('UTC');
 }
 
+$request = ServerRequest::fromGlobals();
+
 Error::registerErrorHandler();
-(new Application())->run();
+$response = (new Application())->run($request);
+(new HttpResponseEmitter())->emit($response);
