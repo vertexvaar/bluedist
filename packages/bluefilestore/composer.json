@@ -17,6 +17,7 @@
 		}
 	},
 	"require": {
+		"php": "8.2.*",
 		"ext-pdo_mysql": "*",
 		"co-stack/lib": "v4.4.0",
 		"ext-json": "*"
