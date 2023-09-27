@@ -22,13 +22,14 @@ class ControllerDispatcher implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         ob_start();
-        define('VXVR_BS_REQUEST_METHOD', $request->getServerParams()['REQUEST_METHOD']);
+        define('VXVR_BS_REQUEST_METHOD', $request->getMethod());
 
         $route = $request->getAttribute('route');
         $response = new Response();
 
         /** @var AbstractController $controller */
         $controller = new $route['controller']($request);
+        $content = '';
         try {
             $content = $controller->callActionMethod($route);
         } catch (RedirectException $exception) {
