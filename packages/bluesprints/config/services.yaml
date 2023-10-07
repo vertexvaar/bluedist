@@ -9,4 +9,7 @@ services:
   VerteXVaaR\BlueSprints\Http\Application:
     public: true
 
+  VerteXVaaR\BlueSprints\Http\HttpResponseEmitter:
+    public: true
+
   Psr\Http\Server\RequestHandlerInterface: '@VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher'

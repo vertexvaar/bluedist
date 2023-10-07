@@ -8,9 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use VerteXVaaR\BlueSprints\Http\Server\RequestHandler\MiddlewareHandler;
 
-use function array_reverse;
 use function current;
 use function next;
 use function reset;

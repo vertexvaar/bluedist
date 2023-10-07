@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Http\Server\RequestHandler;
 
 use GuzzleHttp\Psr7\Response;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -19,6 +20,10 @@ use function ob_start;
 
 class ControllerDispatcher implements RequestHandlerInterface
 {
+    public function __construct(private readonly ContainerInterface $container)
+    {
+    }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         ob_start();
@@ -28,10 +33,10 @@ class ControllerDispatcher implements RequestHandlerInterface
         $response = new Response();
 
         /** @var AbstractController $controller */
-        $controller = new $route['controller']($request);
+        $controller = $this->container->get($route['controller']);
         $content = '';
         try {
-            $content = $controller->callActionMethod($route);
+            $content = $controller->callActionMethod($route, $request);
         } catch (RedirectException $exception) {
             $response = $response->withHeader('Location', $exception->getUrl())->withStatus($exception->getStatus());
         }

@@ -33,4 +33,4 @@ $request = ServerRequest::fromGlobals();
 Error::registerErrorHandler();
 $di = new DI();
 $response = $di->get(Application::class)->run($request);
-(new HttpResponseEmitter())->emit($response);
+$di->get(HttpResponseEmitter::class)->emit($response);

@@ -2,9 +2,14 @@
 
 namespace VerteXVaaR\BlueSprints\Http\Server\Middleware;
 
-class MiddlewareRegistry
+use Psr\Http\Server\MiddlewareInterface;
+
+readonly class MiddlewareRegistry
 {
-    public function __construct(public readonly array $middlewares)
+    /**
+     * @param array<MiddlewareInterface> $middlewares
+     */
+    public function __construct(public array $middlewares)
     {
     }
 }

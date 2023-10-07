@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use VerteXVaaR\BlueSprints\Http\Server\Middleware\RoutingMiddleware;
+use VerteXVaaR\BlueSprints\Routing\Middleware\RoutingMiddleware;
 
 return [
     'vertexvaar/bluesprints/routing' => [

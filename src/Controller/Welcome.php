@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDist\Controller;
 
+use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueDist\Model\Fruit;
 use VerteXVaaR\BlueDist\Model\SubFolder\Branch;
 use VerteXVaaR\BlueDist\Model\SubFolder\Leaf;
@@ -58,9 +59,9 @@ class Welcome extends AbstractController
         $this->redirect('listFruits');
     }
 
-    protected function createFruit(): void
+    protected function createFruit(ServerRequestInterface $request): void
     {
-        $arguments = $this->request->getParsedBody();
+        $arguments = $request->getParsedBody();
         if (isset($arguments['name'], $arguments['color'])) {
             $fruit = new Fruit();
             $fruit->setColor($arguments['color']);
@@ -70,15 +71,15 @@ class Welcome extends AbstractController
         $this->redirect('listFruits');
     }
 
-    protected function editFruit(): void
+    protected function editFruit(ServerRequestInterface $request): void
     {
-        $fruit = Fruit::findByUuid($this->request->getQueryParams()['fruit']);
+        $fruit = Fruit::findByUuid($request->getQueryParams()['fruit']);
         $this->templateRenderer->setVariable('fruit', $fruit);
     }
 
-    protected function updateFruit(): void
+    protected function updateFruit(ServerRequestInterface $request): void
     {
-        $arguments = $this->request->getParsedBody();
+        $arguments = $request->getParsedBody();
         if (isset($arguments['uuid'], $arguments['name'], $arguments['color'])) {
             $fruit = Fruit::findByUuid($arguments['uuid']);
             $fruit->setName($arguments['name']);
@@ -88,9 +89,9 @@ class Welcome extends AbstractController
         $this->redirect('listFruits');
     }
 
-    protected function createTree(): void
+    protected function createTree(ServerRequestInterface $request): void
     {
-        $arguments = $this->request->getParsedBody();
+        $arguments = $request->getParsedBody();
         $tree = new Tree();
         $tree->setGenus($arguments['genus']);
         $tree->save();
@@ -102,9 +103,9 @@ class Welcome extends AbstractController
     {
     }
 
-    protected function growBranches(): void
+    protected function growBranches(ServerRequestInterface $request): void
     {
-        $arguments = $this->request->getParsedBody();
+        $arguments = $request->getParsedBody();
         $tree = Tree::findByUuid($arguments['tree']);
         $branches = [];
         foreach ($arguments['branches'] as $data) {
@@ -117,18 +118,18 @@ class Welcome extends AbstractController
         $this->redirect('applyLeaves?tree=' . $tree->getUuid());
     }
 
-    protected function applyLeaves(): void
+    protected function applyLeaves(ServerRequestInterface $request): void
     {
-        $arguments = $this->request->getQueryParams();
+        $arguments = $request->getQueryParams();
         $this->templateRenderer->setVariable(
             'tree',
             Tree::findByUuid($arguments['tree'])
         );
     }
 
-    protected function addLeaf(): void
+    protected function addLeaf(ServerRequestInterface $request): void
     {
-        $arguments = $this->request->getParsedBody();
+        $arguments = $request->getParsedBody();
         $tree = Tree::findByUuid($arguments['tree']);
         $branch = $tree->getBranches()[$arguments['branch']];
         $leaves = $branch->getLeaves();
@@ -138,9 +139,9 @@ class Welcome extends AbstractController
         $this->redirect('applyLeaves?tree=' . $tree->getUuid());
     }
 
-    protected function deleteFruit(): void
+    protected function deleteFruit(ServerRequestInterface $request): void
     {
-        $fruit = Fruit::findByUuid($this->request->getParsedBody()['fruit']);
+        $fruit = Fruit::findByUuid($request->getParsedBody()['fruit']);
         $fruit->delete();
         $this->redirect('listFruits');
     }

@@ -5,12 +5,18 @@ namespace VerteXVaaR\BlueContainer\Composer;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
+use Composer\Package\Package;
 use Composer\Plugin\PluginInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use VerteXVaaR\BlueContainer\DI;
+use VerteXVaaR\BlueContainer\Helper\PackageIterator;
+use VerteXVaaR\BlueSprints\Paths;
 
 use function file_exists;
 use function is_dir;
@@ -45,6 +51,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         ];
     }
 
+    /**
+     * @noinspection PhpUnused
+     */
     public function postAutoloadDump(): void
     {
         $this->io->write('Generating container');
@@ -57,24 +66,40 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
         require $autoloadFile;
 
-
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->set('composer', $this->composer);
+        $containerBuilder->set('io', $this->io);
+        $diDefinition = new Definition(DI::class);
+        $diDefinition->setPublic(true);
+        $diDefinition->setShared(true);
+        $containerBuilder->setDefinition(ContainerInterface::class, $diDefinition);
 
-        $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
-        foreach ($packages as $package) {
-            $installPath = $installationManager->getInstallPath($package);
-            $configPath = $installPath . '/config';
-            if (file_exists($configPath) && is_dir($configPath)) {
-                if (file_exists($configPath . '/services.yaml')) {
-                    $loader = new YamlFileLoader($containerBuilder, new FileLocator($configPath));
-                    $loader->load('services.yaml');
-                }
-                if (file_exists($configPath . '/services.php')) {
-                    $loader = new PhpFileLoader($containerBuilder, new FileLocator($configPath));
-                    $loader->load('services.php');
+        $packageIterator = new PackageIterator($this->composer);
+        $packageIterator->iterate(
+            static function (Package $package, string $installPath) use ($containerBuilder): void {
+                $configPath = $installPath . '/config';
+                if (file_exists($configPath) && is_dir($configPath)) {
+                    if (file_exists($configPath . '/services.yaml')) {
+                        $loader = new YamlFileLoader($containerBuilder, new FileLocator($configPath));
+                        $loader->load('services.yaml');
+                    }
+                    if (file_exists($configPath . '/services.php')) {
+                        $loader = new PhpFileLoader($containerBuilder, new FileLocator($configPath));
+                        $loader->load('services.php');
+                    }
                 }
             }
+        );
+
+        $pathsDefinition = $containerBuilder->getDefinition(Paths::class);
+        $configPath = $pathsDefinition->getArgument('$config');
+        if (file_exists($configPath . '/services.yaml')) {
+            $loader = new YamlFileLoader($containerBuilder, new FileLocator($configPath));
+            $loader->load('services.yaml');
+        }
+        if (file_exists($configPath . '/services.php')) {
+            $loader = new PhpFileLoader($containerBuilder, new FileLocator($configPath));
+            $loader->load('services.php');
         }
 
         $containerBuilder->compile();

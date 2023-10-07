@@ -38,6 +38,15 @@
     "config": {
         "allow-plugins": {
             "vertexvaar/bluecontainer": true
+        },
+        "vertexvaar/bluesprints": {
+            "logs": "var/logs",
+            "locks": "var/locks",
+            "cache": "var/cache",
+            "database": "var/database",
+            "config": "config",
+            "view": "view",
+            "translations": "translations"
         }
     }
 }

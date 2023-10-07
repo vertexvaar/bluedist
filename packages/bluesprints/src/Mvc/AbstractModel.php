@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Mvc;
 
 use DateTime;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
 use VerteXVaaR\BlueSprints\Utility\Files;
@@ -26,7 +27,10 @@ abstract class AbstractModel
     {
         $fileContents = Files::readFileContents(self::getFolder() . $uuid);
         if ($fileContents) {
-            return unserialize($fileContents);
+            return unserialize(
+                $fileContents,
+                ['allowed_classes' => [static::class, DateTime::class, DateTimeImmutable::class]]
+            );
         }
         return null;
     }
@@ -51,7 +55,10 @@ abstract class AbstractModel
         $results = [];
         foreach ($files as $file) {
             if (Strings::isValidUuid(basename($file))) {
-                $results[] = unserialize(file_get_contents($file));
+                $results[] = unserialize(
+                    file_get_contents($file),
+                    ['allowed_classes' => [static::class, DateTime::class, DateTimeImmutable::class]]
+                );
             }
         }
         return $results;
@@ -65,7 +72,10 @@ abstract class AbstractModel
     final public static function findByProperty(string $property, string $value): array
     {
         $indicesFile = self::getIndicesFile();
-        $indices = unserialize(Files::readFileContents($indicesFile));
+        $indices = unserialize(
+            Files::readFileContents($indicesFile),
+            ['allowed_classes' => [static::class, DateTime::class, DateTimeImmutable::class]]
+        );
         $results = [];
         foreach ($indices as $uuid => $index) {
             if ($index[$property] === $value) {
@@ -120,7 +130,10 @@ abstract class AbstractModel
     {
         if (!empty($this->getIndexColumns())) {
             $indicesFile = self::getIndicesFile($this);
-            $indices = unserialize(Files::readFileContents($indicesFile));
+            $indices = unserialize(
+                Files::readFileContents($indicesFile),
+                ['allowed_classes' => [static::class, DateTime::class, DateTimeImmutable::class]]
+            );
             if (array_key_exists($this->uuid, $indices)) {
                 $indexEntry = $indices[$this->uuid];
             } else {

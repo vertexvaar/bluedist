@@ -1,6 +1,7 @@
 <?php
+
 use VerteXVaaR\BlueDist\Controller\Welcome;
-use VerteXVaaR\BlueSprints\Http\Server\Middleware\RoutingMiddleware;
+use VerteXVaaR\BlueSprints\Routing\Middleware\RoutingMiddleware;
 
 return [
     // safe methods
