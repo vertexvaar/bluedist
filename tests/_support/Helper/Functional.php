@@ -5,11 +5,13 @@ namespace VerteXVaaR\BlueDistTest\Helper;
 // here you can define custom actions
 // all public methods declared in helper class will be available in $I
 
+use Codeception\Module;
 use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueSprints\Http\Application;
 
-class Functional extends \Codeception\Module
+class Functional extends Module
 {
     private ?ResponseInterface $response = null;
 
@@ -17,7 +19,9 @@ class Functional extends \Codeception\Module
     {
         $request = new ServerRequest('GET', $path);
 
-        $application = new Application();
+        $di = new DI();
+
+        $application = $di->get(Application::class);
         $this->response = $application->run($request);
     }
 
