@@ -11,13 +11,9 @@ additional_fqdns: []
 database:
     type: mariadb
     version: "10.3"
-hooks:
-    post-start:
-        - exec: composer install
 use_dns_when_possible: true
 composer_version: ""
-web_environment:
-    - VXVR_BS_CONTEXT=TRUE
+web_environment: []
 nodejs_version: "16"
 
 # Key features of DDEV's config.yaml:
