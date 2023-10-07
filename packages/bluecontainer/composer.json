@@ -1,0 +1,35 @@
+{
+  "name": "vertexvaar/bluecontainer",
+  "description": "Dependency Injection Container for bluesprints",
+  "type": "composer-plugin",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "Oliver Eglseder",
+      "email": "bluesprints@vxvr.de",
+      "homepage": "http://vxvr.de/",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "VerteXVaaR\\BlueContainer\\": "src/"
+    }
+  },
+  "require": {
+    "php": "8.2.*",
+    "symfony/dependency-injection": "^v6.3",
+    "symfony/config": "^v6.3",
+    "symfony/yaml": "^v6.3",
+    "composer-plugin-api": "^2.0"
+  },
+  "bin": [
+    "bin/bluesprints"
+  ],
+  "suggest": {
+    "erusev/parsedown": "Is used to print exception help pages in HTML instead of pure markdown (development context only)."
+  },
+  "extra": {
+    "class": "\\VerteXVaaR\\BlueContainer\\Composer\\Plugin"
+  }
+}

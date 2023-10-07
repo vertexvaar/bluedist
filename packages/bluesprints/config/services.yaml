@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  VerteXVaaR\BlueSprints\:
+    resource: '../src/*'
+
+  VerteXVaaR\BlueSprints\Http\Application:
+    public: true
+
+  Psr\Http\Server\RequestHandlerInterface: '@VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher'

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Composer\Autoload\ClassLoader;
 use GuzzleHttp\Psr7\ServerRequest;
+use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueSprints\Http\Application;
 use VerteXVaaR\BlueSprints\Http\HttpResponseEmitter;
 use VerteXVaaR\BlueSprints\Utility\Error;
@@ -30,5 +31,6 @@ if (empty(ini_get('date.timezone'))) {
 $request = ServerRequest::fromGlobals();
 
 Error::registerErrorHandler();
-$response = (new Application())->run($request);
+$di = new DI();
+$response = $di->get(Application::class)->run($request);
 (new HttpResponseEmitter())->emit($response);

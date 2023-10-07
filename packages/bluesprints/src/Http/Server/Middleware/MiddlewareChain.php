@@ -11,31 +11,30 @@ use Psr\Http\Server\RequestHandlerInterface;
 use VerteXVaaR\BlueSprints\Http\Server\RequestHandler\MiddlewareHandler;
 
 use function array_reverse;
+use function current;
+use function next;
+use function reset;
 
-class MiddlewareChain
+class MiddlewareChain implements RequestHandlerInterface
 {
-    protected RequestHandlerInterface $requestHandler;
+    /** @var array<MiddlewareInterface> */
+    private array $middlewares;
 
-    /** @var MiddlewareInterface[] */
-    protected array $chain = [];
-
-    public function __construct(RequestHandlerInterface $requestHandler)
-    {
-        $this->requestHandler = $requestHandler;
-    }
-
-    public function add(MiddlewareInterface $middleware): void
-    {
-        $this->chain[] = $middleware;
+    public function __construct(
+        MiddlewareRegistry $middlewareRegistry,
+        private readonly RequestHandlerInterface $requestHandler
+    ) {
+        $this->middlewares = $middlewareRegistry->middlewares;
+        reset($this->middlewares);
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $chain = $this->requestHandler;
-
-        foreach (array_reverse($this->chain) as $middleware) {
-            $chain = new MiddlewareHandler($middleware, $chain);
+        $middleware = current($this->middlewares);
+        next($this->middlewares);
+        if (false === $middleware) {
+            return $this->requestHandler->handle($request);
         }
-        return $chain->handle($request);
+        return $middleware->process($request, $this);
     }
 }
