@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9b6a39959b6b0428a833525ad45f8a2",
+    "content-hash": "16383f2de89bdc2598c48a2f93395f96",
     "packages": [
         {
             "name": "guzzlehttp/psr7",
@@ -1175,7 +1175,7 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/bluecontainer",
-                "reference": "ff09f3b79eec4fa20042bc7d68c4c07f548692dd"
+                "reference": "aad4335b664afaec15d26a567fb5f5a4ca5d8c1f"
             },
             "require": {
                 "composer-plugin-api": "^2.0",
@@ -1184,12 +1184,6 @@
                 "symfony/dependency-injection": "^v6.3",
                 "symfony/yaml": "^v6.3"
             },
-            "suggest": {
-                "erusev/parsedown": "Is used to print exception help pages in HTML instead of pure markdown (development context only)."
-            },
-            "bin": [
-                "bin/bluesprints"
-            ],
             "type": "composer-plugin",
             "extra": {
                 "class": "\\VerteXVaaR\\BlueContainer\\Composer\\Plugin"
@@ -1246,40 +1240,6 @@
                 }
             ],
             "description": "BlueFluids provides an adapter for the TYPO3 templating engine Fluid",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "vertexvaar/bluemysqlstore",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "./packages/bluemysqlstore",
-                "reference": "cca7aa393b9f0d00a6fef1cb809f12710e51d406"
-            },
-            "require": {
-                "ext-pdo_mysql": "*",
-                "php": "8.2.*"
-            },
-            "type": "project",
-            "autoload": {
-                "psr-4": {
-                    "VerteXVaaR\\BlueMysqlStore\\": "src/"
-                }
-            },
-            "license": [
-                "GPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Oliver Eglseder",
-                    "email": "bluesprints@vxvr.de",
-                    "homepage": "http://vxvr.de/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "BlueMysqlStore allows using a MySQL database as backend for models",
             "transport-options": {
                 "relative": true
             }
@@ -6184,7 +6144,6 @@
     "stability-flags": {
         "vertexvaar/bluesprints": 20,
         "vertexvaar/bluefluid": 20,
-        "vertexvaar/bluemysqlstore": 20,
         "vertexvaar/bluecontainer": 20
     },
     "prefer-stable": false,

@@ -23,12 +23,6 @@
     "symfony/yaml": "^v6.3",
     "composer-plugin-api": "^2.0"
   },
-  "bin": [
-    "bin/bluesprints"
-  ],
-  "suggest": {
-    "erusev/parsedown": "Is used to print exception help pages in HTML instead of pure markdown (development context only)."
-  },
   "extra": {
     "class": "\\VerteXVaaR\\BlueContainer\\Composer\\Plugin"
   }

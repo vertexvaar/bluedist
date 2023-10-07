@@ -20,7 +20,6 @@
         "ext-json": "*",
         "vertexvaar/bluesprints": "@dev",
         "vertexvaar/bluefluid": "@dev",
-        "vertexvaar/bluemysqlstore": "@dev",
         "psr/container": "^2.0",
         "vertexvaar/bluecontainer": "@dev"
     },

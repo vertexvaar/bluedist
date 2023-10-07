@@ -11,7 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use VerteXVaaR\BlueContainer\Container;
 
 use function file_exists;
 use function is_dir;
@@ -50,10 +49,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $this->io->write('Generating container');
 
+        $installationManager = $this->composer->getInstallationManager();
+        $config = $this->composer->getConfig();
+        $autoloadFile = $config->get('vendor-dir') . '/autoload.php';
+        if (!file_exists($autoloadFile)) {
+            return;
+        }
+        require $autoloadFile;
+
+
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->set('composer', $this->composer);
 
-        $installationManager = $this->composer->getInstallationManager();
         $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
         foreach ($packages as $package) {
             $installPath = $installationManager->getInstallPath($package);
