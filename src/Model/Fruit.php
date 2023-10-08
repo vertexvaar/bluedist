@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueDist\Model;
 
 use VerteXVaaR\BlueSprints\Mvc\AbstractModel;
+use VerteXVaaR\BlueSprints\Mvc\Entity;
+use VerteXVaaR\BlueSprints\Mvc\Exception\IdentityAlreadySetException;
 
 class Fruit extends AbstractModel
 {
@@ -34,7 +36,7 @@ class Fruit extends AbstractModel
         return $this;
     }
 
-    protected function getIndexColumns(): array
+    public function getIndexColumns(): array
     {
         return ['name'];
     }
