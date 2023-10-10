@@ -76,14 +76,24 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $packageIterator = new PackageIterator($this->composer);
         $packageIterator->iterate(
-            static function (Package $package, string $installPath) use ($containerBuilder): void {
+            function (Package $package, string $installPath) use ($containerBuilder): void {
                 $configPath = $installPath . '/config';
                 if (file_exists($configPath) && is_dir($configPath)) {
                     if (file_exists($configPath . '/services.yaml')) {
+                        $this->io->write(
+                            'Loading services.yaml from ' . $package->getName(),
+                            true,
+                            IOInterface::VERBOSE
+                        );
                         $loader = new YamlFileLoader($containerBuilder, new FileLocator($configPath));
                         $loader->load('services.yaml');
                     }
                     if (file_exists($configPath . '/services.php')) {
+                        $this->io->write(
+                            'Loading services.php from ' . $package->getName(),
+                            true,
+                            IOInterface::VERBOSE
+                        );
                         $loader = new PhpFileLoader($containerBuilder, new FileLocator($configPath));
                         $loader->load('services.php');
                     }

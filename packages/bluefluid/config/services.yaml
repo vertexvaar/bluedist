@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  VerteXVaaR\BlueFluid\:
+    resource: '../src/*'
+
+  VerteXVaaR\BlueSprints\Mvc\TemplateRenderer: '@VerteXVaaR\BlueFluid\Mvc\FluidTemplateRenderer'

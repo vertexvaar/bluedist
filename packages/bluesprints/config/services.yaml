@@ -13,3 +13,5 @@ services:
     public: true
 
   Psr\Http\Server\RequestHandlerInterface: '@VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher'
+
+  VerteXVaaR\BlueSprints\Mvc\TemplateRenderer: '@VerteXVaaR\BlueSprints\Mvc\PhpTemplateRenderer'

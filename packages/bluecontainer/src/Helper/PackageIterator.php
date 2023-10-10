@@ -7,6 +7,8 @@ namespace VerteXVaaR\BlueContainer\Helper;
 use Closure;
 use Composer\Composer;
 
+use function array_reverse;
+
 readonly class PackageIterator
 {
     public function __construct(private Composer $composer)
@@ -22,7 +24,7 @@ readonly class PackageIterator
         $return = [];
         $installationManager = $this->composer->getInstallationManager();
         $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
-        foreach ($packages as $package) {
+        foreach (array_reverse($packages) as $package) {
             $installPath = $installationManager->getInstallPath($package);
             $return[] = $closure($package, $installPath);
         }

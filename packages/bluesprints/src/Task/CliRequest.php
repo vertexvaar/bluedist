@@ -12,7 +12,7 @@ class CliRequest
 
     public static function createFromEnvironment(): self
     {
-        return new self;
+        return new self();
     }
 
     /**

@@ -8,7 +8,6 @@ use Throwable;
 use VerteXVaaR\BlueSprints\BluesprintsException;
 use VerteXVaaR\BlueSprints\Mvc\Entity;
 
-use function get_class;
 use function sprintf;
 
 class IdentityAlreadySetException extends BluesprintsException

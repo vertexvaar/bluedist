@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueFluid\Mvc;
 
 use TYPO3Fluid\Fluid\View\TemplateView;
-use VerteXVaaR\BlueSprints\Mvc\TemplateRendererInterface;
+use VerteXVaaR\BlueSprints\Mvc\TemplateRenderer;
 
-class FluidAdapter implements TemplateRendererInterface
+class FluidTemplateRenderer implements TemplateRenderer
 {
     protected array $routeConfiguration = [];
 

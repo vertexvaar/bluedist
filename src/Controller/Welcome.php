@@ -10,14 +10,9 @@ use VerteXVaaR\BlueDist\Model\SubFolder\Branch;
 use VerteXVaaR\BlueDist\Model\SubFolder\Leaf;
 use VerteXVaaR\BlueDist\Model\SubFolder\Tree;
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
-use VerteXVaaR\BlueSprints\Mvc\Repository;
 
 class Welcome extends AbstractController
 {
-    public function __construct(private readonly Repository $repository)
-    {
-    }
-
     protected function index(): void
     {
         $this->templateRenderer->setVariable(
