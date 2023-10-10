@@ -2,3 +2,4 @@
 /vendor
 /public/css
 /var
+/composer.lock
