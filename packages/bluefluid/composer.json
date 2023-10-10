@@ -19,6 +19,6 @@
 	"require": {
 		"php": "8.2.*",
 		"typo3fluid/fluid": "^2.2",
-		"vertexvaar/bluesprints": "dev-master"
+		"vertexvaar/bluesprints": "@dev"
 	}
 }
