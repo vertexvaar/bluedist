@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints;
+namespace VerteXVaaR\BlueSprints\Environment;
 
 readonly class Config
 {

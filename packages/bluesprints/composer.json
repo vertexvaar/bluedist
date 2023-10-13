@@ -21,7 +21,8 @@
 		"psr/http-server-middleware": "^1.0",
 		"psr/http-server-handler": "^1.0",
 		"psr/container": "^2.0",
-		"guzzlehttp/psr7": "^2.6"
+		"guzzlehttp/psr7": "^2.6",
+		"co-stack/lib": "^v5.0.0"
 	},
 	"bin": [
 		"bin/bluesprints"

@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
-use VerteXVaaR\BlueSprints\Paths;
+use VerteXVaaR\BlueSprints\Environment\Paths;
 
 use function file_exists;
 use function is_dir;
@@ -101,8 +101,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             }
         );
 
-        $pathsDefinition = $containerBuilder->getDefinition(Paths::class);
-        $configPath = $pathsDefinition->getArgument('$config');
+
+        $packageConfig = $this->composer->getPackage()->getConfig();
+        $configPath = $packageConfig['vertexvaar/bluesprints']['config'] ?? 'config';
+
         if (file_exists($configPath . '/services.yaml')) {
             $loader = new YamlFileLoader($containerBuilder, new FileLocator($configPath));
             $loader->load('services.yaml');

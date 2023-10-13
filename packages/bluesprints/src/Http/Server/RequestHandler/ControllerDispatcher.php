@@ -9,9 +9,10 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use VerteXVaaR\BlueSprints\Environment\Context;
+use VerteXVaaR\BlueSprints\Environment\Environment;
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
 use VerteXVaaR\BlueSprints\Mvc\RedirectException;
-use VerteXVaaR\BlueSprints\Utility\Context;
 
 use function define;
 use function ob_end_clean;
@@ -20,8 +21,10 @@ use function ob_start;
 
 class ControllerDispatcher implements RequestHandlerInterface
 {
-    public function __construct(private readonly ContainerInterface $container)
-    {
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly Environment $environment
+    ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -40,7 +43,7 @@ class ControllerDispatcher implements RequestHandlerInterface
         } catch (RedirectException $exception) {
             $response = $response->withHeader('Location', $exception->getUrl())->withStatus($exception->getStatus());
         }
-        if ((new Context())->getCurrentContext() === Context::CONTEXT_DEVELOPMENT) {
+        if ($this->environment->context === Context::Development) {
             $content = ob_get_contents() . $content;
         }
 

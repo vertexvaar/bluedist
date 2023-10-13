@@ -12,6 +12,21 @@ services:
   VerteXVaaR\BlueSprints\Http\HttpResponseEmitter:
     public: true
 
+  VerteXVaaR\BlueSprints\Task\Scheduler:
+    public: true
+
+  VerteXVaaR\BlueSprints\Environment\Environment:
+    public: true
+    shared: true
+
+  VerteXVaaR\BlueSprints\Environment\Paths:
+    public: true
+    shared: true
+
+  VerteXVaaR\BlueSprints\Environment\Config:
+    public: true
+    shared: true
+
   Psr\Http\Server\RequestHandlerInterface: '@VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher'
 
   VerteXVaaR\BlueSprints\Mvc\TemplateRenderer: '@VerteXVaaR\BlueSprints\Mvc\PhpTemplateRenderer'

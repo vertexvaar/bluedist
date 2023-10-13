@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueFluid\Mvc;
 
 use TYPO3Fluid\Fluid\View\TemplateView;
+use VerteXVaaR\BlueSprints\Environment\Paths;
 use VerteXVaaR\BlueSprints\Mvc\TemplateRenderer;
-use VerteXVaaR\BlueSprints\Paths;
 
-use const DIRECTORY_SEPARATOR as DS;
+use function CoStack\Lib\concat_paths;
 
 class FluidTemplateRenderer implements TemplateRenderer
 {
@@ -24,11 +24,11 @@ class FluidTemplateRenderer implements TemplateRenderer
     public function render(string $templateName = ''): string
     {
         $controller = str_replace('\\', '/', $this->routeConfiguration['controller']);
-        $viewRootPath = VXVR_BS_ROOT . DS . $this->paths->view . DS;
+        $viewRootPath = concat_paths(VXVR_BS_ROOT, $this->paths->view);
 
-        $this->view->getTemplatePaths()->setTemplateRootPaths([$viewRootPath . 'Template/' . $controller . '/']);
-        $this->view->getTemplatePaths()->setLayoutRootPaths([$viewRootPath . 'Layout/' . $controller . '/']);
-        $this->view->getTemplatePaths()->setPartialRootPaths([$viewRootPath . 'Partial/' . $controller . '/']);
+        $this->view->getTemplatePaths()->setTemplateRootPaths([concat_paths($viewRootPath, 'Template', $controller)]);
+        $this->view->getTemplatePaths()->setLayoutRootPaths([concat_paths($viewRootPath, 'Layout', $controller)]);
+        $this->view->getTemplatePaths()->setPartialRootPaths([concat_paths($viewRootPath, 'Partial', $controller)]);
         $this->view->getRenderingContext()->setControllerName(substr($controller, strrpos($controller, '/') + 1));
 
         if (empty($templateName)) {

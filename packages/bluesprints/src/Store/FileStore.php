@@ -9,11 +9,12 @@ use DateTimeImmutable;
 use FilesystemIterator;
 use RuntimeException;
 use SplFileInfo;
-use VerteXVaaR\BlueSprints\Config;
+use VerteXVaaR\BlueSprints\Environment\Config;
+use VerteXVaaR\BlueSprints\Environment\Paths;
 use VerteXVaaR\BlueSprints\Mvc\Entity;
-use VerteXVaaR\BlueSprints\Paths;
 use VerteXVaaR\BlueSprints\Utility\Strings;
 
+use function CoStack\Lib\concat_paths;
 use function file_get_contents;
 use function is_dir;
 use function mkdir;
@@ -33,7 +34,7 @@ readonly class FileStore implements Store
     public function findByUuid(string $class, string $uuid): ?object
     {
         $databaseFolder = $this->getFolder($class);
-        $fileContents = file_get_contents($databaseFolder . DS . $uuid);
+        $fileContents = file_get_contents(concat_paths($databaseFolder, $uuid));
         if ($fileContents) {
             return unserialize(
                 $fileContents,
@@ -65,18 +66,18 @@ readonly class FileStore implements Store
     {
         $uuid = $entity->uuid;
         $databaseFolder = $this->getFolder($entity::class);
-        file_put_contents($databaseFolder . DS . $uuid, serialize($entity));
+        file_put_contents(concat_paths($databaseFolder, $uuid), serialize($entity));
     }
 
     public function delete(Entity $entity): void
     {
         $databaseFolder = $this->getFolder($entity::class);
-        unlink($databaseFolder . DS . $entity->uuid);
+        unlink(concat_paths($databaseFolder, $entity->uuid));
     }
 
     public function getFolder(string $class): string
     {
-        $classFolder = VXVR_BS_ROOT . DS . $this->paths->database . DS . str_replace('\\', DS, $class) . DS;
+        $classFolder = concat_paths(VXVR_BS_ROOT, $this->paths->database, str_replace('\\', DS, $class));
 
         if (
             !is_dir($classFolder)

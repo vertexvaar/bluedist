@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueSprints\Task\CliRequest;
 use VerteXVaaR\BlueSprints\Task\Scheduler;
 
@@ -14,5 +15,5 @@ if (empty(ini_get('date.timezone'))) {
 }
 
 $cliRequest = CliRequest::createFromEnvironment();
-$scheduler = new Scheduler($cliRequest);
-$scheduler->run();
+$di = new DI();
+$di->get(Scheduler::class)->run($cliRequest);

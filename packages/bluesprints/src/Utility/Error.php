@@ -7,6 +7,9 @@ namespace VerteXVaaR\BlueSprints\Utility;
 use Exception;
 use Parsedown;
 use Throwable;
+use VerteXVaaR\BlueContainer\DI;
+use VerteXVaaR\BlueSprints\Environment\Context;
+use VerteXVaaR\BlueSprints\Environment\Environment;
 
 class Error
 {
@@ -42,16 +45,12 @@ class Error
     ): void {
         self::includeCss();
         $additionalException = null;
-        try {
-            $context = (new Context())->getCurrentContext();
-        } catch (Exception $additionalException) {
-            $context = Context::CONTEXT_PRODUCTION;
-        }
+        $context = (new DI())->get(Environment::class)->context;
         echo '<div class="c-error">';
         if ($additionalException !== null) {
             echo '<h1 class="c-error__title">An error occured. Additionally an exception was thrown.</h1>';
         } else {
-            if ($context === Context::CONTEXT_PRODUCTION) {
+            if ($context === Context::Production) {
                 echo '<h1>An error occured. Please contact your administator</h1>';
             } else {
                 echo '<h1>An error occured.</h1>';
