@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueFileStore;
+namespace VerteXVaaR\BlueSprints\Store;
 
 use DateTime;
 use DateTimeImmutable;
@@ -12,7 +12,6 @@ use SplFileInfo;
 use VerteXVaaR\BlueSprints\Config;
 use VerteXVaaR\BlueSprints\Mvc\Entity;
 use VerteXVaaR\BlueSprints\Paths;
-use VerteXVaaR\BlueSprints\Store\Store;
 use VerteXVaaR\BlueSprints\Utility\Strings;
 
 use function file_get_contents;

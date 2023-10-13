@@ -1,8 +1,10 @@
 <?php
 
+use VerteXVaaR\BlueDist\Task\ExampleTask;
+
 return [
     'name' => [
-        'task' => \VerteXVaaR\BlueDist\Task\ExampleTask::class,
+        'task' => ExampleTask::class,
         'interval' => 1,
         'arguments' => [
             'first',

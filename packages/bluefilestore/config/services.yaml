@@ -1,9 +1,0 @@
-services:
-  _defaults:
-    autowire: true
-    autoconfigure: true
-
-  VerteXVaaR\BlueFileStore\:
-    resource: '../src/*'
-
-  VerteXVaaR\BlueSprints\Store\Store: '@VerteXVaaR\BlueFileStore\FileStore'
