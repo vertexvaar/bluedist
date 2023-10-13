@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDist\Model\SubFolder;
 
-use VerteXVaaR\BlueSprints\Mvc\AbstractModel;
+use VerteXVaaR\BlueSprints\Mvc\Entity;
 
-class Branch extends AbstractModel
+class Branch extends Entity
 {
     /**
      * @var Leaf[]

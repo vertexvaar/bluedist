@@ -6,8 +6,6 @@ namespace VerteXVaaR\BlueSprints\Mvc;
 
 interface TemplateRenderer
 {
-    public function __construct();
-
     public function render(string $templateName = ''): string;
 
     /**

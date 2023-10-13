@@ -4,19 +4,12 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDist\Model\SubFolder;
 
-use VerteXVaaR\BlueSprints\Mvc\AbstractModel;
+use VerteXVaaR\BlueSprints\Mvc\Entity;
 
-class Leaf extends AbstractModel
+class Leaf extends Entity
 {
-    protected int $number;
-
-    public function __construct(int $number)
+    public function __construct(string $uuid, public readonly int $number)
     {
-        $this->number = $number;
-    }
-
-    public function getNumber(): int
-    {
-        return $this->number;
+        parent::__construct($uuid);
     }
 }

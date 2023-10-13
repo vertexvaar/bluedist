@@ -21,20 +21,6 @@ class Folders
         return str_replace('\\', DIRECTORY_SEPARATOR, $className) . DIRECTORY_SEPARATOR;
     }
 
-    public static function getAllFilesInFolder(string $folderName): array
-    {
-        $files = [];
-        /** @var SplFileInfo[] $fileSystemIterator */
-        $fileSystemIterator = new FilesystemIterator(
-            Files::getAbsoluteFilePath($folderName),
-            FilesystemIterator::SKIP_DOTS
-        );
-        foreach ($fileSystemIterator as $file) {
-            $files[] = $file->getPathname();
-        }
-        return $files;
-    }
-
     /**
      * @param string $folder
      * @return bool If the folder exists or was created

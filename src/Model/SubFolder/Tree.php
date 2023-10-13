@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDist\Model\SubFolder;
 
-use VerteXVaaR\BlueSprints\Mvc\AbstractModel;
+use VerteXVaaR\BlueSprints\Mvc\Entity;
 
-class Tree extends AbstractModel
+class Tree extends Entity
 {
     protected ?Branch $mainBranch = null;
 

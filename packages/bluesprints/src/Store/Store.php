@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Store;
 
-use VerteXVaaR\BlueSprints\Store\Exception\ObjectNotFoundByUuidException;
-use VerteXVaaR\BlueSprints\Store\Exception\ObjectReconstitutionException;
+use VerteXVaaR\BlueSprints\Mvc\Entity;
 
 interface Store
 {
-    public function __construct(string $class, array $indices);
+    public function findByUuid(string $class, string $uuid): ?object;
 
-    /**
-     * @param string $uuid
-     * @return object
-     * @throws ObjectNotFoundByUuidException
-     * @throws ObjectReconstitutionException
-     */
-    public function findByUuid(string $uuid): object;
+    public function findAll(string $class): array;
+
+    public function store(Entity $entity): void;
+
+    public function delete(Entity $entity): void;
 }

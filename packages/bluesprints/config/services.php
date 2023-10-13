@@ -5,6 +5,7 @@ use Composer\Package\Package;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
+use VerteXVaaR\BlueSprints\Config;
 use VerteXVaaR\BlueSprints\Http\Server\Middleware\MiddlewareRegistry;
 use VerteXVaaR\BlueSprints\Mvc\Controller;
 use VerteXVaaR\BlueSprints\Mvc\DependencyInjection\PublicServicePass;
@@ -39,6 +40,20 @@ return static function (ContainerBuilder $containerBuilder): void {
         '$view' => $config['view'] ?? 'view',
         '$translations' => $config['translations'] ?? 'translations',
     ]);
+    $pathsDefinition->setShared(true);
+    $pathsDefinition->setPublic(true);
+
+    $systemSettings = [];
+    if (file_exists('config/system.php')) {
+        $systemSettings = require 'config/system.php';
+    }
+    $configDefinition = $containerBuilder->getDefinition(Config::class);
+    $configDefinition->setArguments([
+        '$filePermissions' => $config['permissions']['files'] ?? 0660,
+        '$folderPermissions' => $config['permissions']['folders'] ?? 0770,
+    ]);
+    $configDefinition->setShared(true);
+    $configDefinition->setPublic(true);
 
     $packageMiddlewares = [];
     $middlewaresPath = $pathsDefinition->getArgument('$config') . '/middlewares.php';

@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Mvc;
 
-use VerteXVaaR\BlueSprints\Mvc\Exception\IdentityAlreadySetException;
-
-interface Entity
+abstract class Entity
 {
-    public function getUuid(): ?string;
-
-    /**
-     * @throws IdentityAlreadySetException
-     */
-    public function setUuid(string $uuid): void;
-
-    public function getIndexColumns(): array;
+    public function __construct(public readonly string $uuid)
+    {
+    }
 }

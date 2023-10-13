@@ -31,28 +31,6 @@ class Files
      * @return mixed
      * @throws Exception
      */
-    public static function requireOnceFile(string $fileName, array $variables = [])
-    {
-        $absoluteFilePath = self::getAbsoluteFilePath($fileName);
-        if (!is_file($absoluteFilePath)) {
-            throw new Exception(
-                'Error: require_once(' . htmlspecialchars($absoluteFilePath) . '): failed to open stream: ' .
-                'No such file or directory in ' . __FILE__ . ' on line ' . __LINE__,
-                1432841751
-            );
-        }
-        foreach ($variables as $variableName => $variable) {
-            $$variableName = $variable;
-        }
-        return require_once($absoluteFilePath);
-    }
-
-    /**
-     * @param string $fileName
-     * @param array $variables
-     * @return mixed
-     * @throws Exception
-     */
     public static function requireFile(string $fileName, array $variables = [])
     {
         $absoluteFilePath = self::getAbsoluteFilePath($fileName);
@@ -86,10 +64,5 @@ class Files
             return file_put_contents($absolutePath, $fileContents);
         }
         return 0;
-    }
-
-    public static function delete(string $fileName): bool
-    {
-        return unlink(self::getAbsoluteFilePath($fileName));
     }
 }

@@ -4,119 +4,89 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueFileStore;
 
-use Exception;
-use ReflectionClass;
-use Throwable;
-use VerteXVaaR\BlueSprints\Store\Exception\ObjectNotFoundByUuidException;
-use VerteXVaaR\BlueSprints\Store\Exception\ObjectReconstitutionException;
+use DateTime;
+use DateTimeImmutable;
+use FilesystemIterator;
+use RuntimeException;
+use SplFileInfo;
+use VerteXVaaR\BlueSprints\Config;
+use VerteXVaaR\BlueSprints\Mvc\Entity;
+use VerteXVaaR\BlueSprints\Paths;
 use VerteXVaaR\BlueSprints\Store\Store;
+use VerteXVaaR\BlueSprints\Utility\Strings;
 
-use function array_keys;
-use function array_values;
-use function file_exists;
 use function file_get_contents;
-use function file_put_contents;
-use function hash;
-use function json_decode;
-use function json_encode;
-use function ksort;
-use function natsort;
-use function property_exists;
+use function is_dir;
+use function mkdir;
 use function serialize;
 use function str_replace;
 use function unserialize;
 
 use const DIRECTORY_SEPARATOR as DS;
-use const JSON_THROW_ON_ERROR;
+use const VXVR_BS_ROOT;
 
-class FileStore implements Store
+readonly class FileStore implements Store
 {
-    private const STORE_FOLDER = 'database';
-
-    protected array $indices;
-
-    private string $class;
-
-    private array $classProperties;
-
-    private string $folder;
-
-    public function __construct(string $class, array $indices)
+    public function __construct(private Paths $paths, private Config $config)
     {
-        $this->class = $class;
-
-        $reflection = new ReflectionClass($this->class);
-        $reflectionProperties = $reflection->getProperties();
-        $properties = [];
-        foreach ($reflectionProperties as $reflectionProperty) {
-            $properties[] = $reflectionProperty->getName();
-        }
-        natsort($properties);
-        $this->classProperties = $properties;
-
-        $this->folder = self::STORE_FOLDER . DS . str_replace('\\', DS, $this->class) . DS;
-
-        $indicesList = [];
-        foreach ($indices as $index) {
-            foreach ($index as $property) {
-                if (!property_exists($this->class, $property)) {
-                    throw new Exception("Property $property not found in class $this->class", 1642592800);
-                }
-            }
-            ksort($index);
-            $hash = hash('sha265', json_encode($index, JSON_THROW_ON_ERROR));
-            $indicesList[$hash] = $index;
-        }
-        $this->indices = $indicesList;
     }
 
-    public function findByUuid(string $uuid): object
+    public function findByUuid(string $class, string $uuid): ?object
     {
-        $file = $this->folder . $uuid;
-        if (!file_exists($file)) {
-            throw new ObjectNotFoundByUuidException($this->class, $uuid);
+        $databaseFolder = $this->getFolder($class);
+        $fileContents = file_get_contents($databaseFolder . DS . $uuid);
+        if ($fileContents) {
+            return unserialize(
+                $fileContents,
+                ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]]
+            );
         }
-        $fileContents = file_get_contents($file);
-        try {
-            return unserialize($fileContents, ['allowed_classes' => $this->class]);
-        } catch (Throwable $exception) {
-            throw new ObjectReconstitutionException($this->class, $uuid, $exception);
-        }
+        return null;
     }
 
-    public function findByProperties(array $properties): array
+    public function findAll(string $class): array
     {
-        ksort($properties);
-        $hash = hash('sha265', json_encode($properties, JSON_THROW_ON_ERROR));
-        if (isset($this->indices[$hash])) {
-            $indicesFile = $this->folder . 'Indices' . DS . $hash;
-            if (!file_exists($indicesFile)) {
-                file_put_contents($indicesFile, json_encode([], JSON_THROW_ON_ERROR));
-            }
-            $index = json_decode(file_get_contents($indicesFile), null, JSON_THROW_ON_ERROR);
+        $databaseFolder = $this->getFolder($class);
 
-            $valueHash = json_encode(array_values($properties), JSON_THROW_ON_ERROR);
-            if (isset($index[$valueHash])) {
-                $objects = [];
-                foreach ($index[$valueHash] as $uuid) {
-                    try {
-                        $objects[] = $this->findByUuid($uuid);
-                    } catch (ObjectNotFoundByUuidException $exception) {
-                        // ignore
-                    }
-                }
-                return $objects;
+        $results = [];
+        /** @var SplFileInfo[] $fileSystemIterator */
+        $fileSystemIterator = new FilesystemIterator($databaseFolder, FilesystemIterator::SKIP_DOTS);
+        foreach ($fileSystemIterator as $file) {
+            if (Strings::isValidUuid($file->getBasename())) {
+                $results[] = unserialize(
+                    file_get_contents($file->getPathname()),
+                    ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]]
+                );
             }
         }
+        return $results;
     }
 
-    private function getIndices(): array
+    public function store(Entity $entity): void
     {
-        $indicesFile = $this->folder . 'Indices';
-        if (!file_exists($indicesFile)) {
-            file_put_contents($indicesFile, serialize([]));
-            return [];
+        $uuid = $entity->uuid;
+        $databaseFolder = $this->getFolder($entity::class);
+        file_put_contents($databaseFolder . DS . $uuid, serialize($entity));
+    }
+
+    public function delete(Entity $entity): void
+    {
+        $databaseFolder = $this->getFolder($entity::class);
+        unlink($databaseFolder . DS . $entity->uuid);
+    }
+
+    public function getFolder(string $class): string
+    {
+        $classFolder = VXVR_BS_ROOT . DS . $this->paths->database . DS . str_replace('\\', DS, $class) . DS;
+
+        if (
+            !is_dir($classFolder)
+            && !mkdir($classFolder, $this->config->folderPermissions, true)
+            && !is_dir($classFolder)
+        ) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $classFolder));
         }
-        return unserialize(file_get_contents($indicesFile), ['allowed_classes' => false]);
+
+        return $classFolder;
     }
 }

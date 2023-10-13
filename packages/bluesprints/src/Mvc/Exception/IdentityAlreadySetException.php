@@ -18,7 +18,7 @@ class IdentityAlreadySetException extends BluesprintsException
     public function __construct(public readonly Entity $entity, Throwable $previous = null)
     {
         parent::__construct(
-            sprintf(self::MESSAGE, $this->entity::class, $this->entity->getUuid()),
+            sprintf(self::MESSAGE, $this->entity::class, $this->entity->uuid),
             self::CODE,
             $previous
         );

@@ -6,6 +6,9 @@ namespace VerteXVaaR\BlueFluid\Mvc;
 
 use TYPO3Fluid\Fluid\View\TemplateView;
 use VerteXVaaR\BlueSprints\Mvc\TemplateRenderer;
+use VerteXVaaR\BlueSprints\Paths;
+
+use const DIRECTORY_SEPARATOR as DS;
 
 class FluidTemplateRenderer implements TemplateRenderer
 {
@@ -13,15 +16,15 @@ class FluidTemplateRenderer implements TemplateRenderer
 
     protected TemplateView $view;
 
-    public function __construct()
+    public function __construct(private readonly Paths $paths)
     {
         $this->view = new TemplateView();
     }
 
     public function render(string $templateName = ''): string
     {
-        $controller = strtr($this->routeConfiguration['controller'], '\\', '/');
-        $viewRootPath = VXVR_BS_ROOT . 'view/';
+        $controller = str_replace('\\', '/', $this->routeConfiguration['controller']);
+        $viewRootPath = VXVR_BS_ROOT . DS . $this->paths->view . DS;
 
         $this->view->getTemplatePaths()->setTemplateRootPaths([$viewRootPath . 'Template/' . $controller . '/']);
         $this->view->getTemplatePaths()->setLayoutRootPaths([$viewRootPath . 'Layout/' . $controller . '/']);
