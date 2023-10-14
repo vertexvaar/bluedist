@@ -27,6 +27,10 @@ services:
     public: true
     shared: true
 
+  VerteXVaaR\BlueSprints\Cache\Cache:
+    public: true
+    shared: true
+
   VerteXVaaR\BlueSprints\Template\TwigFactory:
     public: true
 

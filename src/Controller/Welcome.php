@@ -18,13 +18,13 @@ class Welcome extends AbstractController
     #[Route(path: '/.*', priority: -1)]
     public function index(): ResponseInterface
     {
-        return $this->render('index.html.twig', ['strings' => ['foo', 'bar', 'baz']]);
+        return $this->render('fruits/index.html.twig', ['strings' => ['foo', 'bar', 'baz']]);
     }
 
     #[Route(path: '/listFruits')]
     public function listFruits(): ResponseInterface
     {
-        return $this->render('fruits.html.twig', ['fruits' => $this->repository->findAll(Fruit::class)]);
+        return $this->render('fruits/list.html.twig', ['fruits' => $this->repository->findAll(Fruit::class)]);
     }
 
     #[Route(path: '/createDemoFruits', method: 'POST')]
@@ -74,7 +74,7 @@ class Welcome extends AbstractController
     public function editFruit(ServerRequestInterface $request): ResponseInterface
     {
         $fruit = $this->repository->findByIdentifier(Fruit::class, $request->getQueryParams()['fruit']);
-        return $this->render('edit.html.twig', ['fruit' => $fruit]);
+        return $this->render('fruits/edit.html.twig', ['fruit' => $fruit]);
     }
 
     /**

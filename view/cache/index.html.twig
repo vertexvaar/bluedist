@@ -1,0 +1,33 @@
+<h1>Caching demo</h1>
+
+{% if cache_value %}
+    <p>A value has been cached. The value is: {{ cache_value }}</p>
+{% else %}
+    <p>No value has been stored in the cache so far or it already expired.</p>
+{% endif %}
+
+<form action="/cache/store" method="post">
+    <table>
+        <tr>
+            <td>
+                <label>
+                    Value
+                    <input type="text" name="value">
+                </label>
+            </td>
+            <td>
+                <label>
+                    ttl (seconds)
+                    <input type="text" name="ttl">
+                </label>
+            </td>
+            <td>
+                <button type="submit">Store value</button>
+            </td>
+        </tr>
+    </table>
+
+    <p>
+        <a href="..">Back to the index</a>
+    </p>
+</form>
