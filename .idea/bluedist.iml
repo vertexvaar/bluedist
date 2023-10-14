@@ -98,6 +98,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vertexvaar/blueauth" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vertexvaar/bluedebug" />
+      <excludeFolder url="file://$MODULE_DIR$/locales" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ramsey/collection" />

@@ -1,4 +1,6 @@
+/locales
 /vendor
 /public/css
 /var
 /composer.lock
+/messages.po

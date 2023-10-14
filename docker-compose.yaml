@@ -16,7 +16,9 @@ services:
           - local.bluedist.com
 
   php:
-    image: in2code/php-dev:8.2-fpm
+    build:
+      context: .project/docker/php
+      dockerfile: Dockerfile
     volumes:
       - ./:/app/
       - $HOME/.composer/auth.json:/tmp/composer/auth.json

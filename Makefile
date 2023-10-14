@@ -185,3 +185,7 @@ cept-run-acceptance:
 
 cept-build:
 	docker compose exec php ./vendor/bin/codecept build
+
+update-messages:
+	docker compose exec php find ./packages/ -type f -name '*.php' -exec xgettext -j {} \;
+	docker compose exec php msgfmt -o locales/de/LC_MESSAGES/messages.mo messages.po;
