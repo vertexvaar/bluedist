@@ -12,7 +12,7 @@ services:
   VerteXVaaR\BlueSprints\Http\HttpResponseEmitter:
     public: true
 
-  VerteXVaaR\BlueSprints\Task\Scheduler:
+  VerteXVaaR\BlueSprints\Scheduler\Scheduler:
     public: true
 
   VerteXVaaR\BlueSprints\Environment\Environment:

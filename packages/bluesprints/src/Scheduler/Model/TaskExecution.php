@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Task;
+namespace VerteXVaaR\BlueSprints\Scheduler\Model;
 
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
