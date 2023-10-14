@@ -15,7 +15,7 @@ abstract class AbstractController implements Controller
     /**
      * @var bool Indicates if the template should be rendered after the action has been called
      */
-    private bool $renderTemplate = true;
+    protected bool $renderTemplate = true;
 
     public function __construct(
         protected readonly Repository $repository,

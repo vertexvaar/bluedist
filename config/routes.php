@@ -1,5 +1,6 @@
 <?php
 
+use VerteXVaaR\BlueAuth\Controller\AuthenticationController;
 use VerteXVaaR\BlueDist\Controller\Welcome;
 use VerteXVaaR\BlueSprints\Routing\Middleware\RoutingMiddleware;
 
@@ -25,6 +26,14 @@ return [
         '/listFruits' => [
             'controller' => Welcome::class,
             'action' => 'listFruits',
+        ],
+        '/login' => [
+            'controller' => AuthenticationController::class,
+            'action' => 'login',
+        ],
+        '/logout' => [
+            'controller' => AuthenticationController::class,
+            'action' => 'logout',
         ],
         '.*' => [
             'controller' => Welcome::class,
@@ -61,6 +70,10 @@ return [
         '/createFruit' => [
             'controller' => Welcome::class,
             'action' => 'createFruit',
+        ],
+        '/login' => [
+            'controller' => AuthenticationController::class,
+            'action' => 'authenticate',
         ],
     ],
     RoutingMiddleware::HTTP_METHOD_PUT => [],
