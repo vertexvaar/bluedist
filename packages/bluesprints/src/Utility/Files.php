@@ -6,6 +6,8 @@ namespace VerteXVaaR\BlueSprints\Utility;
 
 use Exception;
 
+use function getenv;
+
 class Files
 {
     public static function fileExists(string $fileName): bool
@@ -17,7 +19,7 @@ class Files
 
     public static function getAbsoluteFilePath(string $fileName): string
     {
-        return VXVR_BS_ROOT . $fileName;
+        return getenv('VXVR_BS_ROOT') . $fileName;
     }
 
     protected static function clearStateCache(string $absolutePath): void

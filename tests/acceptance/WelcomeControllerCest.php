@@ -4,16 +4,23 @@ namespace VerteXVaaR\Acceptance;
 
 use VerteXVaaR\BlueDistTest\AcceptanceTester;
 
-class FirstCest
+use function ini_get;
+
+class WelcomeControllerCest
 {
     public function _before(AcceptanceTester $I)
     {
     }
 
     // tests
-    public function tryToTest(AcceptanceTester $I)
+    public function createInitialFruitsTest(AcceptanceTester $I)
     {
         $I->amOnPage('/');
+
+        if (ini_get('xdebug.mode') === 'debug') {
+            $I->setCookie('XDEBUG_SESSION', 'XDEBUG_ECLIPSE');
+        }
+
         $I->see('Welcome to VerteXVaaR.BlueSprints');
 
         $I->click('follow me');

@@ -9,6 +9,7 @@ use VerteXVaaR\BlueSprints\Environment\Paths;
 use VerteXVaaR\BlueSprints\Mvc\TemplateRenderer;
 
 use function CoStack\Lib\concat_paths;
+use function getenv;
 
 class FluidTemplateRenderer implements TemplateRenderer
 {
@@ -24,7 +25,7 @@ class FluidTemplateRenderer implements TemplateRenderer
     public function render(string $templateName = ''): string
     {
         $controller = str_replace('\\', '/', $this->routeConfiguration['controller']);
-        $viewRootPath = concat_paths(VXVR_BS_ROOT, $this->paths->view);
+        $viewRootPath = concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->view);
 
         $this->view->getTemplatePaths()->setTemplateRootPaths([concat_paths($viewRootPath, 'Template', $controller)]);
         $this->view->getTemplatePaths()->setLayoutRootPaths([concat_paths($viewRootPath, 'Layout', $controller)]);

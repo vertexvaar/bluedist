@@ -16,6 +16,7 @@ use VerteXVaaR\BlueSprints\Utility\Strings;
 
 use function CoStack\Lib\concat_paths;
 use function file_get_contents;
+use function getenv;
 use function is_dir;
 use function mkdir;
 use function serialize;
@@ -23,7 +24,6 @@ use function str_replace;
 use function unserialize;
 
 use const DIRECTORY_SEPARATOR as DS;
-use const VXVR_BS_ROOT;
 
 readonly class FileStore implements Store
 {
@@ -77,7 +77,7 @@ readonly class FileStore implements Store
 
     public function getFolder(string $class): string
     {
-        $classFolder = concat_paths(VXVR_BS_ROOT, $this->paths->database, str_replace('\\', DS, $class));
+        $classFolder = concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->database, str_replace('\\', DS, $class));
 
         if (
             !is_dir($classFolder)

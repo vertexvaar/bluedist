@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Utility;
 
-use Exception;
 use Parsedown;
 use Throwable;
 use VerteXVaaR\BlueContainer\DI;

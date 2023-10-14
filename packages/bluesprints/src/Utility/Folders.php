@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Utility;
 
-use FilesystemIterator;
 use JetBrains\PhpStorm\Pure;
-use SplFileInfo;
 
 use function CoStack\Lib\concat_paths;
-use function str_replace;
 use function strtr;
 
 class Folders

@@ -16,7 +16,6 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
-use VerteXVaaR\BlueSprints\Environment\Paths;
 
 use function file_exists;
 use function is_dir;

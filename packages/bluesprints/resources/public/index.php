@@ -4,13 +4,26 @@ declare(strict_types=1);
 
 use Composer\Autoload\ClassLoader;
 use GuzzleHttp\Psr7\ServerRequest;
+use Symfony\Component\Dotenv\Dotenv;
 use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueSprints\Http\Application;
 use VerteXVaaR\BlueSprints\Http\HttpResponseEmitter;
 use VerteXVaaR\BlueSprints\Utility\Error;
 
-if (!defined('VXVR_BS_ROOT')) {
-    define('VXVR_BS_ROOT', dirname(__DIR__, 2) . DIRECTORY_SEPARATOR);
+$root = getenv('VXVR_BS_ROOT');
+if (!$root) {
+    $root = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR;
+    putenv('VXVR_BS_ROOT=' . $root);
+}
+
+if (file_exists($root . '/.env')) {
+    $dotenv = new Dotenv();
+    $dotenv->usePutenv();
+    $dotenv->loadEnv($root . '/.env', null, 'dev', [], true);
+}
+
+if (empty(ini_get('date.timezone'))) {
+    date_default_timezone_set('UTC');
 }
 
 if (!class_exists(ClassLoader::class, false)) {
@@ -24,13 +37,11 @@ if (!class_exists(ClassLoader::class, false)) {
         throw new Exception('Autoloader not found', 1491561093);
     }
 }
-if (empty(ini_get('date.timezone'))) {
-    date_default_timezone_set('UTC');
-}
+
+Error::registerErrorHandler();
 
 $request = ServerRequest::fromGlobals();
 
-Error::registerErrorHandler();
 $di = new DI();
 $response = $di->get(Application::class)->run($request);
 $di->get(HttpResponseEmitter::class)->emit($response);

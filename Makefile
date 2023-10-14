@@ -168,32 +168,20 @@ EMOJI_controlknobs := "🎛️"
 %:
 	@:
 
+cept-debug:
+	docker compose exec -e PHP_IDE_CONFIG="serverName=local.bluedist.com" php php -dxdebug.mode=debug -dxdebug.remote_autostart=1 -dxdebug.start_with_request=yes -dxdebug.remote_host=host.docker.internal ./vendor/bin/codecept run
+
 cept-run:
 	docker compose exec php ./vendor/bin/codecept run
 
 cept-run-unit:
 	docker compose exec php ./vendor/bin/codecept run unit --recurse-includes
 
-cept-debug:
-	docker compose exec -e PHP_IDE_CONFIG="serverName=local.bluedist.com" php php -dxdebug.mode=debug -dxdebug.remote_autostart=1 -dxdebug.start_with_request=yes -dxdebug.remote_host=host.docker.internal ./vendor/bin/codecept run acceptance
-
 cept-run-functional:
+	docker compose exec php ./vendor/bin/codecept run functional
+
+cept-run-acceptance:
 	docker compose exec php ./vendor/bin/codecept run acceptance
-
-cept-create-unit-test:
-	read -r -p "Enter repo name: " module; \
-	read -r -p "Enter class: " class; \
-	docker compose exec php ./vendor/bin/codecept generate:test -c repo/$$module unit $$class
-
-cept-create-acceptance-test:
-	read -r -p "Enter repo name: " module; \
-	read -r -p "Enter test name: " testname; \
-	docker compose exec php ./vendor/bin/codecept generate:cest -c repo/$$module acceptance $$testname
-
-cept-create-functional-test:
-	read -r -p "Enter repo name: " module; \
-	read -r -p "Enter test name: " testname; \
-	docker compose exec php ./vendor/bin/codecept generate:cest -c repo/$$module functional $$testname
 
 cept-build:
 	docker compose exec php ./vendor/bin/codecept build
