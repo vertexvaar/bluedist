@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  httpd:
+    image: in2code/httpd:2.4-alpine
+    volumes:
+      - ./:/app/
+    environment:
+      WEB_DOCUMENT_ROOT: /app/public/
+      VIRTUAL_HOST: local.bluedist.com
+      VIRTUAL_PORT: 443
+      VIRTUAL_PROTO: https
+    networks:
+      default:
+        aliases:
+          - local.bluedist.com
+
+  php:
+    image: in2code/php-dev:8.2-fpm
+    volumes:
+      - ./:/app/
+      - $HOME/.composer/auth.json:/tmp/composer/auth.json
+      - $HOME/.composer/cache/:/tmp/composer/cache/
+      - $HOME/.phive/:/tmp/phive/
+      - $SSH_AUTH_SOCK:$SSH_AUTH_SOCK
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    environment:
+      SSH_AUTH_SOCK: $SSH_AUTH_SOCK
+      VXVR_BS_CONTEXT: Dev
+
+  mail:
+    image: axllent/mailpit
+    environment:
+      VIRTUAL_PORT: 8025
+      VIRTUAL_HOST: mail.local.bluedist.com
+      VIRTUAL_PROTO: http
+
+  selenium-hub:
+    image: selenium/hub:4.11
+
+  chrome:
+    image: selenium/node-chrome:4.11
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+      SE_NODE_MAX_SESSIONS: 4
+      SE_NODE_OVERRIDE_MAX_SESSIONS: "true"
+    ports:
+      - 65378:5900
+    shm_size: 2g
