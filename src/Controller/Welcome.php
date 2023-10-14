@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueDist\Model\Fruit;
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
+use VerteXVaaR\BlueSprints\Routing\Attrbiutes\Route;
 use VerteXVaaR\BlueSprints\Utility\Strings;
 
 class Welcome extends AbstractController
@@ -15,6 +16,8 @@ class Welcome extends AbstractController
     /**
      * @noinspection PhpUnused
      */
+    #[Route(path: '/')]
+    #[Route(path: '/.*', priority: -1)]
     public function index(): ResponseInterface
     {
         return $this->render('index.html.twig', ['strings' => ['foo', 'bar', 'baz']]);
@@ -23,6 +26,7 @@ class Welcome extends AbstractController
     /**
      * @noinspection PhpUnused
      */
+    #[Route(path: '/listFruits')]
     public function listFruits(): ResponseInterface
     {
         return $this->render('fruits.html.twig', ['fruits' => $this->repository->findAll(Fruit::class)]);
@@ -31,6 +35,7 @@ class Welcome extends AbstractController
     /**
      * @noinspection PhpUnused
      */
+    #[Route(path: '/createDemoFruits', method: 'POST')]
     public function createDemoFruits(): ResponseInterface
     {
         $fruitsData = [
@@ -63,6 +68,7 @@ class Welcome extends AbstractController
     /**
      * @noinspection PhpUnused
      */
+    #[Route(path: '/createFruit', method: 'POST')]
     public function createFruit(ServerRequestInterface $request): ResponseInterface
     {
         $arguments = $request->getParsedBody();
@@ -78,6 +84,7 @@ class Welcome extends AbstractController
     /**
      * @noinspection PhpUnused
      */
+    #[Route(path: '/editFruit')]
     public function editFruit(ServerRequestInterface $request): ResponseInterface
     {
         $fruit = $this->repository->findByUuid(Fruit::class, $request->getQueryParams()['fruit']);
@@ -87,6 +94,7 @@ class Welcome extends AbstractController
     /**
      * @noinspection PhpUnused
      */
+    #[Route(path: '/updateFruit', method: 'POST')]
     public function updateFruit(ServerRequestInterface $request): ResponseInterface
     {
         $arguments = $request->getParsedBody();
@@ -105,6 +113,7 @@ class Welcome extends AbstractController
     /**
      * @noinspection PhpUnused
      */
+    #[Route(path: '/deleteFruit', method: 'POST')]
     public function deleteFruit(ServerRequestInterface $request): ResponseInterface
     {
         $fruit = $this->repository->findByUuid(Fruit::class, $request->getParsedBody()['fruit']);
