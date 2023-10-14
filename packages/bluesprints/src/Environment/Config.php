@@ -9,6 +9,8 @@ readonly class Config
     public function __construct(
         public int $filePermissions,
         public int $folderPermissions,
+        public string $cookieDomain,
+        public string $cookieAuthName,
     ) {
     }
 }

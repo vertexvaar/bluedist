@@ -16,12 +16,15 @@ class ConfigCompilerPass implements CompilerPassInterface
         /** @var Composer $composer */
         $composer = $container->get('composer');
         $packageConfig = $composer->getPackage()->getConfig();
-        $permissions = $packageConfig['vertexvaar/bluesprints']['permissions'] ?? [];
+        $config = $packageConfig['vertexvaar/bluesprints'];
+        $permissions = $config['permissions'] ?? [];
 
         $configDefinition = $container->getDefinition(Config::class);
         $configDefinition->setArguments([
             '$filePermissions' => $permissions['files'] ?? 0660,
             '$folderPermissions' => $permissions['folders'] ?? 0770,
+            '$cookieDomain' => $config['cookie']['domain'] ?? '',
+            '$cookieAuthName' => $config['cookie']['authName'] ?? '',
         ]);
     }
 }
