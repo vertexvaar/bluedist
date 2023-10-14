@@ -31,7 +31,7 @@ services:
     public: true
 
   Twig\Environment:
-    factory: ['@VerteXVaaR\BlueSprints\Template\TwigFactory', 'create']
+    factory: [ '@VerteXVaaR\BlueSprints\Template\TwigFactory', 'create' ]
 
   Psr\Http\Server\RequestHandlerInterface: '@VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher'
 

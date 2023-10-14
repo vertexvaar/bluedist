@@ -1,4 +1,5 @@
 <?php
+
 namespace VerteXVaaR\BlueDistTest\Helper;
 
 // here you can define custom actions

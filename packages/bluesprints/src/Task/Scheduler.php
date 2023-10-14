@@ -5,18 +5,30 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Task;
 
 use VerteXVaaR\BlueSprints\Environment\Paths;
-use VerteXVaaR\BlueSprints\Utility\Files;
-use VerteXVaaR\BlueSprints\Utility\Folders;
+use VerteXVaaR\BlueSprints\Mvc\Repository;
 
 use function CoStack\Lib\concat_paths;
+use function file_exists;
+use function getenv;
+use function strtr;
+use function time;
 
-class Scheduler
+use const PHP_INT_MAX;
+
+readonly class Scheduler
 {
-    protected array $tasks = [];
+    private array $tasks;
 
-    public function __construct(private readonly Paths $paths)
-    {
-        $this->tasks = Files::requireFile('config/tasks.php');
+    public function __construct(
+        private Paths $paths,
+        private Repository $repository,
+    ) {
+        $tasksFile = concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->config, 'tasks.php');
+        $tasks = [];
+        if (file_exists($tasksFile)) {
+            $tasks = require $tasksFile;
+        }
+        $this->tasks = $tasks;
     }
 
     /**
@@ -24,8 +36,11 @@ class Scheduler
      */
     public function run(CliRequest $cliRequest): void
     {
+        $now = time();
+
         foreach ($this->tasks as $taskName => $taskConfiguration) {
-            if ($this->isScheduled($taskName, $taskConfiguration)) {
+            $taskExecution = $this->getTaskExecution($taskName);
+            if (($now - $taskExecution->lastExecution) >= $taskConfiguration['interval']) {
                 /** @var AbstractTask $task */
                 $task = new $taskConfiguration['task']($cliRequest);
                 if (!empty($taskConfiguration['arguments'])) {
@@ -33,72 +48,21 @@ class Scheduler
                 } else {
                     $task->run();
                 }
-                $this->update($taskName, $taskConfiguration);
+                $taskExecution->lastExecution = $now;
+                $this->repository->persist($taskExecution);
             }
         }
     }
 
-    /**
-     * @param string $taskName
-     * @param array $taskConfiguration
-     * @return bool
-     */
-    protected function isScheduled(string $taskName, array $taskConfiguration): bool
+    public function getTaskExecution(string $taskName): TaskExecution
     {
-        $scheduled = false;
-        $taskInformation = $this->getTaskInformation($taskName, $taskConfiguration['task']);
-        if (empty($taskInformation)) {
-            $scheduled = true;
-        } else {
-            if ((time() - $taskInformation['lastRun']) >= $taskConfiguration['interval']) {
-                $scheduled = true;
-            }
+        $uuid = strtr($taskName, '\\', '_');
+        $taskExecution = $this->repository->findByUuid(TaskExecution::class, $uuid);
+        if (null === $taskExecution) {
+            $taskExecution = new TaskExecution($uuid);
+            $taskExecution->lastExecution = -PHP_INT_MAX;
+            $this->repository->persist($taskExecution);
         }
-        return $scheduled;
-    }
-
-    /**
-     * @param string $taskName
-     * @param string $taskClassName
-     * @return string
-     */
-    protected function getTaskInformationFile(string $taskName, string $taskClassName): string
-    {
-        $taskFolder = Folders::createFolderForClassName($this->paths->database, $taskClassName);
-        $taskInformationFile = concat_paths($taskFolder, $taskName);
-        Files::touch($taskInformationFile, 'a:0:{}');
-        return $taskInformationFile;
-    }
-
-    /**
-     * @param string $taskName
-     * @param string $taskClassName
-     * @return mixed
-     */
-    protected function getTaskInformation(string $taskName, string $taskClassName)
-    {
-        return unserialize(Files::readFileContents($this->getTaskInformationFile($taskName, $taskClassName)));
-    }
-
-    /**
-     * @param string $taskName
-     * @param array $taskConfiguration
-     */
-    protected function update(string $taskName, array $taskConfiguration): void
-    {
-        $taskInformation = $this->getTaskInformation($taskName, $taskConfiguration['task']);
-        $taskInformation['lastRun'] = time();
-        $this->writeTaskInformation($taskName, $taskConfiguration['task'], $taskInformation);
-    }
-
-    /**
-     * @param string $taskName
-     * @param string $taskClassName
-     * @param array $taskInformation
-     */
-    protected function writeTaskInformation(string $taskName, string $taskClassName, array $taskInformation): void
-    {
-        $taskInformationFile = $this->getTaskInformationFile($taskName, $taskClassName);
-        Files::writeFileContents($taskInformationFile, serialize($taskInformation));
+        return $taskExecution;
     }
 }

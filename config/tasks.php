@@ -5,7 +5,7 @@ use VerteXVaaR\BlueDist\Task\ExampleTask;
 return [
     'name' => [
         'task' => ExampleTask::class,
-        'interval' => 1,
+        'interval' => 10,
         'arguments' => [
             'first',
             'another arg',

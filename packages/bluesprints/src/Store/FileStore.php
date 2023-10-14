@@ -15,6 +15,7 @@ use VerteXVaaR\BlueSprints\Mvc\Entity;
 use VerteXVaaR\BlueSprints\Utility\Strings;
 
 use function CoStack\Lib\concat_paths;
+use function file_exists;
 use function file_get_contents;
 use function getenv;
 use function is_dir;
@@ -34,14 +35,15 @@ readonly class FileStore implements Store
     public function findByUuid(string $class, string $uuid): ?object
     {
         $databaseFolder = $this->getFolder($class);
-        $fileContents = file_get_contents(concat_paths($databaseFolder, $uuid));
-        if ($fileContents) {
-            return unserialize(
-                $fileContents,
-                ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]]
-            );
+        $databaseFile = concat_paths($databaseFolder, $uuid);
+        if (!file_exists($databaseFile)) {
+            return null;
         }
-        return null;
+        $fileContents = file_get_contents($databaseFile);
+        return unserialize(
+            $fileContents,
+            ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]]
+        );
     }
 
     public function findAll(string $class): array

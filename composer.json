@@ -1,55 +1,55 @@
 {
-    "name": "vertexvaar/bluedist",
-    "type": "project",
-    "description": "BlueSprints development and demo distribution",
-    "license": "GPL-3.0-only",
-    "authors": [
-        {
-            "name": "Oliver Eglseder",
-            "email": "php@vxvr.de"
-        }
-    ],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "./packages/*"
-        }
-    ],
-    "require": {
-        "php": "8.2.*",
-        "ext-json": "*",
-        "vertexvaar/bluesprints": "@dev",
-        "psr/container": "^2.0",
-        "vertexvaar/bluecontainer": "@dev",
-        "vertexvaar/blueauth": "@dev",
-        "vertexvaar/bluedebug": "@dev"
-    },
-    "autoload": {
-        "psr-4": {
-            "VerteXVaaR\\BlueDist\\": "src"
-        }
-    },
-    "require-dev": {
-        "codeception/codeception": "^5.0.11",
-        "codeception/module-phpbrowser": "^3.0.0",
-        "codeception/module-asserts": "^3.0.0",
-        "codeception/module-webdriver": "^4.0.0",
-        "composer/composer": "^2.6"
-    },
-    "config": {
-        "allow-plugins": {
-            "vertexvaar/bluecontainer": true
-        }
-    },
-    "extra": {
-        "vertexvaar/bluesprints": {
-            "logs": "var/logs",
-            "locks": "var/locks",
-            "cache": "var/cache",
-            "database": "var/database",
-            "config": "config",
-            "view": "view",
-            "translations": "translations"
-        }
+  "name": "vertexvaar/bluedist",
+  "type": "project",
+  "description": "BlueSprints development and demo distribution",
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "Oliver Eglseder",
+      "email": "php@vxvr.de"
     }
+  ],
+  "repositories": [
+    {
+      "type": "path",
+      "url": "./packages/*"
+    }
+  ],
+  "require": {
+    "php": "8.2.*",
+    "ext-json": "*",
+    "vertexvaar/bluesprints": "@dev",
+    "psr/container": "^2.0",
+    "vertexvaar/bluecontainer": "@dev",
+    "vertexvaar/blueauth": "@dev",
+    "vertexvaar/bluedebug": "@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "VerteXVaaR\\BlueDist\\": "src"
+    }
+  },
+  "require-dev": {
+    "codeception/codeception": "^5.0.11",
+    "codeception/module-phpbrowser": "^3.0.0",
+    "codeception/module-asserts": "^3.0.0",
+    "codeception/module-webdriver": "^4.0.0",
+    "composer/composer": "^2.6"
+  },
+  "config": {
+    "allow-plugins": {
+      "vertexvaar/bluecontainer": true
+    }
+  },
+  "extra": {
+    "vertexvaar/bluesprints": {
+      "logs": "var/logs",
+      "locks": "var/locks",
+      "cache": "var/cache",
+      "database": "var/database",
+      "config": "config",
+      "view": "view",
+      "translations": "translations"
+    }
+  }
 }

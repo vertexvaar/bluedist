@@ -6,15 +6,15 @@
 
 actor: AcceptanceTester
 modules:
-    enabled:
-        - WebDriver:
-            url: https://local.bluedist.com/
-            browser: chrome
-            host: selenium-hub
-            port: 4444
-            capabilities:
-                acceptInsecureCerts: true
-                chromeOptions:
-                    args: [ "--ignore-certificate-errors", "--disable-notifications" ]
-        - \VerteXVaaR\BlueDistTest\Helper\Acceptance
+  enabled:
+    - WebDriver:
+        url: https://local.bluedist.com/
+        browser: chrome
+        host: selenium-hub
+        port: 4444
+        capabilities:
+          acceptInsecureCerts: true
+          chromeOptions:
+            args: [ "--ignore-certificate-errors", "--disable-notifications" ]
+    - \VerteXVaaR\BlueDistTest\Helper\Acceptance
 step_decorators: ~

@@ -9,15 +9,9 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
 use VerteXVaaR\BlueSprints\Mvc\RedirectException;
-
-use function define;
-use function ob_end_clean;
-use function ob_get_contents;
-use function ob_start;
 
 class ControllerDispatcher implements RequestHandlerInterface
 {

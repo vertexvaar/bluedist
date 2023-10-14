@@ -9,6 +9,10 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueSprints\Environment\Config;
 
+use function CoStack\Lib\concat_paths;
+use function file_exists;
+use function getenv;
+
 class ConfigCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
@@ -16,15 +20,24 @@ class ConfigCompilerPass implements CompilerPassInterface
         /** @var Composer $composer */
         $composer = $container->get('composer');
         $packageConfig = $composer->getPackage()->getExtra();
-        $config = $packageConfig['vertexvaar/bluesprints'];
-        $permissions = $config['permissions'] ?? [];
 
-        $configDefinition = $container->getDefinition(Config::class);
-        $configDefinition->setArguments([
-            '$filePermissions' => $permissions['files'] ?? 0660,
-            '$folderPermissions' => $permissions['folders'] ?? 0770,
-            '$cookieDomain' => $config['cookie']['domain'] ?? '',
-            '$cookieAuthName' => $config['cookie']['authName'] ?? '',
-        ]);
+        $systemConfig = concat_paths(
+            getenv('VXVR_BS_ROOT'),
+            $packageConfig['vertexvaar/bluesprints']['config'] ?? 'config',
+            'config.php'
+        );
+
+        if (file_exists($systemConfig)) {
+            $config = require $systemConfig;
+        } else {
+            $config = Config::setOptions([]);
+        }
+
+        $arguments = [];
+        foreach ($config as $name => $value) {
+            $arguments['$' . $name] = $value;
+        }
+
+        $container->getDefinition(Config::class)->setArguments($arguments);
     }
 }

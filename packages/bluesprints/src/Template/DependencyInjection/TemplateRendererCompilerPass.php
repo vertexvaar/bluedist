@@ -13,12 +13,9 @@ use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 use VerteXVaaR\BlueSprints\Template\TemplatePathsRegistry;
 
 use function array_filter;
-use function array_keys;
-use function array_merge;
 use function array_replace;
 use function CoStack\Lib\concat_paths;
 use function getenv;
-use function str_replace;
 use function strtr;
 
 class TemplateRendererCompilerPass implements CompilerPassInterface
