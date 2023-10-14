@@ -7,7 +7,7 @@ use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use VerteXVaaR\BlueSprints\Routing\Attrbiutes\Route;
+use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
 use VerteXVaaR\BlueSprints\Routing\Middleware\RoutingMiddleware;
 
 use function array_keys;
@@ -20,7 +20,7 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
     {
         /** @var IOInterface $io */
         $io = $container->get('io');
-        $io->write('Loading routes from controller attributes', IOInterface::VERBOSE);
+        $io->write('Loading routes from controller attributes', true, IOInterface::VERBOSE);
 
         $compiledRoutes = [];
         $controllers = $container->findTaggedServiceIds('vertexvaar.bluesprints.controller');
@@ -30,7 +30,7 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
             try {
                 $reflection = new ReflectionClass($controllerClass);
             } catch (ReflectionException $exception) {
-                $io->error(
+                $io->writeError(
                     sprintf(
                         'Could not reflect controller "%s". Exception: %s',
                         $controllerClass,
@@ -43,6 +43,7 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
             if (empty($reflectionMethods)) {
                 $io->write(
                     sprintf('Controller "%s" does not define any methods', $controllerClass),
+                    true,
                     IOInterface::VERBOSE
                 );
                 continue;
@@ -62,7 +63,8 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
                             $controllerClass,
                             $methodName
                         ),
-                        IOInterface::DEBUG
+                        true,
+                        IOInterface::VERBOSE
                     );
                     $compiledRoutes[$route->method][$route->priority][$route->path] = [
                         'controller' => $controllerClass,
@@ -80,6 +82,6 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition(RoutingMiddleware::class);
         $definition->setArgument('$routes', $compiledRoutes);
 
-        $io->write('Loaded routes from controller attributes', IOInterface::VERBOSE);
+        $io->write('Loaded routes from controller attributes', true, IOInterface::VERBOSE);
     }
 }

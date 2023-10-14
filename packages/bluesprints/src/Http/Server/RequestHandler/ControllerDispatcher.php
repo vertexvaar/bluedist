@@ -9,16 +9,13 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use VerteXVaaR\BlueSprints\Environment\Environment;
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
 use VerteXVaaR\BlueSprints\Mvc\RedirectException;
 
-class ControllerDispatcher implements RequestHandlerInterface
+readonly class ControllerDispatcher implements RequestHandlerInterface
 {
-    public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly Environment $environment
-    ) {
+    public function __construct(private ContainerInterface $container)
+    {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -32,8 +29,8 @@ class ControllerDispatcher implements RequestHandlerInterface
         } catch (RedirectException $exception) {
             $response = new Response();
             return $response
-                ->withHeader('Location', $exception->getUrl())
-                ->withStatus($exception->getStatus());
+                ->withStatus($exception->getStatus())
+                ->withHeader('Location', $exception->getUrl());
         }
     }
 }

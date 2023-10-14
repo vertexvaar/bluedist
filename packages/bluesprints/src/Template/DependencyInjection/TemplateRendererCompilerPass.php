@@ -20,7 +20,7 @@ use function strtr;
 
 class TemplateRendererCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         /** @var Composer $composer */
         $composer = $container->get('composer');

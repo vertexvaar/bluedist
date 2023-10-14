@@ -6,16 +6,14 @@ namespace VerteXVaaR\BlueDist\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Ramsey\Uuid\Uuid;
 use VerteXVaaR\BlueDist\Model\Fruit;
 use VerteXVaaR\BlueSprints\Mvc\AbstractController;
-use VerteXVaaR\BlueSprints\Routing\Attrbiutes\Route;
+use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
 use VerteXVaaR\BlueSprints\Utility\Strings;
 
 class Welcome extends AbstractController
 {
-    /**
-     * @noinspection PhpUnused
-     */
     #[Route(path: '/')]
     #[Route(path: '/.*', priority: -1)]
     public function index(): ResponseInterface
@@ -23,18 +21,12 @@ class Welcome extends AbstractController
         return $this->render('index.html.twig', ['strings' => ['foo', 'bar', 'baz']]);
     }
 
-    /**
-     * @noinspection PhpUnused
-     */
     #[Route(path: '/listFruits')]
     public function listFruits(): ResponseInterface
     {
         return $this->render('fruits.html.twig', ['fruits' => $this->repository->findAll(Fruit::class)]);
     }
 
-    /**
-     * @noinspection PhpUnused
-     */
     #[Route(path: '/createDemoFruits', method: 'POST')]
     public function createDemoFruits(): ResponseInterface
     {
@@ -57,7 +49,7 @@ class Welcome extends AbstractController
             ],
         ];
         foreach ($fruitsData as $fruitData) {
-            $fruit = new Fruit(Strings::generateUuid());
+            $fruit = new Fruit(Uuid::uuid4()->toString());
             $fruit->color = $fruitData['color'];
             $fruit->name = $fruitData['name'];
             $this->repository->persist($fruit);
@@ -65,15 +57,12 @@ class Welcome extends AbstractController
         return $this->redirect('listFruits');
     }
 
-    /**
-     * @noinspection PhpUnused
-     */
     #[Route(path: '/createFruit', method: 'POST')]
     public function createFruit(ServerRequestInterface $request): ResponseInterface
     {
         $arguments = $request->getParsedBody();
         if (isset($arguments['name'], $arguments['color'])) {
-            $fruit = new Fruit(Strings::generateUuid());
+            $fruit = new Fruit(Uuid::uuid4()->toString());
             $fruit->color = $arguments['color'];
             $fruit->name = $arguments['name'];
             $this->repository->persist($fruit);
@@ -81,9 +70,6 @@ class Welcome extends AbstractController
         return $this->redirect('listFruits');
     }
 
-    /**
-     * @noinspection PhpUnused
-     */
     #[Route(path: '/editFruit')]
     public function editFruit(ServerRequestInterface $request): ResponseInterface
     {
@@ -91,9 +77,6 @@ class Welcome extends AbstractController
         return $this->render('edit.html.twig', ['fruit' => $fruit]);
     }
 
-    /**
-     * @noinspection PhpUnused
-     */
     #[Route(path: '/updateFruit', method: 'POST')]
     public function updateFruit(ServerRequestInterface $request): ResponseInterface
     {
@@ -110,9 +93,6 @@ class Welcome extends AbstractController
         return $this->redirect('listFruits');
     }
 
-    /**
-     * @noinspection PhpUnused
-     */
     #[Route(path: '/deleteFruit', method: 'POST')]
     public function deleteFruit(ServerRequestInterface $request): ResponseInterface
     {

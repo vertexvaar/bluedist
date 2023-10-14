@@ -6,9 +6,9 @@ use Composer\Autoload\ClassLoader;
 use GuzzleHttp\Psr7\ServerRequest;
 use Symfony\Component\Dotenv\Dotenv;
 use VerteXVaaR\BlueContainer\DI;
+use VerteXVaaR\BlueSprints\Error\ErrorHandler;
 use VerteXVaaR\BlueSprints\Http\Application;
 use VerteXVaaR\BlueSprints\Http\HttpResponseEmitter;
-use VerteXVaaR\BlueSprints\Utility\Error;
 
 $root = getenv('VXVR_BS_ROOT');
 if (!$root) {
@@ -38,7 +38,8 @@ if (!class_exists(ClassLoader::class, false)) {
     }
 }
 
-Error::registerErrorHandler();
+$errorHandler = new ErrorHandler();
+$errorHandler->register();
 
 $request = ServerRequest::fromGlobals();
 

@@ -1,4 +1,4 @@
-# VerteXVaaR.BlueSprints
+# vertexvaar/bluesprints
 
 ## Quickstart & Documentation ;)
 
@@ -21,8 +21,8 @@ open http://localhost:8000 in your favorite browser
 ## Problems?
 
 You might find some help in the documentation (especially if you get exceptions). If you did not find what you were
-searching for you can open a question issue on github.
+searching for you can open a question issue on GitHub.
 
 ## TODO
 
-* Let Parsedown link to the correct manual page on github (exception help pages)
+* Let Parsedown link to the correct manual page on GitHub (exception help pages)

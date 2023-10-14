@@ -35,6 +35,4 @@ services:
 
   Psr\Http\Server\RequestHandlerInterface: '@VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher'
 
-  VerteXVaaR\BlueSprints\Mvc\TemplateRenderer: '@VerteXVaaR\BlueSprints\Mvc\PhpTemplateRenderer'
-
   VerteXVaaR\BlueSprints\Store\Store: '@VerteXVaaR\BlueSprints\Store\FileStore'

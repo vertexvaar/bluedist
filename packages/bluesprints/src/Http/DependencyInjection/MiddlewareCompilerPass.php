@@ -17,7 +17,7 @@ use VerteXVaaR\BlueSprints\Http\Server\Middleware\MiddlewareRegistry;
 
 class MiddlewareCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         /** @var Composer $composer */
         $composer = $container->get('composer');

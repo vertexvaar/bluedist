@@ -15,7 +15,7 @@ readonly class PublicServicePass implements CompilerPassInterface
     {
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach (array_keys($container->findTaggedServiceIds($this->tag)) as $service) {
             $container->getDefinition($service)->setPublic(true);

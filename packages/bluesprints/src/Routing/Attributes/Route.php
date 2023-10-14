@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Routing\Attrbiutes;
+namespace VerteXVaaR\BlueSprints\Routing\Attributes;
 
 use Attribute;
 

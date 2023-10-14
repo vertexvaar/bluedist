@@ -28,19 +28,19 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     private Composer $composer;
     private IOInterface $io;
 
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
         $this->composer = $composer;
         $this->io = $io;
     }
 
-    public function deactivate(Composer $composer, IOInterface $io)
+    public function deactivate(Composer $composer, IOInterface $io): void
     {
         $this->composer = $composer;
         $this->io = $io;
     }
 
-    public function uninstall(Composer $composer, IOInterface $io)
+    public function uninstall(Composer $composer, IOInterface $io): void
     {
         $this->composer = $composer;
         $this->io = $io;
@@ -53,9 +53,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         ];
     }
 
-    /**
-     * @noinspection PhpUnused
-     */
     public function postAutoloadDump(): void
     {
         $this->io->write('Generating container');

@@ -6,8 +6,7 @@ namespace VerteXVaaR\BlueSprints\Environment;
 
 final readonly class Environment
 {
-    public function __construct(
-        public Context $context,
-    ) {
+    public function __construct(public Context $context)
+    {
     }
 }

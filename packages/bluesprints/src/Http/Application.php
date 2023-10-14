@@ -8,9 +8,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueSprints\Http\Server\Middleware\MiddlewareChain;
 
-class Application
+readonly class Application
 {
-    public function __construct(private readonly MiddlewareChain $middlewareChain)
+    public function __construct(private MiddlewareChain $middlewareChain)
     {
     }
 

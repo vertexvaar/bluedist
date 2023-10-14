@@ -1,4 +1,7 @@
 <?php
+/**
+ * @noinspection ALL
+ */
 
 /*
  * This file is part of the TYPO3 CMS project.

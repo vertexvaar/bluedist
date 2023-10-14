@@ -22,7 +22,7 @@ return [
 
 ## Syntax
 
-There is no special syntax by intention. Many routing packages have a a billion options to choose from and sometimes
+There is no special syntax by intention. Many routing packages have a billion options to choose from and sometimes
 even more ways to configure your routes. This one is intentionally left as simple as possible and is therefore just a
 2-dimensional array.
 

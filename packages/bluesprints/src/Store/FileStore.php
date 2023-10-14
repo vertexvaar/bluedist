@@ -12,7 +12,6 @@ use SplFileInfo;
 use VerteXVaaR\BlueSprints\Environment\Config;
 use VerteXVaaR\BlueSprints\Environment\Paths;
 use VerteXVaaR\BlueSprints\Mvc\Entity;
-use VerteXVaaR\BlueSprints\Utility\Strings;
 
 use function CoStack\Lib\concat_paths;
 use function file_exists;
@@ -54,12 +53,10 @@ readonly class FileStore implements Store
         /** @var SplFileInfo[] $fileSystemIterator */
         $fileSystemIterator = new FilesystemIterator($databaseFolder, FilesystemIterator::SKIP_DOTS);
         foreach ($fileSystemIterator as $file) {
-            if (Strings::isValidUuid($file->getBasename())) {
-                $results[] = unserialize(
-                    file_get_contents($file->getPathname()),
-                    ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]]
-                );
-            }
+            $results[] = unserialize(
+                file_get_contents($file->getPathname()),
+                ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]]
+            );
         }
         return $results;
     }

@@ -38,21 +38,13 @@ class CliRequest
         return isset($this->arguments[$name]);
     }
 
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    public function getArgument(string $name)
+    public function getArgument(string $name): mixed
     {
         return $this->arguments[$name];
     }
 
-    /**
-     * @param string $name
-     * @return bool
-     */
     public function flagExists(string $name): bool
     {
-        return in_array($name, $this->flags);
+        return in_array($name, $this->flags, true);
     }
 }

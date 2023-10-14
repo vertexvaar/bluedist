@@ -13,7 +13,7 @@ use function getenv;
 
 class EnvironmentCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $definition = $container->getDefinition(Environment::class);
         $definition->setArgument('$context', Context::fromString((string)getenv('VXVR_BS_CONTEXT')));
