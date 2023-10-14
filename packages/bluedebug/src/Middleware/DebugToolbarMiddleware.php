@@ -12,7 +12,6 @@ use Twig\Environment;
 
 readonly class DebugToolbarMiddleware implements MiddlewareInterface
 {
-
     public function __construct(private Environment $view)
     {
     }
@@ -20,6 +19,9 @@ readonly class DebugToolbarMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
+        if ($response->getStatusCode() >= 300) {
+            return $response;
+        }
 
         $contents = $this->view->render('@vertexvaar_bluedebug/debug_toolbar.html.twig', [
             'route' => $request->getAttribute('route'),

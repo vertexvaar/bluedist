@@ -77,9 +77,16 @@ class Welcome extends AbstractController
         return $this->render('edit.html.twig', ['fruit' => $fruit]);
     }
 
+    /**
+     * 'GET' route registration only to be able to redirect the user for demonstration purposes.
+     */
     #[Route(path: '/updateFruit', method: 'POST')]
+    #[Route(path: '/updateFruit', method: 'GET')]
     public function updateFruit(ServerRequestInterface $request): ResponseInterface
     {
+        if ($request->getMethod() === 'GET') {
+            return $this->redirect('listFruits');
+        }
         $arguments = $request->getParsedBody();
         if (isset($arguments['id'], $arguments['name'], $arguments['color'])) {
             $fruit = $this->repository->findByIdentifier(Fruit::class, $arguments['id']);
