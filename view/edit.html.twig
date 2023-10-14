@@ -11,7 +11,7 @@
         </p>
 
         <form action="updateFruit" method="post">
-            <input type="hidden" name="uuid" value="{{ fruit.uuid }}">
+            <input type="hidden" name="id" value="{{ fruit.identifier }}">
 
             <p>
                 <label>
@@ -30,7 +30,7 @@
         </form>
 
         <form action="deleteFruit" method="post">
-            <input type="hidden" name="fruit" value="{{ fruit.uuid }}"/>
+            <input type="hidden" name="fruit" value="{{ fruit.identifier }}"/>
             <input type="submit" value="Or delete it :)">
         </form>
 
@@ -39,8 +39,8 @@
 
         <pre>
         $arguments = $this->request->getParsedBody();
-        if (isset($arguments['uuid'], $arguments['name'], $arguments['color'])) {
-            $fruit = Fruit::findByUuid($arguments['uuid']);
+        if (isset($arguments['identifier'], $arguments['name'], $arguments['color'])) {
+            $fruit = Fruit::findByIdentifier($arguments['identifier']);
             $fruit->setName($arguments['name']);
             $fruit->setColor($arguments['color']);
             $fruit->save();
@@ -62,7 +62,7 @@
         <h2>Try it</h2>
 
         <p>
-            <a href="updateFruit?name=failure&color=black&uuid={{ fruit.uuid }}">This link</a> will not work since the
+            <a href="updateFruit?name=failure&color=black&identifier={{ fruit.identifier }}">This link</a> will not work since the
             request parameters are expected to exist in POST.
             You will be redirected to the listFruits view.
         </p>

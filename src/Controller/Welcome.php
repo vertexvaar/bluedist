@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Ramsey\Uuid\Uuid;
 use VerteXVaaR\BlueDist\Model\Fruit;
-use VerteXVaaR\BlueSprints\Mvc\AbstractController;
+use VerteXVaaR\BlueSprints\Mvcr\Controller\AbstractController;
 use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
 use VerteXVaaR\BlueSprints\Utility\Strings;
 
@@ -73,7 +73,7 @@ class Welcome extends AbstractController
     #[Route(path: '/editFruit')]
     public function editFruit(ServerRequestInterface $request): ResponseInterface
     {
-        $fruit = $this->repository->findByUuid(Fruit::class, $request->getQueryParams()['fruit']);
+        $fruit = $this->repository->findByIdentifier(Fruit::class, $request->getQueryParams()['fruit']);
         return $this->render('edit.html.twig', ['fruit' => $fruit]);
     }
 
@@ -81,8 +81,8 @@ class Welcome extends AbstractController
     public function updateFruit(ServerRequestInterface $request): ResponseInterface
     {
         $arguments = $request->getParsedBody();
-        if (isset($arguments['uuid'], $arguments['name'], $arguments['color'])) {
-            $fruit = $this->repository->findByUuid(Fruit::class, $arguments['uuid']);
+        if (isset($arguments['id'], $arguments['name'], $arguments['color'])) {
+            $fruit = $this->repository->findByIdentifier(Fruit::class, $arguments['id']);
             if (null === $fruit) {
                 return $this->redirect('listFruits');
             }
@@ -96,8 +96,18 @@ class Welcome extends AbstractController
     #[Route(path: '/deleteFruit', method: 'POST')]
     public function deleteFruit(ServerRequestInterface $request): ResponseInterface
     {
-        $fruit = $this->repository->findByUuid(Fruit::class, $request->getParsedBody()['fruit']);
+        $fruit = $this->repository->findByIdentifier(Fruit::class, $request->getParsedBody()['fruit']);
         if (null !== $fruit) {
+            $this->repository->delete($fruit);
+        }
+        return $this->redirect('listFruits');
+    }
+
+    #[Route(path: '/deleteAllFruits', method: 'POST')]
+    public function deleteAllFruits(ServerRequestInterface $request): ResponseInterface
+    {
+        $fruits = $this->repository->findAll(Fruit::class);
+        foreach ($fruits as $fruit) {
             $this->repository->delete($fruit);
         }
         return $this->redirect('listFruits');

@@ -13,7 +13,7 @@
             <ul>
                 {% for fruit in fruits %}
                     <li>
-                        <a href="editFruit?fruit={{ fruit.uuid }}">
+                        <a href="editFruit?fruit={{ fruit.identifier }}">
                             I am a
                             {% if fruit.name %}
                                 {{ fruit.name }}
@@ -25,9 +25,12 @@
                     </li>
                 {% endfor %}
             </ul>
+            <form action="/deleteAllFruits" method="post">
+                <input type="submit" value="Delete all fruits">
+            </form>
         {% else %}
             <h3>OH WAIT! There is no Fruit yet.</h3>
-            <form action="createDemoFruits" method="post">
+            <form action="/createDemoFruits" method="post">
                 <input type="submit" value="Create a bunch of fruits">
             </form>
         {% endif %}
@@ -56,22 +59,18 @@
         <h2>The NoDB Storage</h2>
 
         <p>
-            Since there is no configuration for any storage or database i owe you an explanation.
-            BlueSprints just uses the file system. The full qualified class name of a model is converted into a
-            directory
-            structure. Inside the last directory all models are stored in files named by their automatically created
-            uuid.
-            The objects are serialized, since this is the fastest option to store all simple values without
-            reflection,
-            additional configuration or such.
+            Since there is no configuration for any storage or database I owe you an explanation.
+            BlueSprints uses the file system as storage. The full qualified class name of a model is converted into a
+            directory structure. Inside the last directory all models are stored in files named by their identifier.
+            The objects are serialized, since this is the fastest option to store all simple values without reflection,
+            additional configuration or huge ORMs.
         </p>
 
         <h2>WIP !</h2>
 
         <p>
             The Storage function is currently work in progress. Some missing features are automatic index tables for
-            searching
-            models by their properties or the deletion of those.
+            searching models by their properties or the deletion of those.
         </p>
 
         <h2>Like it? Or not?</h2>
@@ -92,8 +91,7 @@
         </pre>
 
         <p>
-            As i promised you, it is easy as pie. If you want to alter the Model, say add a new property, just do
-            it.
+            As I promised you, it is easy as pie. If you want to alter the Model, say add a new property, just do it.
         </p>
 
         <p>

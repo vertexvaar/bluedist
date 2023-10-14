@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Task;
 
 use VerteXVaaR\BlueSprints\Environment\Paths;
-use VerteXVaaR\BlueSprints\Mvc\Repository;
+use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
 use function CoStack\Lib\concat_paths;
 use function file_exists;
@@ -56,10 +56,10 @@ readonly class Scheduler
 
     public function getTaskExecution(string $taskName): TaskExecution
     {
-        $uuid = strtr($taskName, '\\', '_');
-        $taskExecution = $this->repository->findByUuid(TaskExecution::class, $uuid);
+        $identifier = strtr($taskName, '\\', '_');
+        $taskExecution = $this->repository->findByIdentifier(TaskExecution::class, $identifier);
         if (null === $taskExecution) {
-            $taskExecution = new TaskExecution($uuid);
+            $taskExecution = new TaskExecution($identifier);
             $taskExecution->lastExecution = -PHP_INT_MAX;
             $this->repository->persist($taskExecution);
         }

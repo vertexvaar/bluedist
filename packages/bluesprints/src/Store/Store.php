@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Store;
 
-use VerteXVaaR\BlueSprints\Mvc\Entity;
+use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
 interface Store
 {
-    public function findByUuid(string $class, string $uuid): ?object;
+    public function findByIdentifier(string $class, string $identifier): ?object;
 
     public function findAll(string $class): array;
 

@@ -36,4 +36,25 @@ class WelcomeControllerCest
         ]);
         $I->see('I am a Apple and my color is green-red');
     }
+
+    // tests
+    public function deleteAllFruits(AcceptanceTester $I)
+    {
+        $I->amOnPage('/');
+
+        if (ini_get('xdebug.mode') === 'debug') {
+            $I->setCookie('XDEBUG_SESSION', 'XDEBUG_ECLIPSE');
+        }
+
+        $I->click('follow me');
+        $I->see('OH WAIT! There is no Fruit yet.');
+
+        $I->click('Create a bunch of fruits');
+
+        $I->see('I am a Apple and my color is red');
+
+        $I->click('Delete all fruits');
+
+        $I->see('OH WAIT! There is no Fruit yet.');
+    }
 }

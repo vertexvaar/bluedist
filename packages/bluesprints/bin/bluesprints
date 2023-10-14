@@ -24,7 +24,6 @@ if (empty(ini_get('date.timezone'))) {
     date_default_timezone_set('UTC');
 }
 
-
 require_once(__DIR__ . '/../../../vendor/autoload.php');
 
 $cliRequest = CliRequest::createFromEnvironment();

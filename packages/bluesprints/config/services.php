@@ -5,8 +5,8 @@ use VerteXVaaR\BlueSprints\Environment\DependencyInjection\ConfigCompilerPass;
 use VerteXVaaR\BlueSprints\Environment\DependencyInjection\EnvironmentCompilerPass;
 use VerteXVaaR\BlueSprints\Environment\DependencyInjection\PathsCompilerPass;
 use VerteXVaaR\BlueSprints\Http\DependencyInjection\MiddlewareCompilerPass;
-use VerteXVaaR\BlueSprints\Mvc\Controller;
-use VerteXVaaR\BlueSprints\Mvc\DependencyInjection\PublicServicePass;
+use VerteXVaaR\BlueSprints\Mvcr\Controller\Controller;
+use VerteXVaaR\BlueSprints\Mvcr\DependencyInjection\PublicServicePass;
 use VerteXVaaR\BlueSprints\Routing\DependencyInjection\RouteCollectorCompilerPass;
 use VerteXVaaR\BlueSprints\Template\DependencyInjection\TemplateRendererCompilerPass;
 

@@ -1,7 +1,5 @@
 <?php
 
-echo "hi there";
-
 $root = dirname(__DIR__);
 $data = $root . '/tests/_data/functional/' . uniqid('', true) . '/';
 

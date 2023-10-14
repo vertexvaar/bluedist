@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Http\Server\RequestHandler;
 
-use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use VerteXVaaR\BlueSprints\Mvc\AbstractController;
-use VerteXVaaR\BlueSprints\Mvc\RedirectException;
+use VerteXVaaR\BlueSprints\Mvcr\Controller\AbstractController;
 
 readonly class ControllerDispatcher implements RequestHandlerInterface
 {
@@ -24,13 +22,6 @@ readonly class ControllerDispatcher implements RequestHandlerInterface
 
         /** @var AbstractController $controller */
         $controller = $this->container->get($route['controller']);
-        try {
-            return $controller->{$route['action']}($request);
-        } catch (RedirectException $exception) {
-            $response = new Response();
-            return $response
-                ->withStatus($exception->getStatus())
-                ->withHeader('Location', $exception->getUrl());
-        }
+        return $controller->{$route['action']}($request);
     }
 }

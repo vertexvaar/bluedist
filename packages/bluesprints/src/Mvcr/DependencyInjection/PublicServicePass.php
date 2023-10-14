@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Mvc\DependencyInjection;
+namespace VerteXVaaR\BlueSprints\Mvcr\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

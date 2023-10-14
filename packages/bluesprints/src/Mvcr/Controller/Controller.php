@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Mvc;
+namespace VerteXVaaR\BlueSprints\Mvcr\Controller;
 
 interface Controller
 {

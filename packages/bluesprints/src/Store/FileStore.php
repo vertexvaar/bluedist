@@ -11,7 +11,7 @@ use RuntimeException;
 use SplFileInfo;
 use VerteXVaaR\BlueSprints\Environment\Config;
 use VerteXVaaR\BlueSprints\Environment\Paths;
-use VerteXVaaR\BlueSprints\Mvc\Entity;
+use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
 use function CoStack\Lib\concat_paths;
 use function file_exists;
@@ -31,10 +31,10 @@ readonly class FileStore implements Store
     {
     }
 
-    public function findByUuid(string $class, string $uuid): ?object
+    public function findByIdentifier(string $class, string $identifier): ?object
     {
         $databaseFolder = $this->getFolder($class);
-        $databaseFile = concat_paths($databaseFolder, $uuid);
+        $databaseFile = concat_paths($databaseFolder, $identifier);
         if (!file_exists($databaseFile)) {
             return null;
         }
@@ -63,15 +63,15 @@ readonly class FileStore implements Store
 
     public function store(Entity $entity): void
     {
-        $uuid = $entity->uuid;
+        $identifier = $entity->identifier;
         $databaseFolder = $this->getFolder($entity::class);
-        file_put_contents(concat_paths($databaseFolder, $uuid), serialize($entity));
+        file_put_contents(concat_paths($databaseFolder, $identifier), serialize($entity));
     }
 
     public function delete(Entity $entity): void
     {
         $databaseFolder = $this->getFolder($entity::class);
-        unlink(concat_paths($databaseFolder, $entity->uuid));
+        unlink(concat_paths($databaseFolder, $entity->identifier));
     }
 
     public function getFolder(string $class): string

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Mvc;
+namespace VerteXVaaR\BlueSprints\Mvcr\Repository;
 
+use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 use VerteXVaaR\BlueSprints\Store\Store;
 
 readonly class Repository
@@ -12,9 +13,9 @@ readonly class Repository
     {
     }
 
-    public function findByUuid(string $className, string $uuid): ?Entity
+    public function findByIdentifier(string $className, string $identifier): ?Entity
     {
-        return $this->store->findByUuid($className, $uuid);
+        return $this->store->findByIdentifier($className, $identifier);
     }
 
     public function findAll(string $className): array
