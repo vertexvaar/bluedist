@@ -20,7 +20,7 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
         /** @var IOInterface $io */
         $io = $container->get('io');
 
-        $packageConfig = $composer->getPackage()->getConfig();
+        $packageConfig = $composer->getPackage()->getExtra();
         $configPath = $packageConfig['vertexvaar/bluesprints']['config'] ?? 'config';
 
         if (!file_exists($configPath . '/routes.php')) {

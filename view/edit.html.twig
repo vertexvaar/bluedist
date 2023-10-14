@@ -1,0 +1,70 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <section>
+        <h1>Change a {{ fruit.name }}</h1>
+
+        <p>
+            Objects are target to many modifications, so updating a already persistend object is essential.<br/>
+            Change the name or color of your selected fruit and save it, or go <a href="listFruits">back</a> to the
+            list.
+        </p>
+
+        <form action="updateFruit" method="post">
+            <input type="hidden" name="uuid" value="{{ fruit.uuid }}">
+
+            <p>
+                <label>
+                    Name
+                    <input type="text" name="name" value="{{ fruit.name }}"/>
+                </label>
+            </p>
+
+            <p>
+                <label>
+                    Color
+                    <input type="text" name="color" value="{{ fruit.color }}"/>
+                </label>
+            </p>
+            <input type="submit" value="Update it!">
+        </form>
+
+        <form action="deleteFruit" method="post">
+            <input type="hidden" name="fruit" value="{{ fruit.uuid }}"/>
+            <input type="submit" value="Or delete it :)">
+        </form>
+
+
+        <h2>The code behind this object update</h2>
+
+        <pre>
+        $arguments = $this->request->getParsedBody();
+        if (isset($arguments['uuid'], $arguments['name'], $arguments['color'])) {
+            $fruit = Fruit::findByUuid($arguments['uuid']);
+            $fruit->setName($arguments['name']);
+            $fruit->setColor($arguments['color']);
+            $fruit->save();
+        }
+        $this->redirect('listFruits');
+    </pre>
+
+        <h2>About safe requests</h2>
+
+        <p>
+            HTTP requests are divided into two different types. Safe and not safe requests.
+            A safe request must not modify an object or persist changes.
+            Safe requests exist to retrieve information from a service or website without changing any data.
+            Safe requests are idempotent.
+            To change the name of a fruit you must make a non-safe request, e.g. POST.
+            PUT, POST, and DELETE are considered non-safe because they may change data.
+        </p>
+
+        <h2>Try it</h2>
+
+        <p>
+            <a href="updateFruit?name=failure&color=black&uuid={{ fruit.uuid }}">This link</a> will not work since the
+            request parameters are expected to exist in POST.
+            You will be redirected to the listFruits view.
+        </p>
+    </section>
+{% endblock %}

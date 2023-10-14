@@ -17,8 +17,11 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 
+use function dirname;
 use function file_exists;
+use function getenv;
 use function is_dir;
+use function putenv;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
@@ -56,6 +59,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     public function postAutoloadDump(): void
     {
         $this->io->write('Generating container');
+
+        if (!getenv('VXVR_BS_ROOT')) {
+            putenv('VXVR_BS_ROOT=' . dirname(__DIR__, 4));
+        }
 
         $installationManager = $this->composer->getInstallationManager();
         $config = $this->composer->getConfig();
@@ -101,7 +108,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         );
 
 
-        $packageConfig = $this->composer->getPackage()->getConfig();
+        $packageConfig = $this->composer->getPackage()->getExtra();
         $configPath = $packageConfig['vertexvaar/bluesprints']['config'] ?? 'config';
 
         if (file_exists($configPath . '/services.yaml')) {

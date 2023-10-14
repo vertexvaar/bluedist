@@ -29,26 +29,17 @@ class ControllerDispatcher implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        ob_start();
-        define('VXVR_BS_REQUEST_METHOD', $request->getMethod());
-
         $route = $request->getAttribute('route');
-        $response = new Response();
 
         /** @var AbstractController $controller */
         $controller = $this->container->get($route['controller']);
-        $content = '';
         try {
-            $content = $controller->callActionMethod($route, $request);
+            return $controller->{$route['action']}($request);
         } catch (RedirectException $exception) {
-            $response = $response->withHeader('Location', $exception->getUrl())->withStatus($exception->getStatus());
+            $response = new Response();
+            return $response
+                ->withHeader('Location', $exception->getUrl())
+                ->withStatus($exception->getStatus());
         }
-        if ($this->environment->context === Context::Development) {
-            $content = ob_get_contents() . $content;
-        }
-
-        $response->getBody()->write($content);
-        ob_end_clean();
-        return $response;
     }
 }

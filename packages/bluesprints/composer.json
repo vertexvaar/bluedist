@@ -23,7 +23,8 @@
 		"psr/container": "^2.0",
 		"guzzlehttp/psr7": "^2.6",
 		"co-stack/lib": "^v5.0.0",
-		"symfony/dotenv": "^v6.3.0"
+		"symfony/dotenv": "^v6.3.0",
+		"twig/twig": "^v3.7.1"
 	},
 	"bin": [
 		"bin/bluesprints"

@@ -1,0 +1,8 @@
+<div style="position: absolute; bottom: 0; left: 0; display: block; width: 100%; height: 75px; background-color: #333333; color: #cccccc">
+    <div>Route: {{ route.controller }}::{{ route.action }}</div>
+    {% if authenticated %}
+        <div>User (authenticated): {{ username }}</div>
+    {% else %}
+        <div>User (anonymous session)</div>
+    {% endif %}
+</div>

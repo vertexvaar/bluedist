@@ -15,7 +15,7 @@ class PathsCompilerPass implements CompilerPassInterface
     {
         /** @var Composer $composer */
         $composer = $container->get('composer');
-        $packageConfig = $composer->getPackage()->getConfig();
+        $packageConfig = $composer->getPackage()->getExtra();
         $config = $packageConfig['vertexvaar/bluesprints'];
 
         $pathsDefinition = $container->getDefinition(Paths::class);

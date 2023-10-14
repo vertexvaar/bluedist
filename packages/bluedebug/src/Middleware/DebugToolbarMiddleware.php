@@ -8,12 +8,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use VerteXVaaR\BlueSprints\Mvc\TemplateRenderer;
+use Twig\Environment;
 
 readonly class DebugToolbarMiddleware implements MiddlewareInterface
 {
 
-    public function __construct(private TemplateRenderer $templateRenderer)
+    public function __construct(private Environment $view)
     {
     }
 
@@ -21,12 +21,11 @@ readonly class DebugToolbarMiddleware implements MiddlewareInterface
     {
         $response = $handler->handle($request);
 
-        $this->templateRenderer->setRouteConfiguration(['controller' => 'DebugToolbarMiddleware']);
-
-        $this->templateRenderer->setVariable('route', $request->getAttribute('route'));
-        $this->templateRenderer->setVariable('authenticated', $request->getAttribute('authenticated'));
-        $this->templateRenderer->setVariable('username', $request->getAttribute('username'));
-        $contents = $this->templateRenderer->render('DebugToolbar');
+        $contents = $this->view->render('@vertexvaar_bluedebug/debug_toolbar.html.twig', [
+            'route' => $request->getAttribute('route'),
+            'authenticated' => $request->getAttribute('authenticated'),
+            'username' => $request->getAttribute('username'),
+        ]);
 
         $body = $response->getBody();
         $body->seek($body->getSize());

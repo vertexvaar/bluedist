@@ -8,6 +8,7 @@ use VerteXVaaR\BlueSprints\Http\DependencyInjection\MiddlewareCompilerPass;
 use VerteXVaaR\BlueSprints\Mvc\Controller;
 use VerteXVaaR\BlueSprints\Mvc\DependencyInjection\PublicServicePass;
 use VerteXVaaR\BlueSprints\Routing\DependencyInjection\RouteCollectorCompilerPass;
+use VerteXVaaR\BlueSprints\Template\DependencyInjection\TemplateRendererCompilerPass;
 
 return static function (ContainerBuilder $container): void {
     $container->addCompilerPass(new EnvironmentCompilerPass());
@@ -15,6 +16,7 @@ return static function (ContainerBuilder $container): void {
     $container->addCompilerPass(new ConfigCompilerPass());
     $container->addCompilerPass(new MiddlewareCompilerPass());
     $container->addCompilerPass(new RouteCollectorCompilerPass());
+    $container->addCompilerPass(new TemplateRendererCompilerPass());
 
     $container->registerForAutoconfiguration(Controller::class)
         ->addTag('vertexvaar.bluesprints.controller');

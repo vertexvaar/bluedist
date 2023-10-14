@@ -27,6 +27,12 @@ services:
     public: true
     shared: true
 
+  VerteXVaaR\BlueSprints\Template\TwigFactory:
+    public: true
+
+  Twig\Environment:
+    factory: ['@VerteXVaaR\BlueSprints\Template\TwigFactory', 'create']
+
   Psr\Http\Server\RequestHandlerInterface: '@VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher'
 
   VerteXVaaR\BlueSprints\Mvc\TemplateRenderer: '@VerteXVaaR\BlueSprints\Mvc\PhpTemplateRenderer'

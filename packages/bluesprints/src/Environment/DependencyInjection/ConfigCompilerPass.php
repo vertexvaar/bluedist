@@ -15,7 +15,7 @@ class ConfigCompilerPass implements CompilerPassInterface
     {
         /** @var Composer $composer */
         $composer = $container->get('composer');
-        $packageConfig = $composer->getPackage()->getConfig();
+        $packageConfig = $composer->getPackage()->getExtra();
         $config = $packageConfig['vertexvaar/bluesprints'];
         $permissions = $config['permissions'] ?? [];
 
