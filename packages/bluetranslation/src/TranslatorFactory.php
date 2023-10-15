@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueTranslation;
 
 use Locale;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Translation\Translator;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
@@ -20,12 +21,15 @@ readonly class TranslatorFactory
         private Environment $environment,
         private array $resources,
         private array $loader,
+        private string $fallbackLanguage,
+        private ServerRequestInterface $serverRequest
     ) {
     }
 
     public function create(): Translator
     {
-        $locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en');
+        $header = $this->serverRequest->getServerParams()['HTTP_ACCEPT_LANGUAGE'] ?? $this->fallbackLanguage;
+        $locale = Locale::acceptFromHttp($header);
         $translator = new Translator(
             $locale,
             null,

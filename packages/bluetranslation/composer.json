@@ -22,5 +22,10 @@
     "twig/twig": "^v3.7.1",
     "vertexvaar/bluecontainer": "*",
     "vertexvaar/bluesprints": "*"
+  },
+  "extra": {
+    "vertexvaar/bluecontainer": {
+      "svc": "svc"
+    }
   }
 }

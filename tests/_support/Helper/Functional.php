@@ -8,6 +8,7 @@ namespace VerteXVaaR\BlueDistTest\Helper;
 use Codeception\Module;
 use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueSprints\Http\Application;
 
@@ -20,6 +21,7 @@ class Functional extends Module
         $request = new ServerRequest('GET', $path);
 
         $di = new DI();
+        $di->set(ServerRequestInterface::class, $request);
 
         $application = $di->get(Application::class);
         $this->response = $application->run($request);

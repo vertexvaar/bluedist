@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use VerteXVaaR\BlueSprints\Mvcr\Controller\AbstractController;
+use VerteXVaaR\BlueSprints\Mvcr\Controller\Controller;
 
 readonly class ControllerDispatcher implements RequestHandlerInterface
 {
@@ -20,7 +20,7 @@ readonly class ControllerDispatcher implements RequestHandlerInterface
     {
         $route = $request->getAttribute('route');
 
-        /** @var AbstractController $controller */
+        /** @var Controller $controller */
         $controller = $this->container->get($route['controller']);
         return $controller->{$route['action']}($request);
     }

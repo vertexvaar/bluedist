@@ -51,6 +51,9 @@
       "config": "config",
       "view": "view",
       "translations": "translations"
+    },
+    "vertexvaar/bluecontainer": {
+      "svc": "svc"
     }
   }
 }

@@ -10,9 +10,14 @@ services:
     class: Symfony\Component\Translation\Loader\PhpFileLoader
 
   VerteXVaaR\BlueTranslation\TranslatorFactory:
+    shared: true
     arguments:
       $loader:
         php: '@Symfony\Component\Translation\Loader\PhpFileLoader'
+      $fallbackLanguage: 'en_US'
 
   Symfony\Component\Translation\Translator:
     factory: [ '@VerteXVaaR\BlueTranslation\TranslatorFactory', 'create' ]
+
+  Psr\Http\Message\ServerRequestInterface:
+    synthetic: true

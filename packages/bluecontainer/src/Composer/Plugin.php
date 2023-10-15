@@ -5,7 +5,7 @@ namespace VerteXVaaR\BlueContainer\Composer;
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
-use Composer\Package\Package;
+use Composer\Package\PackageInterface;
 use Composer\Plugin\PluginInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\FileLocator;
@@ -17,13 +17,13 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 
-use function dirname;
+use function CoStack\Lib\concat_paths;
 use function file_exists;
 use function getcwd;
 use function getenv;
 use function is_dir;
 use function putenv;
-use function xdebug_break;
+use function sprintf;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
@@ -62,72 +62,85 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         if (!getenv('VXVR_BS_ROOT')) {
             putenv('VXVR_BS_ROOT=' . getcwd());
         }
-        $this->io->write(sprintf("VXVR_BS_ROOT=%s", getenv('VXVR_BS_ROOT')));
+        $this->io->write(sprintf("VXVR_BS_ROOT=%s", getenv('VXVR_BS_ROOT')), true, IOInterface::VERBOSE);
 
-        $installationManager = $this->composer->getInstallationManager();
-        $config = $this->composer->getConfig();
-        $autoloadFile = $config->get('vendor-dir') . '/autoload.php';
+        $autoloadFile = $this->composer->getConfig()->get('vendor-dir') . '/autoload.php';
         if (!file_exists($autoloadFile)) {
+            $this->io->writeError('Autoload not yet dumped');
             return;
         }
         require $autoloadFile;
 
-        $containerBuilder = new ContainerBuilder();
-        $containerBuilder->set('composer', $this->composer);
-        $containerBuilder->set('io', $this->io);
-        $diDefinition = new Definition(DI::class);
-        $diDefinition->setPublic(true);
-        $diDefinition->setShared(true);
-        $containerBuilder->setDefinition(ContainerInterface::class, $diDefinition);
+        $container = new ContainerBuilder();
+        $container->set('composer', $this->composer);
+        $container->set('io', $this->io);
+
+        $container->setAlias(ContainerInterface::class, 'service_container');
 
         $packageIterator = new PackageIterator($this->composer);
         $packageIterator->iterate(
-            function (Package $package, string $installPath) use ($containerBuilder): void {
-                $configPath = $installPath . '/config';
-                if (file_exists($configPath) && is_dir($configPath)) {
-                    if (file_exists($configPath . '/services.yaml')) {
-                        $this->io->write(
-                            'Loading services.yaml from ' . $package->getName(),
-                            true,
-                            IOInterface::VERBOSE
-                        );
-                        $loader = new YamlFileLoader($containerBuilder, new FileLocator($configPath));
-                        $loader->load('services.yaml');
-                    }
-                    if (file_exists($configPath . '/services.php')) {
-                        $this->io->write(
-                            'Loading services.php from ' . $package->getName(),
-                            true,
-                            IOInterface::VERBOSE
-                        );
-                        $loader = new PhpFileLoader($containerBuilder, new FileLocator($configPath));
-                        $loader->load('services.php');
-                    }
-                }
-            }
+            fn(PackageInterface $package, string $path) => $this->loadServices($container, $package, $path)
         );
 
+        $this->loadServices($container, $this->composer->getPackage(), getenv('VXVR_BS_ROOT'));
 
-        $packageConfig = $this->composer->getPackage()->getExtra();
-        $configPath = $packageConfig['vertexvaar/bluesprints']['config'] ?? 'config';
+        $container->compile();
 
-        if (file_exists($configPath . '/services.yaml')) {
-            $loader = new YamlFileLoader($containerBuilder, new FileLocator($configPath));
-            $loader->load('services.yaml');
-        }
-        if (file_exists($configPath . '/services.php')) {
-            $loader = new PhpFileLoader($containerBuilder, new FileLocator($configPath));
-            $loader->load('services.php');
-        }
-
-        $containerBuilder->compile();
-
-        $dumper = new PhpDumper($containerBuilder);
+        $dumper = new PhpDumper($container);
         file_put_contents(
             __DIR__ . '/../DI.php',
             $dumper->dump(['class' => 'DI', 'namespace' => 'VerteXVaaR\\BlueContainer'])
         );
 
         $this->io->write('Generated container');
+    }
+
+    private function loadServices(
+        ContainerBuilder $container,
+        PackageInterface $package,
+        string $installPath,
+    ): void {
+        $packageExtra = $package->getExtra();
+        $servicesPath = $packageExtra['vertexvaar/bluecontainer']['svc'] ?? null;
+
+        if (null === $servicesPath) {
+            $this->io->write(
+                sprintf('Package %s does not define extra.vertexvaar/bluecontainer.svc, skipping', $package->getName()),
+                true,
+                IOInterface::VERY_VERBOSE
+            );
+            return;
+        }
+
+        $absoluteServicesPath = concat_paths($installPath, $servicesPath);
+        if (!is_dir($absoluteServicesPath)) {
+            $this->io->writeError(
+                sprintf(
+                    'Package %s defines extra.vertexvaar/bluecontainer.svc, but the directory "%s" does not exist',
+                    $package->getName(),
+                    $absoluteServicesPath
+                )
+            );
+            return;
+        }
+
+        if (file_exists(concat_paths($absoluteServicesPath, 'services.yaml'))) {
+            $this->io->write(
+                sprintf('Loading services.yaml from package %s', $package->getName()),
+                true,
+                IOInterface::VERBOSE
+            );
+            $loader = new YamlFileLoader($container, new FileLocator($absoluteServicesPath));
+            $loader->load('services.yaml');
+        }
+        if (file_exists(concat_paths($absoluteServicesPath, 'services.php'))) {
+            $this->io->write(
+                sprintf('Loading services.php from package %s', $package->getName()),
+                true,
+                IOInterface::VERBOSE
+            );
+            $loader = new PhpFileLoader($container, new FileLocator($absoluteServicesPath));
+            $loader->load('services.php');
+        }
     }
 }

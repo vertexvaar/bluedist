@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Composer\Autoload\ClassLoader;
 use GuzzleHttp\Psr7\ServerRequest;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Dotenv\Dotenv;
 use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueSprints\Error\ErrorHandler;
@@ -26,23 +26,13 @@ if (empty(ini_get('date.timezone'))) {
     date_default_timezone_set('UTC');
 }
 
-if (!class_exists(ClassLoader::class, false)) {
-    if (file_exists('../../../vendor/autoload.php')) {
-        // project level
-        require('../../../vendor/autoload.php');
-    } elseif (file_exists('../../../../autoload.php')) {
-        // library level
-        require('../../../../autoload.php');
-    } else {
-        throw new Exception('Autoloader not found', 1491561093);
-    }
-}
-
 $errorHandler = new ErrorHandler();
 $errorHandler->register();
 
 $request = ServerRequest::fromGlobals();
 
 $di = new DI();
+$di->set(ServerRequestInterface::class, $request);
+
 $response = $di->get(Application::class)->run($request);
 $di->get(HttpResponseEmitter::class)->emit($response);

@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Template;
 
-use Symfony\Component\Translation\Translator;
 use Twig\Cache\FilesystemCache;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
-use Twig\TwigFilter;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Paths;
 

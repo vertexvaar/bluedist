@@ -40,10 +40,6 @@
       <path value="$PROJECT_DIR$/vendor/ramsey/collection" />
       <path value="$PROJECT_DIR$/vendor/ramsey/uuid" />
       <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
-      <path value="$PROJECT_DIR$/vendor/vertexvaar/bluesprints" />
-      <path value="$PROJECT_DIR$/vendor/vertexvaar/bluedebug" />
-      <path value="$PROJECT_DIR$/vendor/vertexvaar/blueauth" />
-      <path value="$PROJECT_DIR$/vendor/vertexvaar/bluecontainer" />
       <path value="$PROJECT_DIR$/vendor/sebastian/exporter" />
       <path value="$PROJECT_DIR$/vendor/sebastian/recursion-context" />
       <path value="$PROJECT_DIR$/vendor/sebastian/version" />
@@ -109,7 +105,6 @@
       <path value="$PROJECT_DIR$/vendor/sebastian/environment" />
       <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/translation" />
-      <path value="$PROJECT_DIR$/vendor/vertexvaar/bluetranslation" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
