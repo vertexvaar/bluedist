@@ -49,20 +49,30 @@
                     {% for key, timing in lastRequest.stopwatch.timings %}
                         <tr>
                             <td>{{ key }}</td>
-                            <td>{{ (timing.duration / 100000)|round(2) }}ns</td>
+                            <td>{{ (timing.duration / 100000)|round(2) }}ms</td>
                         </tr>
                     {% endfor %}
                 </table>
                 <b>Queries</b>
                 <table>
-                    {% for query in lastRequest.queryCollector.queries %}
+                    <thead>
                         <tr>
-                            <td>{{ (query.cumulatedDuration / 100000)|round(2) }}ns</td>
-                            <td>{{ 'times'|t({times: query.count}) }}</td>
-                            <td>{{ query.query }}</td>
-                            <td>{{ query.context.class }}</td>
+                            <th>Duration</th>
+                            <th>Count</th>
+                            <th>Query</th>
+                            <th>Class</th>
                         </tr>
-                    {% endfor %}
+                    </thead>
+                    <tbody>
+                        {% for query in lastRequest.queryCollector.queries %}
+                            <tr>
+                                <td>{{ (query.cumulatedDuration / 100000)|round(2) }}ms</td>
+                                <td>{{ 'times'|t({times: query.count}) }}</td>
+                                <td>{{ query.query }}</td>
+                                <td>{{ query.context.class }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
                 <b>Session</b>
                 <span>
@@ -91,7 +101,7 @@
                 {% for key, timing in stopwatch.timings %}
                     <tr>
                         <td>{{ key }}</td>
-                        <td>{{ (timing.duration / 100000)|round(2) }}ns</td>
+                        <td>{{ (timing.duration / 100000)|round(2) }}ms</td>
                     </tr>
                 {% endfor %}
             </table>
@@ -100,14 +110,24 @@
     <div class="flexbox-item">{{ 'queries'|t({queries: queryCollector.queries|length}) }}
         <div class="infobox">
             <table>
-                {% for query in queryCollector.queries %}
+                <thead>
                     <tr>
-                        <td>{{ (query.cumulatedDuration / 100000)|round(2) }}ns</td>
-                        <td>{{ 'times'|t({times: query.count}) }}</td>
-                        <td>{{ query.query }}</td>
-                        <td>{{ query.context.class }}</td>
+                        <th>Duration</th>
+                        <th>Count</th>
+                        <th>Query</th>
+                        <th>Class</th>
                     </tr>
-                {% endfor %}
+                </thead>
+                <tbody>
+                    {% for query in queryCollector.queries %}
+                        <tr>
+                            <td>{{ (query.cumulatedDuration / 100000)|round(2) }}ms</td>
+                            <td>{{ 'times'|t({times: query.count}) }}</td>
+                            <td>{{ query.query }}</td>
+                            <td>{{ query.context.class }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
