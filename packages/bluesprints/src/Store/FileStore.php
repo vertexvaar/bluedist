@@ -25,7 +25,7 @@ use function unserialize;
 
 use const DIRECTORY_SEPARATOR as DS;
 
-readonly class FileStore
+readonly class FileStore implements Store
 {
     public function __construct(private Paths $paths, private Config $config)
     {
@@ -77,7 +77,7 @@ readonly class FileStore
         }
     }
 
-    public function getFolder(string $class): string
+    private function getFolder(string $class): string
     {
         $classFolder = concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->database, str_replace('\\', DS, $class));
 

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueSprints\Mvcr\Repository;
 
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
-use VerteXVaaR\BlueSprints\Store\FileStore;
+use VerteXVaaR\BlueSprints\Store\Store;
 
 readonly class Repository
 {
-    public function __construct(private FileStore $store)
+    public function __construct(private Store $store)
     {
     }
 

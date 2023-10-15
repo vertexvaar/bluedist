@@ -13,3 +13,19 @@ services:
   VerteXVaaR\BlueDebug\Service\DebugCollector:
     public: true
     shared: true
+
+  VerteXVaaR\BlueDebug\Service\QueryCollector:
+    public: true
+    shared: true
+
+  VerteXVaaR\BlueDebug\Decorator\StoreDecorator:
+    decorates: VerteXVaaR\BlueSprints\Store\FileStore
+    arguments: [ '@.inner' ]
+
+  VerteXVaaR\BlueDebug\Decorator\ControllerDispatcherDecorator:
+    decorates: VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher
+    arguments: [ '@.inner' ]
+
+  VerteXVaaR\BlueDebug\Decorator\TwigFactoryDecorator:
+    decorates: VerteXVaaR\BlueSprints\Template\TwigFactory
+    arguments: [ '@.inner' ]

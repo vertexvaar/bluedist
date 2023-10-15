@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDebug\Middleware;
 
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Twig\Environment as View;
 use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
+use VerteXVaaR\BlueDebug\Service\CollectedQuery;
 use VerteXVaaR\BlueDebug\Service\DebugCollector;
+use VerteXVaaR\BlueDebug\Service\QueryCollector;
+use VerteXVaaR\BlueDebug\Service\QueryExecution;
 use VerteXVaaR\BlueDebug\Service\Stopwatch;
+use VerteXVaaR\BlueSprints\Cache\Cache;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 use VerteXVaaR\BlueSprints\Routing\Route;
+
+use function serialize;
+use function unserialize;
 
 readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
 {
@@ -23,13 +32,38 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
         private Environment $environment,
         private DebugCollector $collector,
         private Stopwatch $stopwatch,
+        private QueryCollector $queryCollector,
+        private Cache $cache,
     ) {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        if ($this->environment->context === Context::Production || $response->getStatusCode() >= 300) {
+        if ($this->environment->context === Context::Production) {
+            return $response;
+        }
+        if ($response->getStatusCode() >= 300) {
+            /** @var ServerRequestInterface $collectedRequest */
+            $collectedRequest = $this->collector->getItem('request');
+            /** @var ResponseInterface $collectedResponse */
+            $collectedResponse = $this->collector->getItem('response');
+
+            /** @var Route $collectedRoute */
+            $collectedRoute = $collectedRequest->getAttribute('route');
+            /** @var Session $collectedSession */
+            $collectedSession = $collectedRequest->getAttribute('session');
+
+            $lastRequest = [
+                'request' => $collectedRequest,
+                'response' => $collectedResponse,
+                'route' => $collectedRoute,
+                'session' => $collectedSession,
+                'context' => $this->environment->context,
+                'stopwatch' => $this->stopwatch,
+                'queryCollector' => $this->queryCollector,
+            ];
+            $this->cache->set('last_request', serialize($lastRequest));
             return $response;
         }
 
@@ -43,6 +77,24 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
         /** @var Session $collectedSession */
         $collectedSession = $collectedRequest->getAttribute('session');
 
+        $lastRequest = $this->cache->get('last_request');
+        $this->cache->delete('last_request');
+        if (null !== $lastRequest) {
+            $lastRequest = unserialize($lastRequest, [
+                'allowed_classes' => [
+                    ServerRequest::class,
+                    Response::class,
+                    Route::class,
+                    Session::class,
+                    Stopwatch::class,
+                    QueryCollector::class,
+                    DebugCollector::class,
+                    CollectedQuery::class,
+                    QueryExecution::class,
+                ]
+            ]);
+        }
+
         $contents = $this->view->render('@vertexvaar_bluedebug/debug_toolbar.html.twig', [
             'request' => $collectedRequest,
             'response' => $collectedResponse,
@@ -50,6 +102,8 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
             'session' => $collectedSession,
             'context' => $this->environment->context,
             'stopwatch' => $this->stopwatch,
+            'queryCollector' => $this->queryCollector,
+            'lastRequest' => $lastRequest,
         ]);
 
         $body = $response->getBody();

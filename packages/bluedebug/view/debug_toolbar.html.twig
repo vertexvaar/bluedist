@@ -16,14 +16,65 @@
     .flexbox-item {
         padding: 5px;
         flex: 0 1 auto;
+        position: relative;
     }
 
     .flexbox-item:hover {
         flex: 0 1 auto;
         background-color: #444444;
     }
+
+    .infobox {
+        visibility: hidden;
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -60px;
+        background-color: #444444;
+        padding: 10px;
+        border-radius: 6px;
+        white-space: nowrap;
+    }
+
+    .flexbox-item:hover .infobox {
+        visibility: visible;
+    }
 </style>
 <div id="debugtoolbar" class="flexbox-panel">
+    {% if lastRequest %}
+        <div class="flexbox-item">Previous: {{ lastRequest.response.statusCode }}
+            <div class="infobox">
+                <b>Timing:</b>
+                <table>
+                    {% for key, timing in lastRequest.stopwatch.timings %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ (timing.duration / 100000)|round(2) }}ns</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <b>Queries</b>
+                <table>
+                    {% for query in lastRequest.queryCollector.queries %}
+                        <tr>
+                            <td>{{ (query.cumulatedDuration / 100000)|round(2) }}ns</td>
+                            <td>{{ 'times'|t({times: query.count}) }}</td>
+                            <td>{{ query.query }}</td>
+                            <td>{{ query.context.class }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <b>Session</b>
+                <span>
+                    {% if lastRequest.session.authenticated %}
+                        User (authenticated): {{ lastRequest.session.username }}
+                    {% else %}
+                        User (anonymous session)
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    {% endif %}
     <div class="flexbox-item">Route: {{ route.controller }}::{{ route.action }}</div>
     <div class="flexbox-item">
         {% if session.authenticated %}
@@ -34,7 +85,32 @@
     </div>
     <div class="flexbox-item">Context: {{ context.name }}</div>
     <div class="flexbox-item">Response: {{ response.body.size / 1000 }}kB</div>
-    <div class="flexbox-item">Time: {{ stopwatch.timings.request.duration / 100000 }}ms</div>
+    <div class="flexbox-item">Time: {{ stopwatch.timings.request.duration / 100000 }}ms
+        <div class="infobox">
+            <table>
+                {% for key, timing in stopwatch.timings %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ (timing.duration / 100000)|round(2) }}ns</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="flexbox-item">{{ 'queries'|t({queries: queryCollector.queries|length}) }}
+        <div class="infobox">
+            <table>
+                {% for query in queryCollector.queries %}
+                    <tr>
+                        <td>{{ (query.cumulatedDuration / 100000)|round(2) }}ns</td>
+                        <td>{{ 'times'|t({times: query.count}) }}</td>
+                        <td>{{ query.query }}</td>
+                        <td>{{ query.context.class }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
     <div class="flexbox-item">
         <a style="color: #cccccc;" href="#" onclick="document.querySelector('#debugtoolbar').remove(); return false;">Close</a>
     </div>

@@ -22,7 +22,6 @@ namespace VerteXVaaR\BlueContainer\Service;
 
 use UnexpectedValueException;
 
-use function array_diff;
 use function array_keys;
 use function in_array;
 

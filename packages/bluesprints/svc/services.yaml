@@ -40,3 +40,5 @@ services:
     factory: [ '@VerteXVaaR\BlueSprints\Template\TwigFactory', 'create' ]
 
   Psr\Http\Server\RequestHandlerInterface: '@VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher'
+
+  VerteXVaaR\BlueSprints\Store\Store: '@VerteXVaaR\BlueSprints\Store\FileStore'

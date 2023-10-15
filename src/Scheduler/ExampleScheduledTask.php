@@ -10,8 +10,8 @@ use VerteXVaaR\BlueScheduler\Task\AbstractTask;
 
 use function var_export;
 
-#[ScheduledTask(identifier: 'First schedule of example task', interval: 10, config: ['first', 'second'])]
-#[ScheduledTask(identifier: 'Second schedule of example task', interval: 5, config: ['foo', 'bar'])]
+#[ScheduledTask(identifier: 'First schedule of example task', interval: 60 * 60, config: ['hourly'])]
+#[ScheduledTask(identifier: 'Second schedule of example task', interval: 86400, config: ['daily'])]
 class ExampleScheduledTask extends AbstractTask
 {
     public function run(string $identifier, CliRequest $cliRequest, array $config): void

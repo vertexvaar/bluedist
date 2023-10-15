@@ -7,7 +7,6 @@ use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
 use VerteXVaaR\BlueSprints\Routing\Middleware\RoutingMiddleware;
 

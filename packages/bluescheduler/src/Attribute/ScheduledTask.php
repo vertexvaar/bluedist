@@ -9,7 +9,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 final readonly class ScheduledTask
 {
-    public function __construct(public string $identifier, public int $interval, public array $config)
+    public function __construct(public string $identifier, public int $interval, public array $config = [])
     {
     }
 

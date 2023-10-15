@@ -19,10 +19,8 @@
     "php": "8.2.*",
     "ext-json": "*",
     "vertexvaar/bluesprints": "@dev",
-    "psr/container": "^2.0",
     "vertexvaar/bluecontainer": "@dev",
     "vertexvaar/blueauth": "@dev",
-    "vertexvaar/bluedebug": "@dev",
     "vertexvaar/bluetranslation": "@dev",
     "vertexvaar/blueconsole": "@dev",
     "vertexvaar/bluescheduler": "@dev"
@@ -37,7 +35,8 @@
     "codeception/module-phpbrowser": "^3.0.0",
     "codeception/module-asserts": "^3.0.0",
     "codeception/module-webdriver": "^4.0.0",
-    "composer/composer": "^2.6"
+    "composer/composer": "^2.6",
+    "vertexvaar/bluedebug": "@dev"
   },
   "config": {
     "allow-plugins": {
