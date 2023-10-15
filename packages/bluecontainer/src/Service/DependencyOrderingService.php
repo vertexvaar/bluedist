@@ -22,6 +22,10 @@ namespace VerteXVaaR\BlueContainer\Service;
 
 use UnexpectedValueException;
 
+use function array_diff;
+use function array_keys;
+use function in_array;
+
 /**
  * This class provides functionality to build
  * an ordered list from a set of dependencies.
@@ -286,6 +290,17 @@ class DependencyOrderingService
             foreach ([$beforeKey, $afterKey] as $relation) {
                 if (!isset($dependency[$relation]) || !is_array($dependency[$relation])) {
                     $dependency[$relation] = [];
+                }
+                if ($dependency[$relation] === ['*']) {
+                    $calculatedRelations = [];
+                    foreach ($dependencies as $possibleId => $possibleDependency) {
+                        $nextDependencies = $possibleDependency[$relation] ?? [];
+                        if ($possibleId !== $id && $nextDependencies !== ['*'] && !in_array($id, $nextDependencies)) {
+                            $calculatedRelations[] = $possibleId;
+                        }
+                    }
+                    $dependency[$relation] = $calculatedRelations;
+                    $dependencies[$id][$relation] = $calculatedRelations;
                 }
                 // add all missing, but referenced identifiers to the $dependency list
                 foreach ($dependency[$relation] as $dependingId) {

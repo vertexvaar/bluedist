@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Scheduler\Task;
+namespace VerteXVaaR\BlueScheduler\Task;
 
-use VerteXVaaR\BlueSprints\Scheduler\CliRequest;
+use VerteXVaaR\BlueScheduler\CliRequest;
 
 abstract class AbstractTask implements Task
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Scheduler;
+namespace VerteXVaaR\BlueScheduler;
 
+use VerteXVaaR\BlueScheduler\Model\TaskExecution;
+use VerteXVaaR\BlueScheduler\Task\AbstractTask;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
-use VerteXVaaR\BlueSprints\Scheduler\Model\TaskExecution;
-use VerteXVaaR\BlueSprints\Scheduler\Task\AbstractTask;
 
 use function strtr;
 use function time;
@@ -15,7 +15,6 @@ use const PHP_INT_MAX;
 
 readonly class Scheduler
 {
-
     public function __construct(
         private SchedulerTaskRegistry $schedulerTaskRegistry,
         private Repository $repository,

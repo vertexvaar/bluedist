@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="bin/bluesprint" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/vendor/bin/bluesprints">
+  <configuration default="false" name="bin/bluescheduler" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/vendor/bin/bluescheduler" scriptParameters="--verbose string=testing">
     <CommandLine>
       <PhpTestInterpreterSettings>
         <option name="interpreterName" value="php" />

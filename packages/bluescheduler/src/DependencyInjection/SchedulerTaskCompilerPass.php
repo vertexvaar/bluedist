@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Scheduler\DependencyInjection;
+namespace VerteXVaaR\BlueScheduler\DependencyInjection;
 
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use VerteXVaaR\BlueSprints\Scheduler\Attribute\ScheduledTask;
-use VerteXVaaR\BlueSprints\Scheduler\SchedulerTaskRegistry;
+use VerteXVaaR\BlueScheduler\Attribute\ScheduledTask;
+use VerteXVaaR\BlueScheduler\SchedulerTaskRegistry;
 
 use function array_keys;
 

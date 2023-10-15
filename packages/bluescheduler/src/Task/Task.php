@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Scheduler\Task;
+namespace VerteXVaaR\BlueScheduler\Task;
 
 interface Task
 {

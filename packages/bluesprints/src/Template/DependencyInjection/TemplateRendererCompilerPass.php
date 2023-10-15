@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Translation\Translator;
 use Twig\Cache\FilesystemCache;
-use Twig\Environment;
+use Twig\Environment as View;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
@@ -104,7 +104,7 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
         $config = $packageConfig['vertexvaar/bluesprints'];
         $twigCachePath = concat_paths(getenv('VXVR_BS_ROOT'), $config['cache'] ?? 'cache', 'twig');
         $filesystemCache = new FilesystemCache($twigCachePath);
-        $twig = new Environment(
+        $twig = new View(
             $loader,
             [
                 'cache' => $filesystemCache,

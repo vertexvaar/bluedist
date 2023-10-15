@@ -5,3 +5,11 @@ services:
 
   VerteXVaaR\BlueDebug\:
     resource: '../src/*'
+
+  VerteXVaaR\BlueDebug\Service\Stopwatch:
+    public: true
+    shared: true
+
+  VerteXVaaR\BlueDebug\Service\DebugCollector:
+    public: true
+    shared: true

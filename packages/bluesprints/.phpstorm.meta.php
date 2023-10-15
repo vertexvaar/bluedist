@@ -8,7 +8,7 @@ namespace PHPSTORM_META {
     override(
         \Psr\Http\Message\ServerRequestInterface::getAttribute(),
         map([
-            'route' => \VerteXVaaR\BlueSprints\Routing\Route::class
+            'route' => \VerteXVaaR\BlueSprints\Routing\Route::class,
         ])
     );
 }

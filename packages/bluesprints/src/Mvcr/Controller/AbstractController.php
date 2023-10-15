@@ -6,14 +6,14 @@ namespace VerteXVaaR\BlueSprints\Mvcr\Controller;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
-use Twig\Environment;
+use Twig\Environment as View;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
 abstract class AbstractController implements Controller
 {
     public function __construct(
         protected readonly Repository $repository,
-        protected readonly Environment $view
+        protected readonly View $view
     ) {
     }
 

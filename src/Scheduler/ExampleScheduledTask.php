@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDist\Scheduler;
 
-use VerteXVaaR\BlueSprints\Scheduler\Attribute\ScheduledTask;
-use VerteXVaaR\BlueSprints\Scheduler\CliRequest;
-use VerteXVaaR\BlueSprints\Scheduler\Task\AbstractTask;
+use VerteXVaaR\BlueScheduler\Attribute\ScheduledTask;
+use VerteXVaaR\BlueScheduler\CliRequest;
+use VerteXVaaR\BlueScheduler\Task\AbstractTask;
 
 use function var_export;
 

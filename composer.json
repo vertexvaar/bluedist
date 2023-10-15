@@ -24,7 +24,8 @@
     "vertexvaar/blueauth": "@dev",
     "vertexvaar/bluedebug": "@dev",
     "vertexvaar/bluetranslation": "@dev",
-    "vertexvaar/blueconsole": "@dev"
+    "vertexvaar/blueconsole": "@dev",
+    "vertexvaar/bluescheduler": "@dev"
   },
   "autoload": {
     "psr-4": {

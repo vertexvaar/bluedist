@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Scheduler\Attribute;
+namespace VerteXVaaR\BlueScheduler\Attribute;
 
 use Attribute;
 

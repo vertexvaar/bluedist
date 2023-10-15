@@ -1,14 +1,41 @@
-<div id="debugtoolbar"
-     style="position: relative ;display: block; width: calc(100% - 10px); height: 75px; background-color: #333333; color: #cccccc; padding: 5px"
->
-    <div style="position: absolute; right: 5px; ">
+<style>
+    .flexbox-panel {
+        position: relative;
+        width: calc(100% - 10px);
+        background-color: #333333;
+        color: #cccccc;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+    }
+
+    .flexbox-item {
+        padding: 5px;
+        flex: 0 1 auto;
+    }
+
+    .flexbox-item:hover {
+        flex: 0 1 auto;
+        background-color: #444444;
+    }
+</style>
+<div id="debugtoolbar" class="flexbox-panel">
+    <div class="flexbox-item">Route: {{ route.controller }}::{{ route.action }}</div>
+    <div class="flexbox-item">
+        {% if session.authenticated %}
+            User (authenticated): {{ session.username }}
+        {% else %}
+            User (anonymous session)
+        {% endif %}
+    </div>
+    <div class="flexbox-item">Context: {{ context.name }}</div>
+    <div class="flexbox-item">Response: {{ response.body.size / 1000 }}kB</div>
+    <div class="flexbox-item">Time: {{ stopwatch.timings.request.duration / 100000 }}ms</div>
+    <div class="flexbox-item">
         <a style="color: #cccccc;" href="#" onclick="document.querySelector('#debugtoolbar').remove(); return false;">Close</a>
     </div>
-    <div>Route: {{ route.controller }}::{{ route.action }}</div>
-    {% if session.authenticated %}
-        <div>User (authenticated): {{ session.username }}</div>
-    {% else %}
-        <div>User (anonymous session)</div>
-    {% endif %}
-    <div>Context: {{ context.name }}</div>
 </div>

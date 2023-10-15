@@ -27,6 +27,7 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
         $controllers = $container->findTaggedServiceIds('vertexvaar.bluesprints.controller');
         foreach (array_keys($controllers) as $controller) {
             $definition = $container->getDefinition($controller);
+            $definition->setPublic(true);
             $controllerClass = $definition->getClass();
             try {
                 $reflection = new ReflectionClass($controllerClass);

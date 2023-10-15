@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  VerteXVaaR\BlueScheduler\:
+    resource: '../src/*'
+
+  VerteXVaaR\BlueScheduler\Scheduler:
+    public: true

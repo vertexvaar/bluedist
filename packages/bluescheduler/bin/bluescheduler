@@ -5,8 +5,8 @@ declare(strict_types=1);
 
 use Symfony\Component\Dotenv\Dotenv;
 use VerteXVaaR\BlueContainer\DI;
-use VerteXVaaR\BlueSprints\Scheduler\CliRequest;
-use VerteXVaaR\BlueSprints\Scheduler\Scheduler;
+use VerteXVaaR\BlueScheduler\CliRequest;
+use VerteXVaaR\BlueScheduler\Scheduler;
 
 $root = getenv('VXVR_BS_ROOT');
 if (!$root) {

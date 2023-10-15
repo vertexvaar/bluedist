@@ -1,0 +1,31 @@
+{
+  "name": "vertexvaar/bluescheduler",
+  "description": "Scheduler component for bluesprints",
+  "type": "library",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "Oliver Eglseder",
+      "email": "bluesprints@vxvr.de",
+      "homepage": "http://vxvr.de/",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "VerteXVaaR\\BlueScheduler\\": "src/"
+    }
+  },
+  "require": {
+    "php": "8.2.*",
+    "vertexvaar/bluesprints": "*"
+  },
+  "bin": [
+    "bin/bluescheduler"
+  ],
+  "extra": {
+    "vertexvaar/bluecontainer": {
+      "svc": "svc"
+    }
+  }
+}
