@@ -19,9 +19,11 @@ use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 
 use function dirname;
 use function file_exists;
+use function getcwd;
 use function getenv;
 use function is_dir;
 use function putenv;
+use function xdebug_break;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
@@ -58,8 +60,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->io->write('Generating container');
 
         if (!getenv('VXVR_BS_ROOT')) {
-            putenv('VXVR_BS_ROOT=' . dirname(__DIR__, 4));
+            putenv('VXVR_BS_ROOT=' . getcwd());
         }
+        $this->io->write(sprintf("VXVR_BS_ROOT=%s", getenv('VXVR_BS_ROOT')));
 
         $installationManager = $this->composer->getInstallationManager();
         $config = $this->composer->getConfig();

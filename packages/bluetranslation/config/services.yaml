@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  VerteXVaaR\BlueTranslation\:
+    resource: '../src/*'
+
+  Symfony\Component\Translation\Loader\PhpFileLoader:
+    class: Symfony\Component\Translation\Loader\PhpFileLoader
+
+  VerteXVaaR\BlueTranslation\TranslatorFactory:
+    arguments:
+      $loader:
+        php: '@Symfony\Component\Translation\Loader\PhpFileLoader'
+
+  Symfony\Component\Translation\Translator:
+    factory: [ '@VerteXVaaR\BlueTranslation\TranslatorFactory', 'create' ]

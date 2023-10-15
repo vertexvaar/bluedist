@@ -1,6 +1,5 @@
 <?php
 
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueSprints\Environment\DependencyInjection\ConfigCompilerPass;
 use VerteXVaaR\BlueSprints\Environment\DependencyInjection\EnvironmentCompilerPass;
@@ -12,7 +11,6 @@ use VerteXVaaR\BlueSprints\Routing\DependencyInjection\RouteCollectorCompilerPas
 use VerteXVaaR\BlueSprints\Scheduler\DependencyInjection\SchedulerTaskCompilerPass;
 use VerteXVaaR\BlueSprints\Scheduler\Task\Task;
 use VerteXVaaR\BlueSprints\Template\DependencyInjection\TemplateRendererCompilerPass;
-use VerteXVaaR\BlueSprints\Translation\DependencyInjection\TranslationSourceCompilerPass;
 
 return static function (ContainerBuilder $container): void {
     $container->addCompilerPass(new EnvironmentCompilerPass());
@@ -22,7 +20,6 @@ return static function (ContainerBuilder $container): void {
     $container->addCompilerPass(new RouteCollectorCompilerPass());
     $container->addCompilerPass(new TemplateRendererCompilerPass());
     $container->addCompilerPass(new SchedulerTaskCompilerPass());
-    $container->addCompilerPass(new TranslationSourceCompilerPass());
 
     $container->registerForAutoconfiguration(Controller::class)
         ->addTag('vertexvaar.bluesprints.controller');

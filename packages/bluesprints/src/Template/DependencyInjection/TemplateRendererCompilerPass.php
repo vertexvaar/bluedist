@@ -23,8 +23,6 @@ use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Template\TemplatePathsRegistry;
 
-use VerteXVaaR\BlueSprints\Translation\TranslatorFactory;
-
 use function array_filter;
 use function array_replace;
 use function CoStack\Lib\concat_paths;
@@ -96,8 +94,6 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
 
         $io->write('Warming template caches', true, IOInterface::VERBOSE);
 
-        $composer->getAutoloadGenerator()->setDevMode();
-
         $loader = new FilesystemLoader();
         foreach ($templatePaths as $namespace => $path) {
             $loader->addPath($path, $namespace);
@@ -120,6 +116,7 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
         }
         // The actual translator is not required as twig compiles with runtime getter
         $translator = new Translator('en_GB');
+
         $twig->addFilter(new TwigFilter('t', $translator->trans(...)));
 
         $twigTemplatesPath = concat_paths(getenv('VXVR_BS_ROOT'), $config['view'] ?? 'view');

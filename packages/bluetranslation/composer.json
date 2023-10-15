@@ -1,0 +1,26 @@
+{
+  "name": "vertexvaar/bluetranslation",
+  "description": "Translations component for bluesprints",
+  "type": "library",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "Oliver Eglseder",
+      "email": "bluesprints@vxvr.de",
+      "homepage": "http://vxvr.de/",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "VerteXVaaR\\BlueTranslation\\": "src/"
+    }
+  },
+  "require": {
+    "php": "8.2.*",
+    "symfony/translation": "^v6.3.3",
+    "twig/twig": "^v3.7.1",
+    "vertexvaar/bluecontainer": "*",
+    "vertexvaar/bluesprints": "*"
+  }
+}

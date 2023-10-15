@@ -22,7 +22,7 @@ readonly class TwigFactory
         private TemplatePathsRegistry $templatePathsRegistry,
         private Paths $paths,
         private \VerteXVaaR\BlueSprints\Environment\Environment $environment,
-        private Translator $translator,
+        private array $extensions
     ) {
     }
 
@@ -41,7 +41,9 @@ readonly class TwigFactory
                 'debug' => $this->environment->context === Context::Development
             ]
         );
-        $twig->addFilter(new TwigFilter('t', $this->translator->trans(...)));
+        foreach ($this->extensions as $extension) {
+            $twig->addExtension($extension);
+        }
         if ($this->environment->context === Context::Development) {
             $twig->addExtension(new DebugExtension());
         }

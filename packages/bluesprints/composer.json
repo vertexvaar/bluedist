@@ -27,7 +27,6 @@
     "psr/simple-cache": "^3.0.0",
     "ramsey/uuid": "^4.7.4",
     "symfony/dotenv": "^v6.3.0",
-    "symfony/translation": "^v6.3.3",
     "twig/twig": "^v3.7.1"
   },
   "bin": [

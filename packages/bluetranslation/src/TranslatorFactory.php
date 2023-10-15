@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueSprints\Translation;
+namespace VerteXVaaR\BlueTranslation;
 
 use Locale;
 use Symfony\Component\Translation\Translator;

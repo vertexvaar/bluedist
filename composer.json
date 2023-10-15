@@ -22,7 +22,8 @@
     "psr/container": "^2.0",
     "vertexvaar/bluecontainer": "@dev",
     "vertexvaar/blueauth": "@dev",
-    "vertexvaar/bluedebug": "@dev"
+    "vertexvaar/bluedebug": "@dev",
+    "vertexvaar/bluetranslation": "@dev"
   },
   "autoload": {
     "psr-4": {
