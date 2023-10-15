@@ -25,7 +25,7 @@ readonly class TranslatorFactory
 
     public function create(): Translator
     {
-        $locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        $locale = Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en');
         $translator = new Translator(
             $locale,
             null,
