@@ -7,10 +7,8 @@ namespace VerteXVaaR\BlueSprints\Scheduler\DependencyInjection;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use Symfony\Component\DependencyInjection\Reference;
 use VerteXVaaR\BlueSprints\Scheduler\Attribute\ScheduledTask;
-
 use VerteXVaaR\BlueSprints\Scheduler\SchedulerTaskRegistry;
 
 use function array_keys;

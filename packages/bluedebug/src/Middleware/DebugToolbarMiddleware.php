@@ -8,25 +8,27 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Twig\Environment;
+use Twig\Environment as View;
+use VerteXVaaR\BlueSprints\Environment\Context;
+use VerteXVaaR\BlueSprints\Environment\Environment;
 
 readonly class DebugToolbarMiddleware implements MiddlewareInterface
 {
-    public function __construct(private Environment $view)
+    public function __construct(private View $view, private Environment $environment)
     {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        if ($response->getStatusCode() >= 300) {
+        if ($this->environment->context === Context::Production || $response->getStatusCode() >= 300) {
             return $response;
         }
 
         $contents = $this->view->render('@vertexvaar_bluedebug/debug_toolbar.html.twig', [
             'route' => $request->getAttribute('route'),
-            'authenticated' => $request->getAttribute('authenticated'),
-            'username' => $request->getAttribute('username'),
+            'session' => $request->getAttribute('session'),
+            'context' => $this->environment->context,
         ]);
 
         $body = $response->getBody();

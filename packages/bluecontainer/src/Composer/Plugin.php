@@ -10,11 +10,9 @@ use Composer\Plugin\PluginInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 
 use function CoStack\Lib\concat_paths;

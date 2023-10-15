@@ -1,6 +1,6 @@
 {
-  "name": "vertexvaar/blueauth",
-  "description": "Authentication component for bluesprints",
+  "name": "vertexvaar/blueconsole",
+  "description": "Console component for bluesprints",
   "type": "library",
   "license": "GPL-3.0+",
   "authors": [
@@ -13,23 +13,20 @@
   ],
   "autoload": {
     "psr-4": {
-      "VerteXVaaR\\BlueAuth\\": "src/"
+      "VerteXVaaR\\BlueConsole\\": "src/"
     }
   },
   "require": {
     "php": "8.2.*",
-    "vertexvaar/bluesprints": "*"
+    "vertexvaar/bluesprints": "*",
+    "symfony/console": "^v6.3.4"
   },
+  "bin": [
+    "bin/blueconsole"
+  ],
   "extra": {
     "vertexvaar/bluecontainer": {
       "svc": "svc"
-    },
-    "vertexvaar/bluesprints": {
-      "view": "view",
-      "config": "config"
-    },
-    "vertexvaar/blueconsole": {
-      "config": "config"
     }
   }
 }

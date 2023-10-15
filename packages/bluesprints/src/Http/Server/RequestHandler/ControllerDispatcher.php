@@ -21,7 +21,7 @@ readonly class ControllerDispatcher implements RequestHandlerInterface
         $route = $request->getAttribute('route');
 
         /** @var Controller $controller */
-        $controller = $this->container->get($route['controller']);
-        return $controller->{$route['action']}($request);
+        $controller = $this->container->get($route->controller);
+        return $controller->{$route->action}($request);
     }
 }

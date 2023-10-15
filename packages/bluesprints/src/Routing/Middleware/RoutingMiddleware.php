@@ -10,6 +10,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
+use VerteXVaaR\BlueSprints\Routing\Route;
+
 use function preg_match;
 
 class RoutingMiddleware implements MiddlewareInterface
@@ -33,9 +35,11 @@ class RoutingMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $path = $request->getUri()->getPath();
-        foreach ($this->routes[$request->getMethod()] as $pattern => $possibleRoute) {
+        $method = $request->getMethod();
+        foreach ($this->routes[$method] as $pattern => $possibleRoute) {
             if (preg_match('~^' . $pattern . '$~', $path)) {
-                $request = $request->withAttribute('route', $possibleRoute);
+                $route = new Route($method, $path, $possibleRoute['controller'], $possibleRoute['action']);
+                $request = $request->withAttribute('route', $route);
                 return $handler->handle($request);
             }
         }

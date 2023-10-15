@@ -6,12 +6,10 @@ namespace VerteXVaaR\BlueSprints\Cache;
 
 use DateInterval;
 use Psr\SimpleCache\CacheInterface;
-
 use RuntimeException;
 use SplFileInfo;
 use VerteXVaaR\BlueSprints\Environment\Config;
 use VerteXVaaR\BlueSprints\Environment\Paths;
-use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
 use function CoStack\Lib\concat_paths;
 use function dirname;
@@ -28,9 +26,7 @@ use function json_decode;
 use function json_encode;
 use function mkdir;
 use function sprintf;
-use function stat;
 use function time;
-
 use function unlink;
 
 use const JSON_THROW_ON_ERROR;

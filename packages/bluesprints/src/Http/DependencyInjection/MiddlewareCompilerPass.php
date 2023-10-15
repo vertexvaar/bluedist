@@ -6,14 +6,12 @@ namespace VerteXVaaR\BlueSprints\Http\DependencyInjection;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
-use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 use VerteXVaaR\BlueContainer\Service\DependencyOrderingService;
-use VerteXVaaR\BlueSprints\Environment\Paths;
 use VerteXVaaR\BlueSprints\Http\Server\Middleware\MiddlewareRegistry;
 
 use function CoStack\Lib\concat_paths;

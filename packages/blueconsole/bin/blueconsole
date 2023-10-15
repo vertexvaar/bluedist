@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Symfony\Component\Dotenv\Dotenv;
+use VerteXVaaR\BlueConsole\BlueApplication;
+use VerteXVaaR\BlueContainer\DI;
+
+$root = getenv('VXVR_BS_ROOT');
+if (!$root) {
+    $root = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR;
+    putenv('VXVR_BS_ROOT=' . $root);
+}
+
+if (file_exists($root . '/.env')) {
+    $dotenv = new Dotenv();
+    $dotenv->usePutenv();
+    $dotenv->loadEnv($root . '/.env', null, 'dev', [], true);
+}
+
+if (empty(ini_get('date.timezone'))) {
+    date_default_timezone_set('UTC');
+}
+
+require_once(__DIR__ . '/../../../vendor/autoload.php');
+
+$di = new DI();
+$di->get(BlueApplication::class)->run();

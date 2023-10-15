@@ -15,7 +15,7 @@ use VerteXVaaR\BlueSprints\Utility\Strings;
 class Welcome extends AbstractController
 {
     #[Route(path: '/')]
-    #[Route(path: '/.*', priority: -1)]
+    //#[Route(path: '/.*', priority: -1)]
     public function index(): ResponseInterface
     {
         return $this->render('fruits/index.html.twig', ['strings' => ['foo', 'bar', 'baz']]);

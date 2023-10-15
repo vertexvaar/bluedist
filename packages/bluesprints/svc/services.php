@@ -13,7 +13,6 @@ use VerteXVaaR\BlueSprints\Scheduler\Task\Task;
 use VerteXVaaR\BlueSprints\Template\DependencyInjection\TemplateRendererCompilerPass;
 
 return static function (ContainerBuilder $container): void {
-    $container->addCompilerPass(new EnvironmentCompilerPass());
     $container->addCompilerPass(new PathsCompilerPass());
     $container->addCompilerPass(new ConfigCompilerPass());
     $container->addCompilerPass(new MiddlewareCompilerPass());

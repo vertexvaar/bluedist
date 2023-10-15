@@ -23,7 +23,8 @@
     "vertexvaar/bluecontainer": "@dev",
     "vertexvaar/blueauth": "@dev",
     "vertexvaar/bluedebug": "@dev",
-    "vertexvaar/bluetranslation": "@dev"
+    "vertexvaar/bluetranslation": "@dev",
+    "vertexvaar/blueconsole": "@dev"
   },
   "autoload": {
     "psr-4": {
@@ -43,17 +44,19 @@
     }
   },
   "extra": {
+    "vertexvaar/bluecontainer": {
+      "svc": "svc"
+    },
     "vertexvaar/bluesprints": {
       "logs": "var/logs",
       "locks": "var/locks",
       "cache": "var/cache",
       "database": "var/database",
       "config": "config",
-      "view": "view",
-      "translations": "translations"
+      "view": "view"
     },
-    "vertexvaar/bluecontainer": {
-      "svc": "svc"
+    "vertexvaar/bluetranslation": {
+      "translations": "translations"
     }
   }
 }

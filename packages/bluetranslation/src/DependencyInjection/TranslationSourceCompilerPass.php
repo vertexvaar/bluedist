@@ -22,7 +22,7 @@ use VerteXVaaR\BlueTranslation\TranslatorFactory;
 
 use function array_key_exists;
 use function array_keys;
-use function array_merge;
+use function array_merge_recursive;
 use function CoStack\Lib\concat_paths;
 use function explode;
 use function getenv;
@@ -49,7 +49,7 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
             fn(Package $package, string $installPath) => $this->getTranslationResources($package, $installPath, $io)
         );
         $rootTranslations = $this->getTranslationResources($composer->getPackage(), getenv('VXVR_BS_ROOT'), $io);
-        $translations = array_merge($rootTranslations, ...$translations);
+        $translations = array_merge_recursive($rootTranslations, ...$translations);
 
         $definition = $container->getDefinition(TranslatorFactory::class);
         $loaders = $definition->getArgument('$loader');
@@ -69,10 +69,10 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
     private function getTranslationResources(PackageInterface $package, string $installPath, IOInterface $io): array
     {
         $extra = $package->getExtra();
-        if (!isset($extra['vertexvaar/bluesprints']['translations'])) {
+        if (!isset($extra['vertexvaar/bluetranslation']['translations'])) {
             return [];
         }
-        $absolutePath = concat_paths($installPath, $extra['vertexvaar/bluesprints']['translations']);
+        $absolutePath = concat_paths($installPath, $extra['vertexvaar/bluetranslation']['translations']);
         $recursiveDirectoryIterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator(
                 $absolutePath,
@@ -89,7 +89,7 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
                 true,
                 IOInterface::VERBOSE
             );
-            $translations[$file->getExtension()][$catalogue][$language] = $pathname;
+            $translations[$file->getExtension()][$catalogue][$language][] = $pathname;
         }
         return $translations;
     }

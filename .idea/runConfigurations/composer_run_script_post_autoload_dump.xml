@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="composer run-script post-autoload-dump" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/vendor/bin/composer" scriptParameters="run-script post-autoload-dump --verbose">
+  <configuration default="false" name="composer run-script post-autoload-dump" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/vendor/bin/composer" scriptParameters="run-script post-autoload-dump -vv">
     <CommandLine>
       <PhpTestInterpreterSettings>
         <option name="interpreterName" value="php" />

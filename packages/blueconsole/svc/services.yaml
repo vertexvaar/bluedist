@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  VerteXVaaR\BlueConsole\:
+    resource: '../src/*'
+
+  VerteXVaaR\BlueConsole\BlueApplication:
+    public: true

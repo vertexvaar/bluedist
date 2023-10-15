@@ -39,8 +39,10 @@ readonly class TranslatorFactory
         foreach ($this->resources as $loader => $domains) {
             $translator->addLoader($loader, $this->loader[$loader]);
             foreach ($domains as $domain => $languages) {
-                foreach ($languages as $language => $source) {
-                    $translator->addResource($loader, $source, $language, $domain);
+                foreach ($languages as $language => $resources) {
+                    foreach ($resources as $resource) {
+                        $translator->addResource($loader, $resource, $language, $domain);
+                    }
                 }
             }
         }

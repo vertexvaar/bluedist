@@ -18,7 +18,11 @@ class LoginCest
     // tests
     public function loginAndLogout(AcceptanceTester $I)
     {
+        $I->haveUser('admin', 'password');
+
         $I->amOnPage('/');
+
+        $I->dontSeeCookie('auth');
 
         if (ini_get('xdebug.mode') === 'debug') {
             $I->setCookie('XDEBUG_SESSION', 'XDEBUG_ECLIPSE');
@@ -34,9 +38,13 @@ class LoginCest
         // Requires bluesprints debug package
         $I->see('User (authenticated): admin');
 
+        $I->seeCookie('auth');
+
         $I->amOnPage('/logout');
 
         // Requires bluesprints debug package
         $I->see('User (anonymous session)');
+
+        $I->dontSeeCookie('auth');
     }
 }

@@ -10,7 +10,6 @@ use VerteXVaaR\BlueContainer\DI;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 
-use function _;
 use function class_exists;
 use function file_exists;
 use function file_get_contents;
@@ -58,7 +57,7 @@ class ErrorHandler
         $this->includeCss();
         $context = (new DI())->get(Environment::class)->context;
         echo '<div class="c-error">';
-        if ($context === Context::Development) {
+        if (Context::Development === $context || Context::Testing === $context) {
             echo '<h1>An error occurred</h1>';
             echo '<div class="c-error__report">';
             echo '<p>Message: </p><code class="c-error__message">' . $message . ' (Code: ' . $code . ')</code>';

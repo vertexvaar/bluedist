@@ -25,7 +25,7 @@ use function unserialize;
 
 use const DIRECTORY_SEPARATOR as DS;
 
-readonly class FileStore implements Store
+readonly class FileStore
 {
     public function __construct(private Paths $paths, private Config $config)
     {
@@ -71,7 +71,10 @@ readonly class FileStore implements Store
     public function delete(Entity $entity): void
     {
         $databaseFolder = $this->getFolder($entity::class);
-        unlink(concat_paths($databaseFolder, $entity->identifier));
+        $entityFile = concat_paths($databaseFolder, $entity->identifier);
+        if (file_exists($entityFile)) {
+            unlink($entityFile);
+        }
     }
 
     public function getFolder(string $class): string

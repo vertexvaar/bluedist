@@ -41,7 +41,11 @@
       "svc": "svc"
     },
     "vertexvaar/bluesprints": {
+      "view": "view",
       "config": "config"
+    },
+    "vertexvaar/bluetranslation": {
+      "translations": "translations"
     }
   }
 }
