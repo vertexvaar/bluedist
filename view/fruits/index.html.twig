@@ -71,5 +71,25 @@
         <p>
             Want a demo about Caching? Just <a href="/cache/index">go there</a> ;)
         </p>
+
+        <h2>Session? Login?</h2>
+
+        <p>
+            bluesprints can be easily extended with a username/password login by requiring vertexvaar/blueauth.
+            blueauth contains all files required for a full authentication workflow.
+            Create users with <code>bin/blueconsole app:user:create [user] [pass]</code>.
+            User sessions are automatically checked via middleware. You can access the session from the request object.
+        </p>
+
+        {% if session.authenticated %}
+            <p>
+                You are currently authenticated as {{ session.username }}. Your session identifier is {{ session.identifier }}
+                <a href="/logout">Click here to log out</a>
+            </p>
+        {% else %}
+            <p>
+                Login with your created user <a href="/login">Login</a>
+            </p>
+        {% endif %}
     </section>
 {% endblock %}

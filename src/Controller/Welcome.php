@@ -16,9 +16,12 @@ class Welcome extends AbstractController
 {
     #[Route(path: '/')]
     //#[Route(path: '/.*', priority: -1)]
-    public function index(): ResponseInterface
+    public function index(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->render('fruits/index.html.twig', ['strings' => ['foo', 'bar', 'baz']]);
+        return $this->render('fruits/index.html.twig', [
+            'session' => $request->getAttribute('session'),
+            'strings' => ['foo', 'bar', 'baz']
+        ]);
     }
 
     #[Route(path: '/listFruits')]

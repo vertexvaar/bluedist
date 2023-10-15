@@ -1,10 +1,7 @@
-{% if context.name == 'Testing' %}
-    {% set position = 'relative' %}
-{% else %}
-    {% set position = 'fixed' %}
-{% endif %}
-<div id="debugtoolbar" style="position: {{ position }}; bottom: 0; left: 0; display: block; width: 100%; height: 75px; background-color: #333333; color: #cccccc">
-    <div style="position: absolute; right: 0; ">
+<div id="debugtoolbar"
+     style="position: relative ;display: block; width: calc(100% - 10px); height: 75px; background-color: #333333; color: #cccccc; padding: 5px"
+>
+    <div style="position: absolute; right: 5px; ">
         <a style="color: #cccccc;" href="#" onclick="document.querySelector('#debugtoolbar').remove(); return false;">Close</a>
     </div>
     <div>Route: {{ route.controller }}::{{ route.action }}</div>
