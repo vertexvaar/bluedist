@@ -40,3 +40,14 @@ services:
   Psr\Http\Server\RequestHandlerInterface: '@VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher'
 
   VerteXVaaR\BlueSprints\Store\Store: '@VerteXVaaR\BlueSprints\Store\FileStore'
+
+  Symfony\Component\Translation\Loader\PhpFileLoader:
+    class: Symfony\Component\Translation\Loader\PhpFileLoader
+
+  VerteXVaaR\BlueSprints\Translation\TranslatorFactory:
+    arguments:
+      $loader:
+        php: '@Symfony\Component\Translation\Loader\PhpFileLoader'
+
+  Symfony\Component\Translation\Translator:
+    factory: [ '@VerteXVaaR\BlueSprints\Translation\TranslatorFactory', 'create' ]

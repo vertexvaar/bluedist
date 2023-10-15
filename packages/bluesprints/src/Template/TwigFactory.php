@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSprints\Template;
 
+use Symfony\Component\Translation\Translator;
 use Twig\Cache\FilesystemCache;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFilter;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Paths;
 
@@ -19,7 +21,8 @@ readonly class TwigFactory
     public function __construct(
         private TemplatePathsRegistry $templatePathsRegistry,
         private Paths $paths,
-        private \VerteXVaaR\BlueSprints\Environment\Environment $environment
+        private \VerteXVaaR\BlueSprints\Environment\Environment $environment,
+        private Translator $translator,
     ) {
     }
 
@@ -38,6 +41,7 @@ readonly class TwigFactory
                 'debug' => $this->environment->context === Context::Development
             ]
         );
+        $twig->addFilter(new TwigFilter('t', $this->translator->trans(...)));
         if ($this->environment->context === Context::Development) {
             $twig->addExtension(new DebugExtension());
         }

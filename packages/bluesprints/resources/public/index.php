@@ -41,10 +41,6 @@ if (!class_exists(ClassLoader::class, false)) {
 $errorHandler = new ErrorHandler();
 $errorHandler->register();
 
-bindtextdomain('messages','/app/locales');
-setlocale(LC_MESSAGES, "de_DE.UTF-8");
-textdomain('messages');
-
 $request = ServerRequest::fromGlobals();
 
 $di = new DI();

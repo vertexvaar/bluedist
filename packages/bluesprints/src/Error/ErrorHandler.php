@@ -23,6 +23,7 @@ use function nl2br;
 use function set_error_handler;
 use function set_exception_handler;
 use function var_dump;
+use function var_export;
 
 use const E_ALL;
 
@@ -58,9 +59,9 @@ class ErrorHandler
         $context = (new DI())->get(Environment::class)->context;
         echo '<div class="c-error">';
         if ($context === Context::Development) {
-            echo '<h1>' . _('An error occurred.') . '</h1>';
+            echo '<h1>An error occurred</h1>';
             echo '<div class="c-error__report">';
-            echo '<p>' . _('Message') . ': </p><code class="c-error__message">' . $message . ' (Code: ' . $code . ')</code>';
+            echo '<p>Message: </p><code class="c-error__message">' . $message . ' (Code: ' . $code . ')</code>';
             echo '<p>Error occured in:</p><code>' . $file . ' @ ' . $line . '</code>';
             echo '</div>';
             $this->printCallStack($callStack);
@@ -89,8 +90,12 @@ class ErrorHandler
                 } elseif (is_array($argument)) {
                     $argumentArray = [];
                     foreach ($argument as $key => $value) {
-                        $argumentArray[] = "'" . $key . "'" . ' => ' .
-                            (is_object($value) ? get_class($value) : $value);
+                        if (is_array($value)) {
+                            $value = var_export($value, true);
+                        } elseif (is_object($value)) {
+                            $value = get_class($value);
+                        }
+                        $argumentArray[] = "'" . $key . "'" . ' => ' . $value;
                     }
                     echo implode(', ', $argumentArray);
                 } elseif (is_string($argument)) {
