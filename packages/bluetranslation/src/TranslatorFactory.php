@@ -22,7 +22,7 @@ readonly class TranslatorFactory
         private array $resources,
         private array $loader,
         private string $fallbackLanguage,
-        private ServerRequestInterface $serverRequest
+        private ServerRequestInterface $serverRequest,
     ) {
     }
 
@@ -34,7 +34,7 @@ readonly class TranslatorFactory
             $locale,
             null,
             concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->cache, 'translations'),
-            $this->environment->context === Context::Development
+            $this->environment->context === Context::Development,
         );
         foreach ($this->resources as $loader => $domains) {
             $translator->addLoader($loader, $this->loader[$loader]);

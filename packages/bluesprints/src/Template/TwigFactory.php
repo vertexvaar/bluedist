@@ -21,7 +21,7 @@ readonly class TwigFactory
         private TemplatePathsRegistry $templatePathsRegistry,
         private Paths $paths,
         private Environment $environment,
-        private array $extensions
+        private array $extensions,
     ) {
     }
 
@@ -37,8 +37,8 @@ readonly class TwigFactory
             $loader,
             [
                 'cache' => $filesystemCache,
-                'debug' => $this->environment->context === Context::Development
-            ]
+                'debug' => $this->environment->context === Context::Development,
+            ],
         );
         foreach ($this->extensions as $extension) {
             $twig->addExtension($extension);

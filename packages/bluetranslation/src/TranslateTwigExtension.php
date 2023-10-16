@@ -17,7 +17,7 @@ class TranslateTwigExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('t', $this->translator->trans(...))
+            new TwigFilter('t', $this->translator->trans(...)),
         ];
     }
 }

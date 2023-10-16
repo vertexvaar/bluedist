@@ -24,7 +24,7 @@ class ConfigCompilerPass implements CompilerPassInterface
         $systemConfig = concat_paths(
             getenv('VXVR_BS_ROOT'),
             $packageConfig['vertexvaar/bluesprints']['config'] ?? 'config',
-            'config.php'
+            'config.php',
         );
 
         if (file_exists($systemConfig)) {

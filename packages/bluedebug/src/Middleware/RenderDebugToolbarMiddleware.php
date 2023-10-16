@@ -43,17 +43,17 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
         if ($this->environment->context === Context::Production) {
             return $response;
         }
+
+        /** @var null|ServerRequestInterface $collectedRequest */
+        $collectedRequest = $this->collector->getItem('request');
+        /** @var null|ResponseInterface $collectedResponse */
+        $collectedResponse = $this->collector->getItem('response');
+        /** @var null|Route $collectedRoute */
+        $collectedRoute = $collectedRequest?->getAttribute('route');
+        /** @var null|Session $collectedSession */
+        $collectedSession = $collectedRequest?->getAttribute('session');
+
         if ($response->getStatusCode() >= 300) {
-            /** @var ServerRequestInterface $collectedRequest */
-            $collectedRequest = $this->collector->getItem('request');
-            /** @var ResponseInterface $collectedResponse */
-            $collectedResponse = $this->collector->getItem('response');
-
-            /** @var Route $collectedRoute */
-            $collectedRoute = $collectedRequest->getAttribute('route');
-            /** @var Session $collectedSession */
-            $collectedSession = $collectedRequest->getAttribute('session');
-
             $lastRequest = [
                 'request' => $collectedRequest,
                 'response' => $collectedResponse,
@@ -66,16 +66,6 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
             $this->cache->set('last_request', serialize($lastRequest));
             return $response;
         }
-
-        /** @var ServerRequestInterface $collectedRequest */
-        $collectedRequest = $this->collector->getItem('request');
-        /** @var ResponseInterface $collectedResponse */
-        $collectedResponse = $this->collector->getItem('response');
-
-        /** @var Route $collectedRoute */
-        $collectedRoute = $collectedRequest->getAttribute('route');
-        /** @var Session $collectedSession */
-        $collectedSession = $collectedRequest->getAttribute('session');
 
         $lastRequest = $this->cache->get('last_request');
         $this->cache->delete('last_request');
@@ -91,7 +81,7 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
                     DebugCollector::class,
                     CollectedQuery::class,
                     QueryExecution::class,
-                ]
+                ],
             ]);
         }
 

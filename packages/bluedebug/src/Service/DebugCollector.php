@@ -23,6 +23,6 @@ class DebugCollector
 
     public function getItem(string $key): mixed
     {
-        return $this->items[$key];
+        return $this->items[$key] ?? null;
     }
 }

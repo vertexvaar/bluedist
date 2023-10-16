@@ -13,7 +13,7 @@ readonly class Paths
         public string $database,
         public string $config,
         public string $view,
-        public string $translations
+        public string $translations,
     ) {
     }
 }

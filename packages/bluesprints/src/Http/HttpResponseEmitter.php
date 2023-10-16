@@ -24,8 +24,8 @@ class HttpResponseEmitter
                 sprintf(
                     'Buffer length for `%s` must be greater than zero; received `%d`.',
                     self::class,
-                    $bufferLength
-                )
+                    $bufferLength,
+                ),
             );
         }
 

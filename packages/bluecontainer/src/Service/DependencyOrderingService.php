@@ -200,7 +200,7 @@ class DependencyOrderingService
         if (!empty($cycles)) {
             throw new UnexpectedValueException(
                 'Your dependencies have cycles. That will not work out. Cycles found: ' . implode(', ', $cycles),
-                1381960494
+                1381960494,
             );
         }
 

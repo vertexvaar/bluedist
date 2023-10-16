@@ -11,6 +11,6 @@ namespace PHPSTORM_META {
         map([
             'request' => ServerRequestInterface::class,
             'response' => ResponseInterface::class,
-        ])
+        ]),
     );
 }

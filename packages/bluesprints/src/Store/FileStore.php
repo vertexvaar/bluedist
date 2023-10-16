@@ -41,7 +41,7 @@ readonly class FileStore implements Store
         $fileContents = file_get_contents($databaseFile);
         return unserialize(
             $fileContents,
-            ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]]
+            ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]],
         );
     }
 
@@ -55,7 +55,7 @@ readonly class FileStore implements Store
         foreach ($fileSystemIterator as $file) {
             $results[] = unserialize(
                 file_get_contents($file->getPathname()),
-                ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]]
+                ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]],
             );
         }
         return $results;

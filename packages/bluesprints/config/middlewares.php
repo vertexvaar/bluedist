@@ -7,5 +7,5 @@ use VerteXVaaR\BlueSprints\Routing\Middleware\RoutingMiddleware;
 return [
     'vertexvaar/bluesprints/routing' => [
         'service' => RoutingMiddleware::class,
-    ]
+    ],
 ];

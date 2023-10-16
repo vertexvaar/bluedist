@@ -13,7 +13,7 @@ abstract class AbstractController implements Controller
 {
     public function __construct(
         protected readonly Repository $repository,
-        protected readonly View $view
+        protected readonly View $view,
     ) {
     }
 

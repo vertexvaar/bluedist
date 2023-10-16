@@ -7,6 +7,7 @@ namespace VerteXVaaR\BlueDist\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Ramsey\Uuid\Uuid;
+use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueDist\Model\Fruit;
 use VerteXVaaR\BlueSprints\Mvcr\Controller\AbstractController;
 use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
@@ -17,11 +18,11 @@ class Welcome extends AbstractController
     #[Route(path: '/')]
     //#[Route(path: '/.*', priority: -1)]
     public function index(
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
     ): ResponseInterface {
         return $this->render('fruits/index.html.twig', [
             'session' => $request->getAttribute('session'),
-            'strings' => ['foo', 'bar', 'baz']
+            'strings' => ['foo', 'bar', 'baz'],
         ]);
     }
 
@@ -84,8 +85,8 @@ class Welcome extends AbstractController
     /**
      * 'GET' route registration only to be able to redirect the user for demonstration purposes.
      */
-    #[Route(path: '/updateFruit', method: 'POST')]
-    #[Route(path: '/updateFruit', method: 'GET')]
+    #[Route(path: '/updateFruit')]
+    #[AuthorizedRoute(path: '/updateFruit', method: 'POST', requireAuthorization: true)]
     public function updateFruit(ServerRequestInterface $request): ResponseInterface
     {
         if ($request->getMethod() === 'GET') {
@@ -104,7 +105,7 @@ class Welcome extends AbstractController
         return $this->redirect('listFruits');
     }
 
-    #[Route(path: '/deleteFruit', method: 'POST')]
+    #[AuthorizedRoute(path: '/deleteFruit', method: 'POST', requiredRoles: ['user'])]
     public function deleteFruit(ServerRequestInterface $request): ResponseInterface
     {
         $fruit = $this->repository->findByIdentifier(Fruit::class, $request->getParsedBody()['fruit']);
@@ -114,7 +115,7 @@ class Welcome extends AbstractController
         return $this->redirect('listFruits');
     }
 
-    #[Route(path: '/deleteAllFruits', method: 'POST')]
+    #[AuthorizedRoute(path: '/deleteAllFruits', method: 'POST', requiredRoles: ['admin'])]
     public function deleteAllFruits(ServerRequestInterface $request): ResponseInterface
     {
         $fruits = $this->repository->findAll(Fruit::class);

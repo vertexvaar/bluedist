@@ -83,7 +83,8 @@
 
         {% if session.authenticated %}
             <p>
-                You are currently authenticated as {{ session.username }}. Your session identifier is {{ session.identifier }}
+                You are currently authenticated as {{ session.username }}. Your session identifier
+                is {{ session.identifier }}
                 <a href="/logout">Click here to log out</a>
             </p>
         {% else %}

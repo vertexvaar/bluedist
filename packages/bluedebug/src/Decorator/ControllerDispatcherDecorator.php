@@ -26,5 +26,4 @@ readonly class ControllerDispatcherDecorator implements RequestHandlerInterface
         return $return;
     }
 
-
 }

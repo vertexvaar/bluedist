@@ -43,7 +43,7 @@ class ErrorHandler
             $throwable->getMessage(),
             $throwable->getFile(),
             $throwable->getLine(),
-            $throwable->getTrace()
+            $throwable->getTrace(),
         );
     }
 
@@ -52,7 +52,7 @@ class ErrorHandler
         string $message,
         string $file,
         int $line,
-        array $callStack = []
+        array $callStack = [],
     ): bool {
         $this->includeCss();
         $context = (new DI())->get(Environment::class)->context;

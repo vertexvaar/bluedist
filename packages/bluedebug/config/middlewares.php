@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 use VerteXVaaR\BlueDebug\Middleware\CollectorMiddleware;
 use VerteXVaaR\BlueDebug\Middleware\RenderDebugToolbarMiddleware;
 use VerteXVaaR\BlueDebug\Middleware\StopwatchMiddleware;

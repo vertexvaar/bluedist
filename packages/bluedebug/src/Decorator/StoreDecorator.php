@@ -24,7 +24,7 @@ class StoreDecorator implements Store
             'findByIdentifier',
             ['class' => $class],
             $this->inner->findByIdentifier(...),
-            func_get_args()
+            func_get_args(),
         );
     }
 
@@ -34,7 +34,7 @@ class StoreDecorator implements Store
             'findAll',
             ['class' => $class],
             $this->inner->findAll(...),
-            func_get_args()
+            func_get_args(),
         );
     }
 
@@ -44,7 +44,7 @@ class StoreDecorator implements Store
             'store',
             ['class' => $entity::class],
             $this->inner->store(...),
-            func_get_args()
+            func_get_args(),
         );
     }
 
@@ -54,7 +54,7 @@ class StoreDecorator implements Store
             'delete',
             ['class' => $entity::class],
             $this->inner->delete(...),
-            func_get_args()
+            func_get_args(),
         );
     }
 }

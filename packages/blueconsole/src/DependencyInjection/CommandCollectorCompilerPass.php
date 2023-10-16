@@ -32,7 +32,7 @@ class CommandCollectorCompilerPass implements CompilerPassInterface
 
         $packageIterator = new PackageIterator($composer);
         $commands = $packageIterator->iterate(
-            fn(PackageInterface $package, string $installPath) => $this->loadCommands($package, $installPath, $io)
+            fn(PackageInterface $package, string $installPath) => $this->loadCommands($package, $installPath, $io),
         );
 
         $packageCommands = $this->loadCommands($composer->getPackage(), getenv('VXVR_BS_ROOT'), $io);
@@ -57,7 +57,7 @@ class CommandCollectorCompilerPass implements CompilerPassInterface
             $io->write(
                 sprintf('Package %s does not define extra.vertexvaar/blueconsole.config, skipping', $name),
                 true,
-                IOInterface::VERY_VERBOSE
+                IOInterface::VERY_VERBOSE,
             );
             return [];
         }
@@ -67,10 +67,10 @@ class CommandCollectorCompilerPass implements CompilerPassInterface
             $io->write(
                 sprintf(
                     'Package %s defines extra.vertexvaar/blueconsole.config, but the file commands.php does not exist',
-                    $name
+                    $name,
                 ),
                 true,
-                IOInterface::VERBOSE
+                IOInterface::VERBOSE,
             );
             return [];
         }

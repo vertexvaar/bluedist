@@ -33,7 +33,7 @@ class LoginCest
         $I->amOnPage('/login');
         $I->submitForm('#login', [
             'username' => 'admin',
-            'password' => 'password'
+            'password' => 'password',
         ]);
         // Requires bluesprints debug package
         $I->see('User (authenticated): admin');

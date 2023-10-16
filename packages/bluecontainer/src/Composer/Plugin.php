@@ -77,7 +77,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $packageIterator = new PackageIterator($this->composer);
         $packageIterator->iterate(
-            fn(PackageInterface $package, string $path) => $this->loadServices($container, $package, $path)
+            fn(PackageInterface $package, string $path) => $this->loadServices($container, $package, $path),
         );
 
         $this->loadServices($container, $this->composer->getPackage(), getenv('VXVR_BS_ROOT'));
@@ -87,7 +87,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $dumper = new PhpDumper($container);
         file_put_contents(
             __DIR__ . '/../DI.php',
-            $dumper->dump(['class' => 'DI', 'namespace' => 'VerteXVaaR\\BlueContainer'])
+            $dumper->dump(['class' => 'DI', 'namespace' => 'VerteXVaaR\\BlueContainer']),
         );
 
         $this->io->write('Generated container');
@@ -105,7 +105,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->io->write(
                 sprintf('Package %s does not define extra.vertexvaar/bluecontainer.svc, skipping', $package->getName()),
                 true,
-                IOInterface::VERY_VERBOSE
+                IOInterface::VERY_VERBOSE,
             );
             return;
         }
@@ -116,8 +116,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 sprintf(
                     'Package %s defines extra.vertexvaar/bluecontainer.svc, but the directory "%s" does not exist',
                     $package->getName(),
-                    $absoluteServicesPath
-                )
+                    $absoluteServicesPath,
+                ),
             );
             return;
         }
@@ -126,7 +126,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->io->write(
                 sprintf('Loading services.yaml from package %s', $package->getName()),
                 true,
-                IOInterface::VERBOSE
+                IOInterface::VERBOSE,
             );
             $loader = new YamlFileLoader($container, new FileLocator($absoluteServicesPath));
             $loader->load('services.yaml');
@@ -135,7 +135,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $this->io->write(
                 sprintf('Loading services.php from package %s', $package->getName()),
                 true,
-                IOInterface::VERBOSE
+                IOInterface::VERBOSE,
             );
             $loader = new PhpFileLoader($container, new FileLocator($absoluteServicesPath));
             $loader->load('services.php');

@@ -20,7 +20,7 @@ class MiddlewareChain implements RequestHandlerInterface
 
     public function __construct(
         MiddlewareRegistry $middlewareRegistry,
-        private readonly RequestHandlerInterface $requestHandler
+        private readonly RequestHandlerInterface $requestHandler,
     ) {
         $this->middlewares = $middlewareRegistry->middlewares;
         reset($this->middlewares);

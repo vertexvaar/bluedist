@@ -30,7 +30,7 @@ class MiddlewareCompilerPass implements CompilerPassInterface
 
         $packageIterator = new PackageIterator($composer);
         $middlewares = $packageIterator->iterate(
-            fn(PackageInterface $package, string $installPath) => $this->loadMiddlewares($package, $installPath, $io)
+            fn(PackageInterface $package, string $installPath) => $this->loadMiddlewares($package, $installPath, $io),
         );
 
         $packageMiddlewares = $this->loadMiddlewares($composer->getPackage(), getenv('VXVR_BS_ROOT'), $io);
@@ -55,10 +55,10 @@ class MiddlewareCompilerPass implements CompilerPassInterface
             $io->write(
                 sprintf(
                     'Package %s does not define extra.vertexvaar/bluesprints.config, skipping',
-                    $package->getName()
+                    $package->getName(),
                 ),
                 true,
-                IOInterface::VERY_VERBOSE
+                IOInterface::VERY_VERBOSE,
             );
             return [];
         }
@@ -69,10 +69,10 @@ class MiddlewareCompilerPass implements CompilerPassInterface
             $io->write(
                 sprintf(
                     'Package %s defines extra.vertexvaar/bluesprints.config, but middlewares.php does not exist',
-                    $package->getName()
+                    $package->getName(),
                 ),
                 true,
-                IOInterface::VERY_VERBOSE
+                IOInterface::VERY_VERBOSE,
             );
             return [];
         }
@@ -81,7 +81,7 @@ class MiddlewareCompilerPass implements CompilerPassInterface
         $io->write(
             sprintf('Loading middlewares.php from package %s', $package->getName()),
             true,
-            IOInterface::VERBOSE
+            IOInterface::VERBOSE,
         );
         $packageMiddlewares = require $absoluteMiddlewaresPath;
         foreach ($packageMiddlewares as $index => $packageMiddleware) {

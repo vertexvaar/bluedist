@@ -1,27 +1,30 @@
 <?php
 
-namespace VerteXVaaR\BlueSprints\Routing\DependencyInjection;
+declare(strict_types=1);
+
+namespace VerteXVaaR\BlueAuth\DependencyInjection;
 
 use Composer\IO\IOInterface;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
+use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueSprints\Routing\Middleware\RoutingMiddleware;
 
 use function array_keys;
 use function array_merge_recursive;
 use function array_replace;
+use function krsort;
 use function sprintf;
 
-class RouteCollectorCompilerPass implements CompilerPassInterface
+class AuthorizedRouteCollectorCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container): void
+    public function process(ContainerBuilder $container)
     {
         /** @var IOInterface $io */
         $io = $container->get('io');
-        $io->write('Loading routes from controller attributes', true, IOInterface::VERBOSE);
+        $io->write('Loading authorized routes from controller attributes', true, IOInterface::VERBOSE);
 
         $compiledRoutes = [];
         $controllers = $container->findTaggedServiceIds('vertexvaar.bluesprints.controller');
@@ -51,27 +54,29 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
                 continue;
             }
             foreach ($reflectionMethods as $reflectionMethod) {
-                $attributes = $reflectionMethod->getAttributes(Route::class);
+                $attributes = $reflectionMethod->getAttributes(AuthorizedRoute::class);
                 foreach ($attributes as $attribute) {
-                    /** @var Route $route */
-                    $route = $attribute->newInstance();
+                    /** @var AuthorizedRoute $authorizedRoute */
+                    $authorizedRoute = $attribute->newInstance();
                     $methodName = $reflectionMethod->getName();
                     $io->write(
                         sprintf(
                             'Found route [%d][%s] "%s" in controller "%s" method "%s"',
-                            $route->priority,
-                            $route->method,
-                            $route->path,
+                            $authorizedRoute->priority,
+                            $authorizedRoute->method,
+                            $authorizedRoute->path,
                             $controllerClass,
                             $methodName,
                         ),
                         true,
                         IOInterface::VERBOSE,
                     );
-                    $compiledRoutes[$route->method][$route->priority][$route->path] = [
-                        'class' => \VerteXVaaR\BlueSprints\Routing\Route::class,
+                    $compiledRoutes[$authorizedRoute->method][$authorizedRoute->priority][$authorizedRoute->path] = [
+                        'class' => \VerteXVaaR\BlueAuth\Routing\AuthorizedRoute::class,
                         'controller' => $controllerClass,
                         'action' => $methodName,
+                        'requireAuthorization' => $authorizedRoute->requireAuthorization || !empty($authorizedRoute->requiredRoles),
+                        'requiredRoles' => $authorizedRoute->requiredRoles,
                     ];
                 }
             }
@@ -93,4 +98,5 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
 
         $io->write('Loaded routes from controller attributes', true, IOInterface::VERBOSE);
     }
+
 }

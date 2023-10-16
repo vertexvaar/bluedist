@@ -55,19 +55,18 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
                         sprintf(
                             'Identified templates root %s for namespace %s',
                             $fullViewPath,
-                            $namespace
+                            $namespace,
                         ),
                         true,
-                        IOInterface::VERBOSE
+                        IOInterface::VERBOSE,
                     );
                     return [
-                        $namespace => $fullViewPath
+                        $namespace => $fullViewPath,
                     ];
                 }
                 return null;
-            }
+            },
         );
-
 
         $rootPaths = [];
         $extra = $composer->getPackage()->getExtra();
@@ -79,10 +78,10 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
                 sprintf(
                     'Identified templates root %s for namespace %s',
                     $fullViewPath,
-                    FilesystemLoader::MAIN_NAMESPACE
+                    FilesystemLoader::MAIN_NAMESPACE,
                 ),
                 true,
-                IOInterface::VERBOSE
+                IOInterface::VERBOSE,
             );
         }
         $templatePaths = array_replace($rootPaths, ...array_filter($templatePaths));
@@ -108,8 +107,8 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
             $loader,
             [
                 'cache' => $filesystemCache,
-                'debug' => $context === Context::Development
-            ]
+                'debug' => $context === Context::Development,
+            ],
         );
         if ($context === Context::Development) {
             $twig->addExtension(new DebugExtension());
@@ -122,7 +121,7 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
         $twigTemplatesPath = concat_paths(getenv('VXVR_BS_ROOT'), $config['view'] ?? 'view');
 
         $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($twigTemplatesPath, FilesystemIterator::SKIP_DOTS)
+            new RecursiveDirectoryIterator($twigTemplatesPath, FilesystemIterator::SKIP_DOTS),
         );
 
         /** @var IOInterface $io */

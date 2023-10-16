@@ -46,7 +46,7 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
 
         $packageIterator = new PackageIterator($composer);
         $translations = $packageIterator->iterate(
-            fn(Package $package, string $installPath) => $this->getTranslationResources($package, $installPath, $io)
+            fn(Package $package, string $installPath) => $this->getTranslationResources($package, $installPath, $io),
         );
         $rootTranslations = $this->getTranslationResources($composer->getPackage(), getenv('VXVR_BS_ROOT'), $io);
         $translations = array_merge_recursive($rootTranslations, ...$translations);
@@ -76,8 +76,8 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
         $recursiveDirectoryIterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator(
                 $absolutePath,
-                FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS
-            )
+                FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS,
+            ),
         );
         $translations = [];
         /** @var SplFileInfo $file */
@@ -87,7 +87,7 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
             $io->write(
                 sprintf('Found translation resource "%s', $pathname),
                 true,
-                IOInterface::VERBOSE
+                IOInterface::VERBOSE,
             );
             $translations[$file->getExtension()][$catalogue][$language][] = $pathname;
         }
