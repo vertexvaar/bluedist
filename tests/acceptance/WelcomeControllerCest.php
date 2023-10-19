@@ -15,6 +15,8 @@ class WelcomeControllerCest
     // tests
     public function createInitialFruitsTest(AcceptanceTester $I)
     {
+        $I->haveUser('admin', 'password', ['user', 'admin']);
+
         $I->amOnPage('/');
 
         if (ini_get('xdebug.mode') === 'debug') {
@@ -34,12 +36,21 @@ class WelcomeControllerCest
         $I->submitForm('[action="updateFruit"]', [
             'color' => 'green-red',
         ]);
+
+        $I->see('Login');
+        $I->submitForm('#login', [
+            'username' => 'admin',
+            'password' => 'password',
+        ]);
+
         $I->see('I am a Apple and my color is green-red');
     }
 
     // tests
     public function deleteAllFruits(AcceptanceTester $I)
     {
+        $I->haveUser('admin', 'password', ['user', 'admin']);
+
         $I->amOnPage('/');
 
         if (ini_get('xdebug.mode') === 'debug') {
@@ -54,6 +65,12 @@ class WelcomeControllerCest
         $I->see('I am a Apple and my color is red');
 
         $I->click('Delete all fruits');
+
+        $I->see('Login');
+        $I->submitForm('#login', [
+            'username' => 'admin',
+            'password' => 'password',
+        ]);
 
         $I->see('OH WAIT! There is no Fruit yet.');
     }

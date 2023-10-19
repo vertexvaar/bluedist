@@ -19,6 +19,7 @@
   "require": {
     "php": "8.2.*",
     "composer-plugin-api": "^2.0",
+    "psr/container": "^2.0",
     "symfony/dependency-injection": "^v6.3",
     "symfony/config": "^v6.3",
     "symfony/yaml": "^v6.3"

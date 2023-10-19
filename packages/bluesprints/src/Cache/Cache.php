@@ -8,8 +8,8 @@ use DateInterval;
 use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 use SplFileInfo;
+use VerteXVaaR\BlueContainer\Generated\PackageExtras;
 use VerteXVaaR\BlueSprints\Environment\Config;
-use VerteXVaaR\BlueSprints\Environment\Paths;
 
 use function CoStack\Lib\concat_paths;
 use function dirname;
@@ -35,9 +35,10 @@ readonly class Cache implements CacheInterface
 {
     private string $cacheRoot;
 
-    public function __construct(private Paths $paths, private Config $config)
+    public function __construct(private Config $config, private PackageExtras $packageExtras)
     {
-        $this->cacheRoot = concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->cache);
+        $this->cacheRoot = $packageExtras->getPath($this->packageExtras->rootPackageName, 'cache')
+            ?? concat_paths(getenv('VXVR_BS_ROOT'), 'var/cache');
     }
 
     public function get(string $key, mixed $default = null): mixed

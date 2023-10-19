@@ -18,7 +18,7 @@ class LoginCest
     // tests
     public function loginAndLogout(AcceptanceTester $I)
     {
-        $I->haveUser('admin', 'password');
+        $I->haveUser('admin', 'password', ['user', 'admin']);
 
         $I->amOnPage('/');
 

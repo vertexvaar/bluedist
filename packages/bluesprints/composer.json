@@ -18,31 +18,13 @@
   },
   "require": {
     "php": "8.2.*",
-    "ext-intl": "*",
     "co-stack/lib": "^v5.0.0",
-    "guzzlehttp/psr7": "^2.6",
-    "psr/container": "^2.0",
-    "psr/http-server-middleware": "^1.0",
-    "psr/http-server-handler": "^1.0",
     "psr/simple-cache": "^3.0.0",
-    "ramsey/uuid": "^4.7.4",
-    "symfony/dotenv": "^v6.3.0",
-    "twig/twig": "^v3.7.1",
     "vertexvaar/bluecontainer": "*"
   },
-  "suggest": {
-    "erusev/parsedown": "Is used to print exception help pages in HTML instead of pure markdown (development context only)."
-  },
   "extra": {
-    "vertexvaar/bluecontainer": {
-      "svc": "svc"
-    },
     "vertexvaar/bluesprints": {
-      "view": "view",
-      "config": "config"
-    },
-    "vertexvaar/bluetranslation": {
-      "translations": "translations"
+      "services": "svc"
     }
   }
 }

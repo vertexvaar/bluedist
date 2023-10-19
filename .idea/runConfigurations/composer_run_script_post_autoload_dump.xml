@@ -6,8 +6,6 @@
       </PhpTestInterpreterSettings>
       <envs>
         <env name="COMPOSER_ALLOW_XDEBUG" value="1" />
-        <env name="PHP_IDE_CONFIG" value="'serverName=local.bluedist.com'" />
-        <env name="XDEBUG_SESSION" value="1" />
       </envs>
     </CommandLine>
     <method v="2" />

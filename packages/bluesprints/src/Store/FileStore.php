@@ -9,8 +9,8 @@ use DateTimeImmutable;
 use FilesystemIterator;
 use RuntimeException;
 use SplFileInfo;
+use VerteXVaaR\BlueContainer\Generated\PackageExtras;
 use VerteXVaaR\BlueSprints\Environment\Config;
-use VerteXVaaR\BlueSprints\Environment\Paths;
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
 use function CoStack\Lib\concat_paths;
@@ -27,7 +27,7 @@ use const DIRECTORY_SEPARATOR as DS;
 
 readonly class FileStore implements Store
 {
-    public function __construct(private Paths $paths, private Config $config)
+    public function __construct(private Config $config, private PackageExtras $packageExtras)
     {
     }
 
@@ -79,7 +79,9 @@ readonly class FileStore implements Store
 
     private function getFolder(string $class): string
     {
-        $classFolder = concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->database, str_replace('\\', DS, $class));
+        $databasePath = $this->packageExtras->getPath($this->packageExtras->rootPackageName, 'database')
+            ?? concat_paths(getenv('VXVR_BS_ROOT'), 'var/database');
+        $classFolder = concat_paths($databasePath, str_replace('\\', DS, $class),);
 
         if (
             !is_dir($classFolder)

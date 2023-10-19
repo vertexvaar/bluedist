@@ -6,20 +6,7 @@ services:
   VerteXVaaR\BlueSprints\:
     resource: '../src/*'
 
-  VerteXVaaR\BlueSprints\Http\Application:
-    public: true
-
-  VerteXVaaR\BlueSprints\Http\HttpResponseEmitter:
-    public: true
-
-  VerteXVaaR\BlueSprints\Scheduler\Scheduler:
-    public: true
-
   VerteXVaaR\BlueSprints\Environment\Environment:
-    public: true
-    shared: true
-
-  VerteXVaaR\BlueSprints\Environment\Paths:
     public: true
     shared: true
 
@@ -30,15 +17,5 @@ services:
   VerteXVaaR\BlueSprints\Cache\Cache:
     public: true
     shared: true
-
-  VerteXVaaR\BlueSprints\Template\TwigFactory:
-    public: true
-    arguments:
-      $extensions: [ ]
-
-  Twig\Environment:
-    factory: [ '@VerteXVaaR\BlueSprints\Template\TwigFactory', 'create' ]
-
-  Psr\Http\Server\RequestHandlerInterface: '@VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher'
 
   VerteXVaaR\BlueSprints\Store\Store: '@VerteXVaaR\BlueSprints\Store\FileStore'

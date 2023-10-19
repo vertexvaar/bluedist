@@ -8,9 +8,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig\Environment as View;
 use VerteXVaaR\BlueSprints\Cache\Cache;
-use VerteXVaaR\BlueSprints\Mvcr\Controller\AbstractController;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
-use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
+use VerteXVaaR\BlueWeb\Controller\AbstractController;
+use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 class Caching extends AbstractController
 {
@@ -26,7 +26,7 @@ class Caching extends AbstractController
         return $this->render('cache/index.html.twig', ['cache_value' => $value]);
     }
 
-    #[Route(path: '/cache/store', method: 'POST')]
+    #[Route(path: '/cache/store', method: Route::POST)]
     public function store(ServerRequestInterface $request): ResponseInterface
     {
         $body = $request->getParsedBody();

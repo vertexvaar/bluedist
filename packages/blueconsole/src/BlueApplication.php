@@ -8,10 +8,10 @@ use Symfony\Component\Console\Application;
 
 class BlueApplication extends Application
 {
-    public function __construct(private readonly CommandRegistry $registry)
+    public function __construct(private readonly array $commands)
     {
         parent::__construct('BlueApplication', '1.0.0');
-        foreach ($this->registry->commands as $command) {
+        foreach ($this->commands as $command) {
             $this->add($command);
         }
     }

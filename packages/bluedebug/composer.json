@@ -21,12 +21,10 @@
     "vertexvaar/bluesprints": "*"
   },
   "extra": {
-    "vertexvaar/bluecontainer": {
-      "svc": "svc"
-    },
     "vertexvaar/bluesprints": {
+      "services": "svc",
       "view": "view",
-      "config": "config"
+      "middlewares": "config"
     }
   }
 }

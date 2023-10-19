@@ -9,17 +9,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use Ramsey\Uuid\Uuid;
 use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueDist\Model\Fruit;
-use VerteXVaaR\BlueSprints\Mvcr\Controller\AbstractController;
-use VerteXVaaR\BlueSprints\Routing\Attributes\Route;
-use VerteXVaaR\BlueSprints\Utility\Strings;
+use VerteXVaaR\BlueWeb\Controller\AbstractController;
+use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 class Welcome extends AbstractController
 {
     #[Route(path: '/')]
-    //#[Route(path: '/.*', priority: -1)]
-    public function index(
-        ServerRequestInterface $request,
-    ): ResponseInterface {
+    public function index(ServerRequestInterface $request): ResponseInterface
+    {
         return $this->render('fruits/index.html.twig', [
             'session' => $request->getAttribute('session'),
             'strings' => ['foo', 'bar', 'baz'],
@@ -32,7 +29,7 @@ class Welcome extends AbstractController
         return $this->render('fruits/list.html.twig', ['fruits' => $this->repository->findAll(Fruit::class)]);
     }
 
-    #[Route(path: '/createDemoFruits', method: 'POST')]
+    #[Route(path: '/createDemoFruits', method: Route::POST)]
     public function createDemoFruits(): ResponseInterface
     {
         $fruitsData = [
@@ -62,7 +59,7 @@ class Welcome extends AbstractController
         return $this->redirect('listFruits');
     }
 
-    #[Route(path: '/createFruit', method: 'POST')]
+    #[Route(path: '/createFruit', method: Route::POST)]
     public function createFruit(ServerRequestInterface $request): ResponseInterface
     {
         $arguments = $request->getParsedBody();

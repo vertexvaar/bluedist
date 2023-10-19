@@ -18,14 +18,15 @@
   },
   "require": {
     "php": "8.2.*",
+    "ext-intl": "*",
     "symfony/translation": "^v6.3.3",
     "twig/twig": "^v3.7.1",
     "vertexvaar/bluecontainer": "*",
     "vertexvaar/bluesprints": "*"
   },
   "extra": {
-    "vertexvaar/bluecontainer": {
-      "svc": "svc"
+    "vertexvaar/bluesprints": {
+      "services": "svc"
     }
   }
 }

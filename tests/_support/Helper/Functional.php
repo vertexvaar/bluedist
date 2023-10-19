@@ -9,8 +9,8 @@ use Codeception\Module;
 use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use VerteXVaaR\BlueContainer\DI;
-use VerteXVaaR\BlueSprints\Http\Application;
+use VerteXVaaR\BlueContainer\Generated\DI;
+use VerteXVaaR\BlueWeb\Application;
 
 class Functional extends Module
 {

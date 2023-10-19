@@ -23,9 +23,9 @@ services:
     arguments: [ '@.inner' ]
 
   VerteXVaaR\BlueDebug\Decorator\ControllerDispatcherDecorator:
-    decorates: VerteXVaaR\BlueSprints\Http\Server\RequestHandler\ControllerDispatcher
+    decorates: VerteXVaaR\BlueWeb\RequestHandler\ControllerDispatcher
     arguments: [ '@.inner' ]
 
   VerteXVaaR\BlueDebug\Decorator\TwigFactoryDecorator:
-    decorates: VerteXVaaR\BlueSprints\Template\TwigFactory
+    decorates: VerteXVaaR\BlueWeb\Template\TwigFactory
     arguments: [ '@.inner' ]

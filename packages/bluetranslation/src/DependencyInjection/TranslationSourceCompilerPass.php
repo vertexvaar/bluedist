@@ -15,17 +15,15 @@ use SplFileInfo;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use VerteXVaaR\BlueContainer\Generated\PackageExtras;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
-use VerteXVaaR\BlueSprints\Template\TwigFactory;
 use VerteXVaaR\BlueTranslation\TranslateTwigExtension;
 use VerteXVaaR\BlueTranslation\TranslatorFactory;
+use VerteXVaaR\BlueWeb\Template\TwigFactory;
 
 use function array_key_exists;
 use function array_keys;
-use function array_merge_recursive;
-use function CoStack\Lib\concat_paths;
 use function explode;
-use function getenv;
 use function sprintf;
 
 class TranslationSourceCompilerPass implements CompilerPassInterface
@@ -44,12 +42,11 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
 
         $io->write('Loading translation resources', true, IOInterface::VERBOSE);
 
-        $packageIterator = new PackageIterator($composer);
-        $translations = $packageIterator->iterate(
-            fn(Package $package, string $installPath) => $this->getTranslationResources($package, $installPath, $io),
+        /** @var PackageIterator $packageIterator */
+        $packageIterator = $container->get('package_iterator');
+        $translations = $packageIterator->map(
+            fn(Package $package) => $this->getTranslationResources($package, $container),
         );
-        $rootTranslations = $this->getTranslationResources($composer->getPackage(), getenv('VXVR_BS_ROOT'), $io);
-        $translations = array_merge_recursive($rootTranslations, ...$translations);
 
         $definition = $container->getDefinition(TranslatorFactory::class);
         $loaders = $definition->getArgument('$loader');
@@ -66,16 +63,22 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
         $io->write('Loaded translation resources', true, IOInterface::VERBOSE);
     }
 
-    private function getTranslationResources(PackageInterface $package, string $installPath, IOInterface $io): array
+    private function getTranslationResources(PackageInterface $package, ContainerBuilder $container): array
     {
-        $extra = $package->getExtra();
-        if (!isset($extra['vertexvaar/bluetranslation']['translations'])) {
+        /** @var IOInterface $io */
+        $io = $container->get('io');
+        /** @var PackageExtras $packageExtras */
+        $packageExtras = $container->get(PackageExtras::class);
+
+        $packageName = $package->getName();
+        $absoluteTranslationsPath = $packageExtras->getPath($packageName, 'translations');
+
+        if (null === $absoluteTranslationsPath) {
             return [];
         }
-        $absolutePath = concat_paths($installPath, $extra['vertexvaar/bluetranslation']['translations']);
         $recursiveDirectoryIterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator(
-                $absolutePath,
+                $absoluteTranslationsPath,
                 FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS,
             ),
         );

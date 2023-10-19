@@ -7,9 +7,9 @@ namespace VerteXVaaR\BlueTranslation;
 use Locale;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Translation\Translator;
+use VerteXVaaR\BlueContainer\Generated\PackageExtras;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
-use VerteXVaaR\BlueSprints\Environment\Paths;
 
 use function CoStack\Lib\concat_paths;
 use function getenv;
@@ -17,12 +17,12 @@ use function getenv;
 readonly class TranslatorFactory
 {
     public function __construct(
-        private Paths $paths,
         private Environment $environment,
         private array $resources,
         private array $loader,
         private string $fallbackLanguage,
         private ServerRequestInterface $serverRequest,
+        private PackageExtras $packageExtras,
     ) {
     }
 
@@ -30,10 +30,12 @@ readonly class TranslatorFactory
     {
         $header = $this->serverRequest->getServerParams()['HTTP_ACCEPT_LANGUAGE'] ?? $this->fallbackLanguage;
         $locale = Locale::acceptFromHttp($header);
+        $cachePath = $this->packageExtras->getPath($this->packageExtras->rootPackageName, 'var/cache')
+            ?? concat_paths(getenv('VXVR_BS_ROOT'), 'var/cache');
         $translator = new Translator(
             $locale,
             null,
-            concat_paths(getenv('VXVR_BS_ROOT'), $this->paths->cache, 'translations'),
+            concat_paths($cachePath, 'translations'),
             $this->environment->context === Context::Development,
         );
         foreach ($this->resources as $loader => $domains) {

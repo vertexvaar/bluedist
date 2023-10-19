@@ -20,7 +20,7 @@ use VerteXVaaR\BlueDebug\Service\Stopwatch;
 use VerteXVaaR\BlueSprints\Cache\Cache;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
-use VerteXVaaR\BlueSprints\Routing\Route;
+use VerteXVaaR\BlueWeb\Routing\Route;
 
 use function serialize;
 use function unserialize;

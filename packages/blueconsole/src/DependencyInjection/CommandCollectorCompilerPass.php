@@ -4,70 +4,67 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueConsole\DependencyInjection;
 
-use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use VerteXVaaR\BlueConsole\CommandRegistry;
+use VerteXVaaR\BlueConsole\BlueApplication;
+use VerteXVaaR\BlueContainer\Generated\PackageExtras;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 
-use function array_merge;
 use function CoStack\Lib\concat_paths;
 use function file_exists;
-use function getenv;
 use function sprintf;
 
 class CommandCollectorCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        /** @var Composer $composer */
-        $composer = $container->get('composer');
-        /** @var IOInterface $io */
         $io = $container->get('io');
+        /** @var PackageIterator $packageIterator */
+        $packageIterator = $container->get('package_iterator');
 
         $io->write('Loading commands', true, IOInterface::VERBOSE);
 
-        $packageIterator = new PackageIterator($composer);
-        $commands = $packageIterator->iterate(
-            fn(PackageInterface $package, string $installPath) => $this->loadCommands($package, $installPath, $io),
+        $commands = $packageIterator->map(
+            fn(PackageInterface $package): array => $this->loadCommands($package, $container),
         );
-
-        $packageCommands = $this->loadCommands($composer->getPackage(), getenv('VXVR_BS_ROOT'), $io);
-
-        $commands = array_merge($packageCommands, ...$commands);
 
         foreach ($commands as $index => $command) {
             $commands[$index] = new Reference($command);
         }
 
-        $registry = $container->getDefinition(CommandRegistry::class);
-        $registry->setArgument('$commands', $commands);
+        $blueApplication = $container->getDefinition(BlueApplication::class);
+        $blueApplication->setArgument('$commands', $commands);
 
         $io->write('Loaded commands', true, IOInterface::VERBOSE);
     }
 
-    private function loadCommands(PackageInterface $package, string $installPath, IOInterface $io): array
+    private function loadCommands(PackageInterface $package, ContainerBuilder $container): array
     {
-        $extra = $package->getExtra();
-        $name = $package->getName();
-        if (!isset($extra['vertexvaar/blueconsole']['config'])) {
+        $io = $container->get('io');
+        $packageExtra = $container->get(PackageExtras::class);
+
+        $packageName = $package->getName();
+
+        $absoluteCommandsPath = $packageExtra->getPath($packageName, 'commands');
+
+        if (null === $absoluteCommandsPath) {
             $io->write(
-                sprintf('Package %s does not define extra.vertexvaar/blueconsole.config, skipping', $name),
+                sprintf('Package %s does not define extra.vertexvaar/bluesprints.commands, skipping', $packageName),
                 true,
                 IOInterface::VERY_VERBOSE,
             );
             return [];
         }
 
-        $absoluteCommandsPath = concat_paths($installPath, $extra['vertexvaar/blueconsole']['config'], 'commands.php');
-        if (!file_exists($absoluteCommandsPath)) {
+        $absoluteCommandsFile = concat_paths($absoluteCommandsPath, 'commands.php');
+        if (!file_exists($absoluteCommandsFile)) {
             $io->write(
                 sprintf(
-                    'Package %s defines extra.vertexvaar/blueconsole.config, but the file commands.php does not exist',
-                    $name,
+                    'Package %s defines extra.vertexvaar/bluesprints.commands, but the file commands.php does not exist',
+                    $packageName,
                 ),
                 true,
                 IOInterface::VERBOSE,
@@ -75,8 +72,8 @@ class CommandCollectorCompilerPass implements CompilerPassInterface
             return [];
         }
 
-        $io->write(sprintf('Found commands.php in package %s', $name), true, IOInterface::VERBOSE);
+        $io->write(sprintf('Found commands.php in package %s', $packageName), true, IOInterface::VERBOSE);
 
-        return require $absoluteCommandsPath;
+        return require $absoluteCommandsFile;
     }
 }
