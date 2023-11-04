@@ -44,6 +44,33 @@
     {% if lastRequest %}
         <div class="flexbox-item">Previous: {{ lastRequest.response.statusCode }}
             <div class="infobox">
+                <b>Request</b>
+                <table>
+                    <tr>
+                        <th>Controller</th>
+                        <td>{{ lastRequest.route.controller }}</td>
+                    </tr>
+                    <tr>
+                        <th>Action</th>
+                        <td>{{ lastRequest.route.action }}</td>
+                    </tr>
+                    {% for key, value in lastRequest.route.route|properties %}
+                        <tr>
+                            <th>{{ key }}</th>
+                            <td>
+                                {% if value is iterable %}
+                                    {{ value|join(', ') }}
+                                {% else %}
+                                    {{ value }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <th>Action Cache</th>
+                        <td>{{ lastRequest.response.headerLine('X-Bluesprints-Cache') }}</td>
+                    </tr>
+                </table>
                 <b>Cache:</b>
                 <table>
                     <tr>
@@ -69,7 +96,6 @@
                         </tr>
                     {% endfor %}
                 </table>
-
                 <b>Timing:</b>
                 <table>
                     {% for key, timing in lastRequest.stopwatch.timings %}
@@ -122,15 +148,18 @@
                     <th>Action</th>
                     <td>{{ route.action }}</td>
                 </tr>
-                <tr>
-
-                    <th>Path</th>
-                    <td>{{ route.path }}</td>
-                </tr>
-                <tr>
-                    <th>Method</th>
-                    <td>{{ route.method }}</td>
-                </tr>
+                {% for key, value in route.route|properties %}
+                    <tr>
+                        <th>{{ key }}</th>
+                        <td>
+                            {% if value is iterable %}
+                                {{ value|join(', ') }}
+                            {% else %}
+                                {{ value }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
                 <tr>
                     <th>Action Cache</th>
                     <td>{{ response.headerLine('X-Bluesprints-Cache') }}</td>

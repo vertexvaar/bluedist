@@ -22,9 +22,7 @@ use VerteXVaaR\BlueDebug\Service\QueryExecution;
 use VerteXVaaR\BlueDebug\Service\Stopwatch;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
-
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
-
 use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
 use function serialize;
@@ -53,7 +51,7 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
         $collectedRequest = $this->collector->getItem('request');
         /** @var null|ResponseInterface $collectedResponse */
         $collectedResponse = $this->collector->getItem('response');
-        /** @var null|Route $collectedRoute */
+        /** @var null|RouteEncapsulation $collectedRoute */
         $collectedRoute = $collectedRequest?->getAttribute('route');
         /** @var null|Session $collectedSession */
         $collectedSession = $collectedRequest?->getAttribute('session');

@@ -71,6 +71,7 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
         );
 
         $definition = $container->getDefinition(TwigFactory::class);
+        $extensions = $definition->getArgument('$extensions');
         $definition->setArgument('$templatePaths', $templatePaths);
 
         $io->write('Loaded templates', true, IOInterface::VERBOSE);
@@ -98,6 +99,9 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
         );
         if ($context === Context::Development) {
             $twig->addExtension(new DebugExtension());
+        }
+        foreach ($extensions as $extension) {
+            $twig->addExtension($container->resolveServices($extension));
         }
         // The actual translator is not required as twig compiles with runtime getter
         $translator = new Translator('en_GB');

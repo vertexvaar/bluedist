@@ -33,3 +33,8 @@ services:
   VerteXVaaR\BlueDebug\Decorator\CacheDecorator:
     decorates: VerteXVaaR\BlueSprints\Cache\Cache
     arguments: [ '@.inner' ]
+
+  VerteXVaaR\BlueWeb\Template\TwigFactory:
+    arguments:
+      $extensions:
+        properties: '@VerteXVaaR\BlueDebug\Template\Extension\BlueDebugExtension'
