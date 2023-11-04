@@ -25,5 +25,4 @@ readonly class ControllerDispatcherDecorator implements RequestHandlerInterface
         $this->stopwatch->stop('controller');
         return $return;
     }
-
 }

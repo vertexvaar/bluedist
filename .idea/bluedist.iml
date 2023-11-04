@@ -12,6 +12,8 @@
       <sourceFolder url="file://$MODULE_DIR$/packages/bluetranslation/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueTranslation\" />
       <sourceFolder url="file://$MODULE_DIR$/packages/bluescheduler/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueScheduler\" />
       <sourceFolder url="file://$MODULE_DIR$/packages/blueweb/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueWeb\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/bluelog/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueLog\" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/behat/gherkin" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeception/codeception" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeception/lib-asserts" />
@@ -110,6 +112,21 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/vertexvaar/bluetranslation" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vertexvaar/bluescheduler" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vertexvaar/blueweb" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/clue/stream-filter" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/http-interop/http-factory-guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/jean85/pretty-package-versions" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/monolog/monolog" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/client-common" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/discovery" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/httplug" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/message" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/message-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/php-http/promise" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/sentry/sentry" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-client" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-client-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/options-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/vertexvaar/bluelog" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

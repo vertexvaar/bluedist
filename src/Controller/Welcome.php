@@ -4,19 +4,25 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDist\Controller;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Ramsey\Uuid\Uuid;
 use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueDist\Model\Fruit;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
-class Welcome extends AbstractController
+class Welcome extends AbstractController implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     #[Route(path: '/')]
     public function index(ServerRequestInterface $request): ResponseInterface
     {
+        $this->logger->debug('index action called');
         return $this->render('fruits/index.html.twig', [
             'session' => $request->getAttribute('session'),
             'strings' => ['foo', 'bar', 'baz'],

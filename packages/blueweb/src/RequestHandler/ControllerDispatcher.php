@@ -20,7 +20,7 @@ readonly class ControllerDispatcher implements RequestHandlerInterface
     {
         $route = $request->getAttribute('route');
 
-        /** @var \VerteXVaaR\BlueWeb\Controller\Controller $controller */
+        /** @var Controller $controller */
         $controller = $this->container->get($route->controller);
         return $controller->{$route->action}($request);
     }

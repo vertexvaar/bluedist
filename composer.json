@@ -24,7 +24,9 @@
     "vertexvaar/bluetranslation": "@dev",
     "vertexvaar/blueconsole": "@dev",
     "vertexvaar/bluescheduler": "@dev",
-    "vertexvaar/blueweb": "@dev"
+    "vertexvaar/blueweb": "@dev",
+    "vertexvaar/bluelog": "@dev",
+    "symfony/http-client": "*"
   },
   "autoload": {
     "psr-4": {
@@ -41,7 +43,8 @@
   },
   "config": {
     "allow-plugins": {
-      "vertexvaar/bluecontainer": true
+      "vertexvaar/bluecontainer": true,
+      "php-http/discovery": true
     }
   },
   "extra": {

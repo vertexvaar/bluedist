@@ -53,8 +53,10 @@ class DependencyOrderingService
      * by setting the $beforeKey and $afterKey parameters accordingly.
      *
      * @param array $items
-     * @param string $beforeKey The key to use in a dependency which specifies the "before"-relation. eg. 'sortBefore', 'loadBefore'
-     * @param string $afterKey The key to use in a dependency which specifies the "after"-relation. eg. 'sortAfter', 'loadAfter'
+     * @param string $beforeKey The key to use in a dependency which specifies the "before"-relation. eg. 'sortBefore',
+     *     'loadBefore'
+     * @param string $afterKey The key to use in a dependency which specifies the "after"-relation. eg. 'sortAfter',
+     *     'loadAfter'
      * @return array
      * @throws UnexpectedValueException
      */
@@ -99,8 +101,10 @@ class DependencyOrderingService
      *   - B depends on A
      *
      * @param array $dependencies
-     * @param string $beforeKey The key to use in a dependency which specifies the "before"-relation. eg. 'sortBefore', 'loadBefore'
-     * @param string $afterKey The key to use in a dependency which specifies the "after"-relation. eg. 'sortAfter', 'loadAfter'
+     * @param string $beforeKey The key to use in a dependency which specifies the "before"-relation. eg. 'sortBefore',
+     *     'loadBefore'
+     * @param string $afterKey The key to use in a dependency which specifies the "after"-relation. eg. 'sortAfter',
+     *     'loadAfter'
      * @return array<array-key, array<array-key, bool>> The dependency graph
      */
     public function buildDependencyGraph(array $dependencies, $beforeKey = 'before', $afterKey = 'after')
@@ -278,8 +282,10 @@ class DependencyOrderingService
      * Additionally fix all invalid or missing before/after arrays
      *
      * @param array $dependencies
-     * @param string $beforeKey The key to use in a dependency which specifies the "before"-relation. eg. 'sortBefore', 'loadBefore'
-     * @param string $afterKey The key to use in a dependency which specifies the "after"-relation. eg. 'sortAfter', 'loadAfter'
+     * @param string $beforeKey The key to use in a dependency which specifies the "before"-relation. eg. 'sortBefore',
+     *     'loadBefore'
+     * @param string $afterKey The key to use in a dependency which specifies the "after"-relation. eg. 'sortAfter',
+     *     'loadAfter'
      * @return array Prepared dependencies
      */
     protected function prepareDependencies(array $dependencies, $beforeKey = 'before', $afterKey = 'after')

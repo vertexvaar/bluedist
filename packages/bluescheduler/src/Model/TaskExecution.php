@@ -8,5 +8,5 @@ use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
 class TaskExecution extends Entity
 {
-    public int $lastExecution;
+    public ?int $lastExecution = null;
 }

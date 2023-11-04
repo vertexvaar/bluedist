@@ -54,7 +54,7 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
             foreach ($reflectionMethods as $reflectionMethod) {
                 $attributes = $reflectionMethod->getAttributes(Route::class);
                 foreach ($attributes as $attribute) {
-                    /** @var \VerteXVaaR\BlueWeb\Routing\Attributes\Route $route */
+                    /** @var Route $route */
                     $route = $attribute->newInstance();
                     $methodName = $reflectionMethod->getName();
                     $io->write(

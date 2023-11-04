@@ -12,5 +12,4 @@ final readonly class ScheduledTask
     public function __construct(public string $identifier, public int $interval, public array $config = [])
     {
     }
-
 }

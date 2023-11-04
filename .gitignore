@@ -2,5 +2,5 @@
 /vendor
 /public/css
 /var
+/.env.local
 /composer.lock
-/messages.po

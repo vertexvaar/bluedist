@@ -21,5 +21,4 @@ class RequireLocalAutoloader implements Step
         }
         require $autoloadFile;
     }
-
 }

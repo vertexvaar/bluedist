@@ -7,7 +7,6 @@ namespace VerteXVaaR\BlueScheduler;
 class CliRequest
 {
     protected array $flags = [];
-
     protected array $arguments = [];
 
     public static function createFromEnvironment(): self

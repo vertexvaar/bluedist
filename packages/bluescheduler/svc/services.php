@@ -8,5 +8,5 @@ return static function (ContainerBuilder $container): void {
     $container->addCompilerPass(new SchedulerTaskCompilerPass());
 
     $container->registerForAutoconfiguration(Task::class)
-        ->addTag('vertexvaar.bluesprints.scheduler.scheduled_task');
+              ->addTag('vertexvaar.bluesprints.scheduler.scheduled_task');
 };

@@ -23,5 +23,4 @@ readonly class StopwatchMiddleware implements MiddlewareInterface
         $this->stopwatch->stop('request');
         return $response;
     }
-
 }

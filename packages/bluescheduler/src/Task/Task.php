@@ -6,5 +6,4 @@ namespace VerteXVaaR\BlueScheduler\Task;
 
 interface Task
 {
-
 }

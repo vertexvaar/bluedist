@@ -11,8 +11,6 @@ use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 use function strtr;
 use function time;
 
-use const PHP_INT_MAX;
-
 readonly class Scheduler
 {
     public function __construct(
@@ -31,10 +29,13 @@ readonly class Scheduler
         foreach ($this->schedulerTaskRegistry->tasks as $taskClass => $identifiers) {
             foreach ($identifiers as $identifier => $taskConfiguration) {
                 $taskExecution = $this->getTaskExecution($taskClass . '->' . $identifier);
-                if (($now - $taskExecution->lastExecution) >= $taskConfiguration['interval']) {
+                if (
+                    null === $taskExecution->lastExecution
+                    || ($now - $taskExecution->lastExecution) >= $taskConfiguration['interval']
+                ) {
                     /** @var AbstractTask $task */
                     $task = $taskConfiguration['service'];
-                    $task->run($identifier, $cliRequest, $taskConfiguration['config'] ?? []);
+                    $this->runTask($task, $identifier, $cliRequest, $taskConfiguration);
                     $taskExecution->lastExecution = $now;
                     $this->repository->persist($taskExecution);
                 }
@@ -48,9 +49,17 @@ readonly class Scheduler
         $taskExecution = $this->repository->findByIdentifier(TaskExecution::class, $identifier);
         if (null === $taskExecution) {
             $taskExecution = new TaskExecution($identifier);
-            $taskExecution->lastExecution = -PHP_INT_MAX;
             $this->repository->persist($taskExecution);
         }
         return $taskExecution;
+    }
+
+    protected function runTask(
+        AbstractTask $task,
+        int|string $identifier,
+        CliRequest $cliRequest,
+        array $taskConfiguration,
+    ): void {
+        $task->run($identifier, $cliRequest, $taskConfiguration['config'] ?? []);
     }
 }

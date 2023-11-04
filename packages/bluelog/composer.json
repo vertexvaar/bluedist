@@ -1,7 +1,7 @@
 {
-  "name": "vertexvaar/bluesprints",
-  "description": "BlueSprints is a small experimental PHP Project which evolved to a framework",
-  "type": "project",
+  "name": "vertexvaar/bluelog",
+  "description": "logger integration for bluesprints",
+  "type": "library",
   "license": "GPL-3.0+",
   "authors": [
     {
@@ -13,14 +13,14 @@
   ],
   "autoload": {
     "psr-4": {
-      "VerteXVaaR\\BlueSprints\\": "src/"
+      "VerteXVaaR\\BlueLog\\": "src/"
     }
   },
   "require": {
     "php": "8.2.*",
-    "co-stack/lib": "^v6.0.0",
-    "psr/simple-cache": "^3.0.0",
-    "vertexvaar/bluecontainer": "*"
+    "vertexvaar/bluesprints": "*",
+    "monolog/monolog": "^3.5.0",
+    "sentry/sdk": "^3.5.0"
   },
   "extra": {
     "vertexvaar/bluesprints": {

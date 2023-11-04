@@ -8,7 +8,6 @@ use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
 interface Store
 {
-
     public function findByIdentifier(string $class, string $identifier): ?object;
 
     public function findAll(string $class): array;

@@ -7,6 +7,8 @@ namespace VerteXVaaR\BlueSprints\Store;
 use DateTime;
 use DateTimeImmutable;
 use FilesystemIterator;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SplFileInfo;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
@@ -25,10 +27,14 @@ use function unserialize;
 
 use const DIRECTORY_SEPARATOR as DS;
 
-readonly class FileStore implements Store
+class FileStore implements Store, LoggerAwareInterface
 {
-    public function __construct(private Config $config, private PackageExtras $packageExtras)
-    {
+    use LoggerAwareTrait;
+
+    public function __construct(
+        private readonly Config $config,
+        private readonly PackageExtras $packageExtras,
+    ) {
     }
 
     public function findByIdentifier(string $class, string $identifier): ?object
