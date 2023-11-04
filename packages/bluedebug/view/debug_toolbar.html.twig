@@ -49,7 +49,7 @@
                     {% for key, timing in lastRequest.stopwatch.timings %}
                         <tr>
                             <td>{{ key }}</td>
-                            <td>{{ (timing.duration / 100000)|round(2) }}ms</td>
+                            <td>{{ (timing.duration / 1000000)|round(2) }}ms</td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -66,7 +66,7 @@
                     <tbody>
                         {% for query in lastRequest.queryCollector.queries %}
                             <tr>
-                                <td>{{ (query.cumulatedDuration / 100000)|round(2) }}ms</td>
+                                <td>{{ (query.cumulatedDuration / 1000000)|round(2) }}ms</td>
                                 <td>{{ 'times'|t({times: query.count}) }}</td>
                                 <td>{{ query.query }}</td>
                                 <td>{{ query.context.class }}</td>
@@ -95,13 +95,13 @@
     </div>
     <div class="flexbox-item">Context: {{ context.name }}</div>
     <div class="flexbox-item">Response: {{ response.body.size / 1000 }}kB</div>
-    <div class="flexbox-item">Time: {{ stopwatch.timings.request.duration / 100000 }}ms
+    <div class="flexbox-item">Time: {{ stopwatch.timings.request.duration / 1000000 }}ms
         <div class="infobox">
             <table>
                 {% for key, timing in stopwatch.timings %}
                     <tr>
                         <td>{{ key }}</td>
-                        <td>{{ (timing.duration / 100000)|round(2) }}ms</td>
+                        <td>{{ (timing.duration / 1000000)|round(2) }}ms</td>
                     </tr>
                 {% endfor %}
             </table>
@@ -121,7 +121,7 @@
                 <tbody>
                     {% for query in queryCollector.queries %}
                         <tr>
-                            <td>{{ (query.cumulatedDuration / 100000)|round(2) }}ms</td>
+                            <td>{{ (query.cumulatedDuration / 1000000)|round(2) }}ms</td>
                             <td>{{ 'times'|t({times: query.count}) }}</td>
                             <td>{{ query.query }}</td>
                             <td>{{ query.context.class }}</td>
