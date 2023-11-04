@@ -6,15 +6,15 @@ namespace VerteXVaaR\BlueDist\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\SimpleCache\CacheInterface;
 use Twig\Environment as View;
-use VerteXVaaR\BlueSprints\Cache\Cache;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 class Caching extends AbstractController
 {
-    public function __construct(Repository $repository, View $view, private readonly Cache $cache)
+    public function __construct(Repository $repository, View $view, private readonly CacheInterface $cache)
     {
         parent::__construct($repository, $view);
     }

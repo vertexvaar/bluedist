@@ -29,3 +29,7 @@ services:
   VerteXVaaR\BlueDebug\Decorator\TwigFactoryDecorator:
     decorates: VerteXVaaR\BlueWeb\Template\TwigFactory
     arguments: [ '@.inner' ]
+
+  VerteXVaaR\BlueDebug\Decorator\CacheDecorator:
+    decorates: VerteXVaaR\BlueSprints\Cache\Cache
+    arguments: [ '@.inner' ]

@@ -1,0 +1,21 @@
+<p>
+    In non-production context, the header "X-Bluesprints-Cache" contains information about the action cache status.
+    It has 4 possible values:
+</p>
+<ul>
+    <li>Not cacheable: The action is not cacheable. Only HTTP 200 responses to GET requests can be cached.</li>
+    <li>Uncached: The action does not have a action cache attribute</li>
+    <li>Cached: The action cache was found and the action results were fetched from cache</li>
+    <li>Set for xxx: The action was not cached yet. A new cache entry has been created with a lifetime of xxx
+        seconds.
+    </li>
+</ul>
+<p>
+    You can also see the action cache status if you hover over the "Route" part on the debug toolbar
+    (vertexvaar/bluedebug required)
+</p>
+<p>
+    Bluesprints respects the Pragma (HTTP 1.0) and Cache-Control (HTTP 1.1) header sent by the user. If they are set to
+    no-cache according to the protocol version (which is the case if the user pressed hard refresh or has developer
+    tools with "disable cache" opened), the action cache will be ignored. The action result will be cached, however.
+</p>

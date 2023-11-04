@@ -11,6 +11,7 @@ use SplFileInfo;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
 use VerteXVaaR\BlueSprints\Environment\Config;
 
+use function clearstatcache;
 use function CoStack\Lib\concat_paths;
 use function dirname;
 use function escapeshellarg;
@@ -88,6 +89,7 @@ readonly class Cache implements CacheInterface
         ];
         $cacheFile = concat_paths($this->cacheRoot, $key);
         $path = dirname($cacheFile);
+        clearstatcache(false, $cacheFile);
         if (!is_dir($path) && mkdir($path, $this->config->folderPermissions, true) && !is_dir($path)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }

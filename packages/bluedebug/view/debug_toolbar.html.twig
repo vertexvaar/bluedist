@@ -44,6 +44,32 @@
     {% if lastRequest %}
         <div class="flexbox-item">Previous: {{ lastRequest.response.statusCode }}
             <div class="infobox">
+                <b>Cache:</b>
+                <table>
+                    <tr>
+                        <th>has/get</th>
+                        <td>{{ cacheCalls.has|length }}/{{ cacheCalls.get|length }}</td>
+                    </tr>
+                    <tr>
+                        <th>hits/misses</th>
+                        <td>{{ cacheCalls.sumHits }}/{{ cacheCalls.sumMisses }}</td>
+                    </tr>
+                </table>
+                <table>
+                    {% for key, hitMiss in cacheCalls.has %}
+                        <tr>
+                            <td>has {{ key }}</td>
+                            <td>{{ hitMiss.hits }}/{{ hitMiss.misses }}</td>
+                        </tr>
+                    {% endfor %}
+                    {% for key, hitMiss in cacheCalls.get %}
+                        <tr>
+                            <td>get {{ key }}</td>
+                            <td>{{ hitMiss.hits }}/{{ hitMiss.misses }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
                 <b>Timing:</b>
                 <table>
                     {% for key, timing in lastRequest.stopwatch.timings %}
@@ -85,7 +111,33 @@
             </div>
         </div>
     {% endif %}
-    <div class="flexbox-item">Route: {{ route.controller }}::{{ route.action }}</div>
+    <div class="flexbox-item">Route: {{ route.controller }}::{{ route.action }}
+        <div class="infobox">
+            <table>
+                <tr>
+                    <th>Controller</th>
+                    <td>{{ route.controller }}</td>
+                </tr>
+                <tr>
+                    <th>Action</th>
+                    <td>{{ route.action }}</td>
+                </tr>
+                <tr>
+
+                    <th>Path</th>
+                    <td>{{ route.path }}</td>
+                </tr>
+                <tr>
+                    <th>Method</th>
+                    <td>{{ route.method }}</td>
+                </tr>
+                <tr>
+                    <th>Action Cache</th>
+                    <td>{{ response.headerLine('X-Bluesprints-Cache') }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
     <div class="flexbox-item">
         {% if session.authenticated %}
             User (authenticated): {{ session.username }}
@@ -95,6 +147,26 @@
     </div>
     <div class="flexbox-item">Context: {{ context.name }}</div>
     <div class="flexbox-item">Response: {{ response.body.size / 1000 }}kB</div>
+    <div class="flexbox-item">
+        Cache has/get {{ cacheCalls.has|length }}/{{ cacheCalls.get|length }}
+        hits/misses: {{ cacheCalls.sumHits }}/{{ cacheCalls.sumMisses }}
+        <div class="infobox">
+            <table>
+                {% for key, hitMiss in cacheCalls.has %}
+                    <tr>
+                        <td>has {{ key }}</td>
+                        <td>{{ hitMiss.hits }}/{{ hitMiss.misses }}</td>
+                    </tr>
+                {% endfor %}
+                {% for key, hitMiss in cacheCalls.get %}
+                    <tr>
+                        <td>get {{ key }}</td>
+                        <td>{{ hitMiss.hits }}/{{ hitMiss.misses }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
     <div class="flexbox-item">Time: {{ stopwatch.timings.request.duration / 1000000 }}ms
         <div class="infobox">
             <table>

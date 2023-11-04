@@ -1,0 +1,39 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <h1>Cached Action wit get parameter</h1>
+
+    <p>
+        This page was rendered at <b>{{ renderTime|date("Y-m-d H:i:s") }}</b>
+    </p>
+
+    <p>
+        Your GET parameter "foo" has the value {{ foo }}.<br>
+        {% if cacheControl %}
+            The cache control header was set to {{ cacheControl }}.
+        {% else %}
+            This page was rendered without a fording cache control header.
+        {% endif %}
+    </p>
+
+    <p>
+        You can also <a href="/cached/clearCache">clear all caches</a>. (You will be redirected to the index page).
+    </p>
+
+    <p>
+        Set another value for foo:
+    </p>
+    <form action="/cached/params" method="get">
+        <label>
+            Value
+            <input type="text" name="foo" value="{{ foo }}"/>
+        </label>
+        <button type="submit">Set</button>
+    </form>
+
+    {{ include('cached/_cache-info.html.twig') }}
+
+    <p>
+        <a href="..">Back to the index</a>
+    </p>
+{% endblock %}

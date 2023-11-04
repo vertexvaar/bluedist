@@ -7,9 +7,7 @@ namespace VerteXVaaR\BlueWeb\Caching\DependencyInjection;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use VerteXVaaR\BlueWeb\Caching\Attributes\ActionCache;
-
 use VerteXVaaR\BlueWeb\Caching\Middleware\ActionCacheMiddleware;
 
 use function array_keys;
@@ -37,7 +35,10 @@ class ActionCacheCompilerPass implements CompilerPassInterface
                     $reflectionCacheAttribute = $reflectionCacheAttributes[0];
                     /** @var ActionCache $cacheAttribute */
                     $cacheAttribute = $reflectionCacheAttribute->newInstance();
-                    $cachedActions[$class][$reflectionMethod->getName()] = $cacheAttribute->ttl;
+                    $cachedActions[$class][$reflectionMethod->getName()] = [
+                        'ttl' => $cacheAttribute->ttl,
+                        'params' => $cacheAttribute->params,
+                    ];
                 }
             }
         }

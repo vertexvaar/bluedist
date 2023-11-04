@@ -10,14 +10,15 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\SimpleCache\CacheInterface;
 use Twig\Environment as View;
 use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
+use VerteXVaaR\BlueDebug\Decorator\CacheDecorator;
 use VerteXVaaR\BlueDebug\Service\CollectedQuery;
 use VerteXVaaR\BlueDebug\Service\DebugCollector;
 use VerteXVaaR\BlueDebug\Service\QueryCollector;
 use VerteXVaaR\BlueDebug\Service\QueryExecution;
 use VerteXVaaR\BlueDebug\Service\Stopwatch;
-use VerteXVaaR\BlueSprints\Cache\Cache;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 use VerteXVaaR\BlueWeb\Routing\Route;
@@ -33,7 +34,7 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
         private DebugCollector $collector,
         private Stopwatch $stopwatch,
         private QueryCollector $queryCollector,
-        private Cache $cache,
+        private CacheInterface $cache,
     ) {
     }
 
@@ -62,6 +63,7 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
                 'context' => $this->environment->context,
                 'stopwatch' => $this->stopwatch,
                 'queryCollector' => $this->queryCollector,
+                'cacheCalls' => CacheDecorator::getCalls(),
             ];
             $this->cache->set('last_request', serialize($lastRequest));
             return $response;
@@ -94,6 +96,7 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
             'stopwatch' => $this->stopwatch,
             'queryCollector' => $this->queryCollector,
             'lastRequest' => $lastRequest,
+            'cacheCalls' => CacheDecorator::getCalls(),
         ]);
 
         $body = $response->getBody();

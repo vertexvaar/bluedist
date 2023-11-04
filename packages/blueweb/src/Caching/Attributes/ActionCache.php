@@ -9,7 +9,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 class ActionCache
 {
-    public function __construct(public int $ttl = 100)
+    public function __construct(public int $ttl = 60 * 60 * 24, public array $params = [])
     {
     }
 }
