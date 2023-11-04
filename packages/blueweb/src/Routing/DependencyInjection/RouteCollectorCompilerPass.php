@@ -4,16 +4,21 @@ namespace VerteXVaaR\BlueWeb\Routing\DependencyInjection;
 
 use Composer\IO\IOInterface;
 use OutOfBoundsException;
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
+use VerteXVaaR\BlueWeb\Routing\Attributes\RouteAttribute;
 use VerteXVaaR\BlueWeb\Routing\Middleware\RoutingMiddleware;
+use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
 use function array_keys;
-use function array_merge_recursive;
-use function array_replace;
+use function array_merge;
+use function get_class;
+use function get_object_vars;
+use function is_object;
 use function sprintf;
 
 class RouteCollectorCompilerPass implements CompilerPassInterface
@@ -57,7 +62,10 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
                 continue;
             }
             foreach ($reflectionMethods as $reflectionMethod) {
-                $attributes = $reflectionMethod->getAttributes(Route::class);
+                $attributes = $reflectionMethod->getAttributes(
+                    Route::class,
+                    ReflectionAttribute::IS_INSTANCEOF,
+                );
                 foreach ($attributes as $attribute) {
                     /** @var Route $route */
                     $route = $attribute->newInstance();
@@ -74,18 +82,19 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
                         true,
                         IOInterface::VERBOSE,
                     );
-                    $compiledRoutes[$route->method][$route->priority][$route->path] = [
-                        'class' => \VerteXVaaR\BlueWeb\Routing\Route::class,
-                        'controller' => $controllerClass,
-                        'action' => $methodName,
-                    ];
+                    $compiledRoutes[$route->method][$route->priority][] = new RouteEncapsulation(
+                        $route,
+                        $controllerClass,
+                        $methodName,
+                    );
                 }
             }
         }
 
-        foreach ($compiledRoutes as $method => $paths) {
-            krsort($paths);
-            $compiledRoutes[$method] = array_replace([], ...$paths);
+        /** @var array<string, array<int, array<RouteEncapsulation>>> $compiledRoutes */
+        foreach ($compiledRoutes as $method => $routesByPriority) {
+            krsort($routesByPriority);
+            $compiledRoutes[$method] = array_merge([], ...$routesByPriority);
         }
 
         $definition = $container->getDefinition(RoutingMiddleware::class);
@@ -94,9 +103,27 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
         } catch (OutOfBoundsException $exception) {
             $routes = [];
         }
-        $routes = array_merge_recursive($routes, $compiledRoutes);
+        foreach ($compiledRoutes as $method => $encapsulatedRoutes) {
+            foreach ($encapsulatedRoutes as $encapsulatedRoute) {
+                $routes[$method][$encapsulatedRoute->route->path] = $this->getObjectVarsRecursive($encapsulatedRoute);
+            }
+        }
         $definition->setArgument('$routes', $routes);
 
         $io->write('Loaded routes from controller attributes', true, IOInterface::VERBOSE);
+    }
+
+    protected function getObjectVarsRecursive(object $object): array
+    {
+        $vars = get_object_vars($object);
+        foreach ($vars as $index => $var) {
+            if (is_object($var)) {
+                $vars[$index] = [
+                    'class' => get_class($var),
+                    'vars' => $this->getObjectVarsRecursive($var),
+                ];
+            }
+        }
+        return $vars;
     }
 }

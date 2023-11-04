@@ -13,6 +13,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Twig\Environment as View;
 use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
+use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueDebug\Decorator\CacheDecorator;
 use VerteXVaaR\BlueDebug\Service\CollectedQuery;
 use VerteXVaaR\BlueDebug\Service\DebugCollector;
@@ -21,7 +22,10 @@ use VerteXVaaR\BlueDebug\Service\QueryExecution;
 use VerteXVaaR\BlueDebug\Service\Stopwatch;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
-use VerteXVaaR\BlueWeb\Routing\Route;
+
+use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
+
+use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
 use function serialize;
 use function unserialize;
@@ -77,6 +81,8 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
                     ServerRequest::class,
                     Response::class,
                     Route::class,
+                    AuthorizedRoute::class,
+                    RouteEncapsulation::class,
                     Session::class,
                     Stopwatch::class,
                     QueryCollector::class,

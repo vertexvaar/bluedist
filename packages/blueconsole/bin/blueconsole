@@ -13,17 +13,17 @@ if (!$root) {
     putenv('VXVR_BS_ROOT=' . $root);
 }
 
-if (file_exists($root . '/.env')) {
-    $dotenv = new Dotenv();
-    $dotenv->usePutenv();
-    $dotenv->loadEnv($root . '/.env', null, 'dev', [], true);
-}
-
 if (empty(ini_get('date.timezone'))) {
     date_default_timezone_set('UTC');
 }
 
 require_once(__DIR__ . '/../../../vendor/autoload.php');
+
+if (file_exists($root . '/.env')) {
+    $dotenv = new Dotenv();
+    $dotenv->usePutenv();
+    $dotenv->loadEnv($root . '/.env', null, 'dev', [], true);
+}
 
 $di = new DI();
 $di->get(BlueApplication::class)->run();

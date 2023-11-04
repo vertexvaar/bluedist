@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueLog;
 
 use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Sentry\ClientBuilder;
@@ -73,7 +74,7 @@ class LoggerFactory
         ])->getClient();
 
         $hub = new Hub($client);
-        $handler = new Handler($hub);
+        $handler = new Handler($hub, Level::Warning);
 
         SentrySdk::setCurrentHub($hub);
 

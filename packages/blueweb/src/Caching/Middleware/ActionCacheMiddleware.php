@@ -12,7 +12,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\SimpleCache\CacheInterface;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
-use VerteXVaaR\BlueWeb\Routing\Route;
+use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
 use function CoStack\Lib\concat_paths;
 use function hash;
@@ -34,8 +34,8 @@ class ActionCacheMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $route = $request->getAttribute('route');
-        if (!isset($this->cachedActions[$route->controller][$route->action])) {
+        $routeEncapsulation = $request->getAttribute('route');
+        if (!isset($this->cachedActions[$routeEncapsulation->controller][$routeEncapsulation->action])) {
             $response = $handler->handle($request);
             if ($this->environment->context !== Context::Production) {
                 $response = $response->withAddedHeader('X-Bluesprints-Cache', 'Uncached');
@@ -43,11 +43,11 @@ class ActionCacheMiddleware implements MiddlewareInterface
             return $response;
         }
 
-        $cacheHash = $this->getCacheHash($route, $request);
+        $cacheHash = $this->getCacheHash($routeEncapsulation, $request);
         $cacheKey = concat_paths(
             'actions',
-            str_replace('\\', '.', $route->controller),
-            $route->action,
+            str_replace('\\', '.', $routeEncapsulation->controller),
+            $routeEncapsulation->action,
             $cacheHash,
         );
 
@@ -60,7 +60,7 @@ class ActionCacheMiddleware implements MiddlewareInterface
             return $response->withAddedHeader('X-Bluesprints-Cache', 'Not cacheable');
         }
 
-        $ttl = $this->cacheResponseContents($response, $route, $cacheKey);
+        $ttl = $this->cacheResponseContents($response, $routeEncapsulation, $cacheKey);
 
         if ($this->environment->context !== Context::Production) {
             $response = $response->withAddedHeader('X-Bluesprints-Cache', 'Set for ' . $ttl);
@@ -87,7 +87,7 @@ class ActionCacheMiddleware implements MiddlewareInterface
         return $response;
     }
 
-    protected function getCacheHash(Route $route, ServerRequestInterface $request): string
+    protected function getCacheHash(RouteEncapsulation $route, ServerRequestInterface $request): string
     {
         $params = $this->cachedActions[$route->controller][$route->action]['params'];
         if (empty($params)) {
@@ -103,8 +103,11 @@ class ActionCacheMiddleware implements MiddlewareInterface
         return hash('sha1', json_encode($cacheKeyParams, JSON_THROW_ON_ERROR));
     }
 
-    protected function cacheResponseContents(ResponseInterface $response, Route $route, string $cacheKey): mixed
-    {
+    protected function cacheResponseContents(
+        ResponseInterface $response,
+        RouteEncapsulation $route,
+        string $cacheKey,
+    ): mixed {
         $body = $response->getBody();
         $body->rewind();
         $contents = $body->getContents();

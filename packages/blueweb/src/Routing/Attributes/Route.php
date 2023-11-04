@@ -18,12 +18,10 @@ readonly class Route
     public const OPTIONS = 'OPTIONS';
     public const TRACE = 'TRACE';
 
-    /**
-     * @param string $path
-     * @param string $method
-     * @param int $priority
-     */
-    public function __construct(public string $path, public string $method = 'GET', public int $priority = 100)
-    {
+    public function __construct(
+        public string $path,
+        public string $method = 'GET',
+        public int $priority = 100,
+    ) {
     }
 }
