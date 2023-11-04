@@ -17,6 +17,7 @@ return [
     ],
     'vertexvaar/bluedebug/collector' => [
         'service' => CollectorMiddleware::class,
+        'before' => ['vertexvaar/bluesprints/actioncache'],
         'after' => ['*'],
     ],
 ];

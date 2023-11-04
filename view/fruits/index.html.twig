@@ -15,21 +15,23 @@
 
         <p>
             {{ 'This PHP Framework is designed to stay as simple as possible but yet provide some indispensable features.'|t }}
-            {{ 'Features included'|t }}:
+            {{ 'Features included (packages in braces are optional)'|t }}:
         </p>
         <ul>
-            <li>{{ 'Routing configured by annotations'|t }}</li>
             <li>{{ 'Dependency Injection (PSR-11 "Container Interface") backend by Symfony Dependency Injection'|t }}</li>
             <li>{{ 'File based storage solution for entities'|t }}</li>
             <li>{{ 'Caching (PSR-16 "Simple Caching")'|t }}</li>
-            <li>{{ 'Standardized Request/Response system (PSR-7: "HTTP message interfaces")'|t }}</li>
-            <li>{{ 'Middlewares (PSR-15: "HTTP Server Request Handlers")'|t }}</li>
-            <li>{{ 'Templating with Twig'|t }}</li>
-            <li>{{ '(Optional with vertexvaar/bluescheduler) Scheduling configured by Annotations'|t }}</li>
-            <li>{{ '(Optional with vertexvaar/bluetranslation) i18n (translations) backend by Symfony Translation'|t }}</li>
-            <li>{{ '(Optional with vertexvaar/blueauth) Username/Password Authentication'|t }}</li>
-            <li>{{ '(Optional with vertexvaar/blueconsole) Console Application backend by Symfony Console'|t }}</li>
-            <li>{{ '(Optional with vertexvaar/bluedebug) Debugging toolbar'|t }}</li>
+            <li>{{ '(vertexvaar/blueweb) Routing configured by annotations'|t }}</li>
+            <li>{{ '(vertexvaar/blueweb) Standardized Request/Response system (PSR-7: "HTTP message interfaces")'|t }}</li>
+            <li>{{ '(vertexvaar/blueweb) Middlewares (PSR-15: "HTTP Server Request Handlers")'|t }}</li>
+            <li>{{ '(vertexvaar/blueweb) Templating with Twig'|t }}</li>
+            <li>{{ '(vertexvaar/blueweb) Controller action caching by annotation'|t }}</li>
+            <li>{{ '(vertexvaar/bluescheduler) Scheduling configured by Annotations'|t }}</li>
+            <li>{{ '(vertexvaar/bluetranslation) i18n (translations) backend by Symfony Translation'|t }}</li>
+            <li>{{ '(vertexvaar/blueauth) Username/Password Authentication'|t }}</li>
+            <li>{{ '(vertexvaar/blueconsole) Console Application backend by Symfony Console'|t }}</li>
+            <li>{{ '(vertexvaar/bluedebug) Debugging toolbar'|t }}</li>
+            <li>{{ '(vertexvaar/bluelog) Logging integration with Sentry and Docker support'|t }}</li>
         </ul>
         <p>
             {{ 'Features not included (and probably not about to be)'|t }}
@@ -69,7 +71,10 @@
         <h2>Caching?</h2>
 
         <p>
-            Want a demo about Caching? Just <a href="/cache/index">go there</a> ;)
+            Want a demo about Caching? You can set and retrieve cached values <a href="/cache/index">here</a> ;)
+        </p>
+        <p>
+            More interested in caching of controller actions? <a href="/cached">This action</a> is cached!
         </p>
 
         <h2>Session? Login?</h2>

@@ -297,8 +297,13 @@ class DependencyOrderingService
                     $dependency[$relation] = [];
                 }
                 if ($dependency[$relation] === ['*']) {
+                    $oppositeRelation = $relation === $beforeKey ? $afterKey : $beforeKey;
+                    $oppositeDependencies = $dependency[$oppositeRelation] ?? [];
                     $calculatedRelations = [];
                     foreach ($dependencies as $possibleId => $possibleDependency) {
+                        if (in_array($possibleId, $oppositeDependencies)) {
+                            continue;
+                        }
                         $nextDependencies = $possibleDependency[$relation] ?? [];
                         if ($possibleId !== $id && $nextDependencies !== ['*'] && !in_array($id, $nextDependencies)) {
                             $calculatedRelations[] = $possibleId;

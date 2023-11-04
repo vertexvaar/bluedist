@@ -1,0 +1,21 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <h1>Cached Controller</h1>
+
+    <p>
+        This page was rendered at <b>{{ renderTime|date("Y-m-d H:i:s") }}</b>
+    </p>
+
+    <p>
+        You may have noticed, that the first call to this page took a bit longer than expected. That's because the
+        action is stalled for a second. When you <a href="/cached">reload this page</a>, it will appear instantly,
+        because the rendered content was cached.
+        The caching is set to 5 seconds, so in 5 seconds the page rendering will be a bit slow, before this page shows
+        up again.
+    </p>
+
+    <p>
+        <a href="..">Back to the index</a>
+    </p>
+{% endblock %}

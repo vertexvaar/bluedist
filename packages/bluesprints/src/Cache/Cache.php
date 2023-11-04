@@ -43,20 +43,24 @@ readonly class Cache implements CacheInterface
 
     public function get(string $key, mixed $default = null): mixed
     {
-        if (!$this->has($key)) {
+        $cacheFile = concat_paths($this->cacheRoot, $key);
+
+        // Cache never existed
+        if (!file_exists($cacheFile)) {
             if (is_callable($default)) {
                 $default = $default();
             }
             $this->set($key, $default);
             return $default;
         }
-        $cacheFile = concat_paths($this->cacheRoot, $key);
+
+        // Check if cache is expired
         $cacheEntry = json_decode(file_get_contents($cacheFile), true, 512, JSON_THROW_ON_ERROR);
         if (is_numeric($cacheEntry['ttl']) && $cacheEntry['ttl'] > 0) {
             $fileInfo = new SplFileInfo($cacheFile);
-            $created = $fileInfo->getCTime() + $cacheEntry['ttl'];
-            $expires = time();
-            if ($created < $expires) {
+            $livesUntil = $fileInfo->getCTime() + $cacheEntry['ttl'];
+            if ($livesUntil < time()) {
+                // Cache expired, set new
                 if (is_callable($default)) {
                     $default = $default();
                 }
@@ -64,6 +68,8 @@ readonly class Cache implements CacheInterface
                 return $default;
             }
         }
+
+        // Cache okay, return value
         return $cacheEntry['value'];
     }
 
@@ -132,6 +138,22 @@ readonly class Cache implements CacheInterface
     public function has(string $key): bool
     {
         $cacheFile = concat_paths($this->cacheRoot, $key);
-        return file_exists($cacheFile);
+
+        if (!file_exists($cacheFile)) {
+            return false;
+        }
+
+        // Check if cache is expired and if, delete it.
+        $cacheEntry = json_decode(file_get_contents($cacheFile), true, 512, JSON_THROW_ON_ERROR);
+        if (is_numeric($cacheEntry['ttl']) && $cacheEntry['ttl'] > 0) {
+            $fileInfo = new SplFileInfo($cacheFile);
+            $livesUntil = $fileInfo->getCTime() + $cacheEntry['ttl'];
+            if ($livesUntil < time()) {
+                unlink($cacheFile);
+                return false;
+            }
+        }
+
+        return true;
     }
 }

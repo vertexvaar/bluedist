@@ -18,6 +18,11 @@ use function sprintf;
 
 class RouteCollectorCompilerPass implements CompilerPassInterface
 {
+    public function __construct(
+        private readonly string $tagName,
+    ) {
+    }
+
     public function process(ContainerBuilder $container): void
     {
         /** @var IOInterface $io */
@@ -25,7 +30,7 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
         $io->write('Loading routes from controller attributes', true, IOInterface::VERBOSE);
 
         $compiledRoutes = [];
-        $controllers = $container->findTaggedServiceIds('vertexvaar.bluesprints.controller');
+        $controllers = $container->findTaggedServiceIds($this->tagName);
         foreach (array_keys($controllers) as $controller) {
             $definition = $container->getDefinition($controller);
             $definition->setPublic(true);
