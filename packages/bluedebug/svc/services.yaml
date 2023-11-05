@@ -10,14 +10,6 @@ services:
     public: true
     shared: true
 
-  VerteXVaaR\BlueDebug\Service\DebugCollector:
-    public: true
-    shared: true
-
-  VerteXVaaR\BlueDebug\Service\QueryCollector:
-    public: true
-    shared: true
-
   VerteXVaaR\BlueDebug\Decorator\StoreDecorator:
     decorates: VerteXVaaR\BlueSprints\Store\FileStore
     arguments: [ '@.inner' ]
@@ -33,6 +25,9 @@ services:
   VerteXVaaR\BlueDebug\Decorator\CacheDecorator:
     decorates: VerteXVaaR\BlueSprints\Cache\Cache
     arguments: [ '@.inner' ]
+
+  VerteXVaaR\BlueDebug\RequestHandler\MiddlewareChainDecorator:
+    decorates: VerteXVaaR\BlueWeb\Middleware\MiddlewareChain
 
   VerteXVaaR\BlueWeb\Template\TwigFactory:
     arguments:

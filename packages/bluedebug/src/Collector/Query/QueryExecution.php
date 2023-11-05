@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueDebug\Service;
+namespace VerteXVaaR\BlueDebug\Collector\Query;
 
 class QueryExecution
 {

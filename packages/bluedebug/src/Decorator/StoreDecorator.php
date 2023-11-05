@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDebug\Decorator;
 
-use VerteXVaaR\BlueDebug\Service\QueryCollector;
+use VerteXVaaR\BlueDebug\Collector\QueryCollector;
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 use VerteXVaaR\BlueSprints\Store\Store;
 

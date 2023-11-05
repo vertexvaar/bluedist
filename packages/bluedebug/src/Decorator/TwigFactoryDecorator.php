@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueDebug\Decorator;
 
 use Twig\Environment as View;
-use VerteXVaaR\BlueDebug\Service\Stopwatch;
+use VerteXVaaR\BlueDebug\Collector\Stopwatch;
 use VerteXVaaR\BlueWeb\Template\TwigFactory;
 
 readonly class TwigFactoryDecorator

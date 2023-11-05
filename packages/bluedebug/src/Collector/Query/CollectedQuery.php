@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueDebug\Service;
+namespace VerteXVaaR\BlueDebug\Collector\Query;
 
 use function count;
 use function hash;
@@ -21,7 +21,7 @@ class CollectedQuery
 
     public function getHash(): string
     {
-        return hash('sha1', json_encode([$this->query, $this->context]));
+        return hash('sha1', json_encode([$this->query, $this->context], JSON_THROW_ON_ERROR));
     }
 
     public function addExecution(QueryExecution $queryExecution): void

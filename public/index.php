@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 if (!file_exists('css')) {
     symlink('../vendor/vertexvaar/blueweb/res/public/css/', __DIR__ . '/css');
 }

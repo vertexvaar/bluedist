@@ -6,31 +6,16 @@ namespace VerteXVaaR\BlueDebug\Decorator;
 
 use DateInterval;
 use Psr\SimpleCache\CacheInterface;
+use VerteXVaaR\BlueDebug\Collector\CacheStatisticsCollector;
 
-use function array_column;
-use function array_sum;
 use function is_callable;
 
 class CacheDecorator implements CacheInterface
 {
-    protected static array $calls = [
-        'get' => [],
-        'has' => [],
-    ];
-
     public function __construct(
         private readonly CacheInterface $inner,
+        private readonly CacheStatisticsCollector $cacheStatisticsCollector,
     ) {
-    }
-
-    public static function getCalls(): array
-    {
-        return self::$calls + [
-                'sumHits' => array_sum(array_column(self::$calls['get'], 'hits'))
-                    + array_sum(array_column(self::$calls['has'], 'hits')),
-                'sumMisses' => array_sum(array_column(self::$calls['get'], 'misses'))
-                    + array_sum(array_column(self::$calls['has'], 'misses')),
-            ];
     }
 
     public function get(string $key, mixed $default = null): mixed
@@ -44,9 +29,7 @@ class CacheDecorator implements CacheInterface
             return $default;
         };
         $value = $this->inner->get($key, $wrapper);
-        self::$calls['get'][$key]['hits'] ??= 0;
-        self::$calls['get'][$key]['misses'] ??= 0;
-        self::$calls['get'][$key][$hit ? 'hits' : 'misses']++;
+        $this->cacheStatisticsCollector->recordCall($key, $hit);
         return $value;
     }
 
@@ -83,9 +66,7 @@ class CacheDecorator implements CacheInterface
     public function has(string $key): bool
     {
         $has = $this->inner->has($key);
-        self::$calls['has'][$key]['hits'] ??= 0;
-        self::$calls['has'][$key]['misses'] ??= 0;
-        self::$calls['has'][$key][$has ? 'hits' : 'misses']++;
+        $this->cacheStatisticsCollector->recordCall($key, $has);
         return $has;
     }
 }

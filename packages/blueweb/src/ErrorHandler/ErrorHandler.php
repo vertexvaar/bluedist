@@ -81,7 +81,7 @@ class ErrorHandler
         echo '<ul class="c-error__call-stack">';
         foreach ($callStack as $trace) {
             echo '<li><code>';
-            echo $trace['file'] . ' @ ' . $trace['line'] . '<br/>';
+            echo ($trace['file'] ?? '<file>') . ' @ ' . ($trace['line'] ?? '?') . '<br/>';
             echo ($trace['class'] ?? '') . ($trace['type'] ?? '') . $trace['function'] . '(';
             foreach ($trace['args'] as $argument) {
                 if (is_object($argument)) {

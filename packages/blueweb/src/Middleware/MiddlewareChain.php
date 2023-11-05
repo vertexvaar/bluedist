@@ -22,8 +22,8 @@ class MiddlewareChain implements RequestHandlerInterface
      * @param array<MiddlewareInterface> $middlewares
      */
     public function __construct(
-        private array $middlewares,
-        private readonly RequestHandlerInterface $requestHandler,
+        protected array $middlewares,
+        protected readonly RequestHandlerInterface $requestHandler,
     ) {
         reset($this->middlewares);
     }

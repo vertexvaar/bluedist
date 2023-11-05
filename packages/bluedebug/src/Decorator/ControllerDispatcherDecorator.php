@@ -7,7 +7,7 @@ namespace VerteXVaaR\BlueDebug\Decorator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use VerteXVaaR\BlueDebug\Service\Stopwatch;
+use VerteXVaaR\BlueDebug\Collector\Stopwatch;
 use VerteXVaaR\BlueWeb\RequestHandler\ControllerDispatcher;
 
 readonly class ControllerDispatcherDecorator implements RequestHandlerInterface

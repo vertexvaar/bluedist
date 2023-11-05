@@ -8,19 +8,22 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use VerteXVaaR\BlueDebug\Service\Stopwatch;
+use VerteXVaaR\BlueDebug\Collector\RequestCollector;
+use VerteXVaaR\BlueDebug\Collector\ResponseCollector;
 
-readonly class StopwatchMiddleware implements MiddlewareInterface
+readonly class CollectMessagesMiddleware implements MiddlewareInterface
 {
-    public function __construct(private Stopwatch $stopwatch)
-    {
+    public function __construct(
+        private RequestCollector $requestCollector,
+        private ResponseCollector $responseCollector,
+    ) {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $this->stopwatch->start('request');
+        $this->requestCollector->collect($request);
         $response = $handler->handle($request);
-        $this->stopwatch->stop('request');
+        $this->responseCollector->collect($response);
         return $response;
     }
 }

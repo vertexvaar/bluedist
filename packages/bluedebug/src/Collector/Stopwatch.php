@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueDebug\Service;
+namespace VerteXVaaR\BlueDebug\Collector;
 
 use Exception;
+use VerteXVaaR\BlueDebug\CollectorRendering;
 
 use function hrtime;
+use function round;
 
-class Stopwatch
+class Stopwatch implements Collector
 {
     private array $timings = [];
 
@@ -26,8 +28,18 @@ class Stopwatch
         $this->timings[$name]['duration'] = $this->timings[$name]['end'] - $this->timings[$name]['start'];
     }
 
-    public function getTimings(): array
+    public function render(): CollectorRendering
     {
-        return $this->timings;
+        $timings = $this->timings;
+        unset($timings['request']);
+        $table = [];
+        foreach ($timings as $key => $stats) {
+            $table[$key] = round($stats['duration'] / 1000000, 2) . 'ms';
+        }
+        return new CollectorRendering(
+            'Timing',
+            round($this->timings['request']['duration'] / 1000000, 2) . 'ms',
+            $table,
+        );
     }
 }

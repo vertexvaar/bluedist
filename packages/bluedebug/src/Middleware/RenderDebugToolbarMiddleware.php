@@ -4,28 +4,22 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDebug\Middleware;
 
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Twig\Environment as View;
-use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
-use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
-use VerteXVaaR\BlueDebug\Decorator\CacheDecorator;
-use VerteXVaaR\BlueDebug\Service\CollectedQuery;
-use VerteXVaaR\BlueDebug\Service\DebugCollector;
-use VerteXVaaR\BlueDebug\Service\QueryCollector;
-use VerteXVaaR\BlueDebug\Service\QueryExecution;
-use VerteXVaaR\BlueDebug\Service\Stopwatch;
+use VerteXVaaR\BlueDebug\Collector\CollectorCollection;
+use VerteXVaaR\BlueDebug\CollectorRendering;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
-use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
-use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
+use function array_unshift;
+use function is_string;
+use function iterator_to_array;
 use function serialize;
+use function strlen;
 use function unserialize;
 
 readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
@@ -33,10 +27,8 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
     public function __construct(
         private View $view,
         private Environment $environment,
-        private DebugCollector $collector,
-        private Stopwatch $stopwatch,
-        private QueryCollector $queryCollector,
         private CacheInterface $cache,
+        private CollectorCollection $collectorCollection,
     ) {
     }
 
@@ -47,61 +39,35 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
             return $response;
         }
 
-        /** @var null|ServerRequestInterface $collectedRequest */
-        $collectedRequest = $this->collector->getItem('request');
-        /** @var null|ResponseInterface $collectedResponse */
-        $collectedResponse = $this->collector->getItem('response');
-        /** @var null|RouteEncapsulation $collectedRoute */
-        $collectedRoute = $collectedRequest?->getAttribute('route');
-        /** @var null|Session $collectedSession */
-        $collectedSession = $collectedRequest?->getAttribute('session');
+        /** @var array<CollectorRendering> $collectorRenderings */
+        $collectorRenderings = iterator_to_array($this->collectorCollection->render());
 
         if ($response->getStatusCode() >= 300) {
-            $lastRequest = [
-                'request' => $collectedRequest,
-                'response' => $collectedResponse,
-                'route' => $collectedRoute,
-                'session' => $collectedSession,
-                'context' => $this->environment->context,
-                'stopwatch' => $this->stopwatch,
-                'queryCollector' => $this->queryCollector,
-                'cacheCalls' => CacheDecorator::getCalls(),
-            ];
-            $this->cache->set('last_request', serialize($lastRequest));
+            $table = [];
+            foreach ($collectorRenderings as $rendering) {
+                $table['<b>' . $rendering->title . '</b>'] = $rendering->shortInformation;
+                foreach ($rendering->popupTable ?? [] as $key => $value) {
+                    $table[$key] = $value;
+                }
+            }
+            $contents = new CollectorRendering(
+                'Previous Request',
+                (string)$response->getStatusCode(),
+                $table,
+            );
+            $this->cache->set('last_request', serialize($contents));
             return $response;
         }
 
         $lastRequest = $this->cache->get('last_request');
-        $this->cache->delete('last_request');
-        if (null !== $lastRequest) {
-            $lastRequest = unserialize($lastRequest, [
-                'allowed_classes' => [
-                    ServerRequest::class,
-                    Response::class,
-                    Route::class,
-                    AuthorizedRoute::class,
-                    RouteEncapsulation::class,
-                    Session::class,
-                    Stopwatch::class,
-                    QueryCollector::class,
-                    DebugCollector::class,
-                    CollectedQuery::class,
-                    QueryExecution::class,
-                ],
-            ]);
+        if (is_string($lastRequest) && strlen($lastRequest) > 10) {
+            $lastRequest = unserialize($lastRequest, ['allowed_classes' => [CollectorRendering::class]]);
+            array_unshift($collectorRenderings, $lastRequest);
         }
-
         $contents = $this->view->render('@vertexvaar_bluedebug/debug_toolbar.html.twig', [
-            'request' => $collectedRequest,
-            'response' => $collectedResponse,
-            'route' => $collectedRoute,
-            'session' => $collectedSession,
-            'context' => $this->environment->context,
-            'stopwatch' => $this->stopwatch,
-            'queryCollector' => $this->queryCollector,
-            'lastRequest' => $lastRequest,
-            'cacheCalls' => CacheDecorator::getCalls(),
+            'collectorRenderings' => $collectorRenderings,
         ]);
+        $this->cache->delete('last_request');
 
         $body = $response->getBody();
         $body->seek($body->getSize());
