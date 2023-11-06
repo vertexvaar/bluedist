@@ -13,7 +13,6 @@
       <sourceFolder url="file://$MODULE_DIR$/packages/bluescheduler/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueScheduler\" />
       <sourceFolder url="file://$MODULE_DIR$/packages/blueweb/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueWeb\" />
       <sourceFolder url="file://$MODULE_DIR$/packages/bluelog/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueLog\" />
-      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/behat/gherkin" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeception/codeception" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeception/lib-asserts" />

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueTranslation\DependencyInjection;
 
-use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
@@ -14,12 +13,9 @@ use RecursiveIteratorIterator;
 use SplFileInfo;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
-use VerteXVaaR\BlueTranslation\TranslateTwigExtension;
 use VerteXVaaR\BlueTranslation\TranslatorFactory;
-use VerteXVaaR\BlueWeb\Template\TwigFactory;
 
 use function array_key_exists;
 use function array_keys;
@@ -30,15 +26,8 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        /** @var Composer $composer */
-        $composer = $container->get('composer');
         /** @var IOInterface $io */
         $io = $container->get('io');
-
-        $twigFactoryDefinition = $container->getDefinition(TwigFactory::class);
-        $extensions = $twigFactoryDefinition->getArgument('$extensions');
-        $extensions['translation'] = new Reference(TranslateTwigExtension::class);
-        $twigFactoryDefinition->setArgument('$extensions', $extensions);
 
         $io->write('Loading translation resources', true, IOInterface::VERBOSE);
 

@@ -12,6 +12,6 @@ final readonly class Environment
 
     public function __construct()
     {
-        $this->context = Context::fromString((string)getenv('VXVR_BS_CONTEXT'));
+        $this->context = Context::from((string)(getenv('APP_ENV')));
     }
 }

@@ -28,8 +28,3 @@ services:
 
   VerteXVaaR\BlueDebug\RequestHandler\MiddlewareChainDecorator:
     decorates: VerteXVaaR\BlueWeb\Middleware\MiddlewareChain
-
-  VerteXVaaR\BlueWeb\Template\TwigFactory:
-    arguments:
-      $extensions:
-        properties: '@VerteXVaaR\BlueDebug\Template\Extension\BlueDebugExtension'

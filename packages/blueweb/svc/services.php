@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Twig\Extension\AbstractExtension;
 use VerteXVaaR\BlueWeb\Caching\DependencyInjection\ActionCacheCompilerPass;
 use VerteXVaaR\BlueWeb\Controller\Controller;
 use VerteXVaaR\BlueWeb\Middleware\DependencyInjection\MiddlewareCompilerPass;
@@ -14,4 +15,5 @@ return static function (ContainerBuilder $container): void {
     $container->addCompilerPass(new ActionCacheCompilerPass('vertexvaar.bluesprints.controller'));
 
     $container->registerForAutoconfiguration(Controller::class)->addTag('vertexvaar.bluesprints.controller');
+    $container->registerForAutoconfiguration(AbstractExtension::class)->addTag('twig.extension');
 };

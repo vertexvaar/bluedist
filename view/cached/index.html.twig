@@ -8,6 +8,23 @@
     </p>
 
     <p>
+        Caching controller actions is very easy. All GET actions can be cached. The following example caches the action
+        result for 1 minute.
+    </p>
+
+    <pre><code class="language-php">
+class Cached extends AbstractController
+{
+    #[Route('/cached')]
+    #[ActionCache(60)]
+    public function index(): ResponseInterface
+    {
+        return $this->render('cached/index.html.twig', ['renderTime' => new DateTimeImmutable('now')]);
+    }
+}
+    </code></pre>
+
+    <p>
         You may have noticed, that the first call to this page took a bit longer than expected. That's because the
         action is stalled for a second. When you <a href="/cached">reload this page</a>, it will appear instantly,
         because the rendered content was cached.

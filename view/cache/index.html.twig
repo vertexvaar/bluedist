@@ -1,33 +1,71 @@
-<h1>Caching demo</h1>
+{% extends "layout.html.twig" %}
 
-{% if cache_value %}
-    <p>A value has been cached. The value is: {{ cache_value }}</p>
-{% else %}
-    <p>No value has been stored in the cache so far or it already expired.</p>
-{% endif %}
+{% block content %}
+    <h1>Caching demo</h1>
 
-<form action="/cache/store" method="post">
-    <table>
-        <tr>
-            <td>
-                <label>
-                    Value
-                    <input type="text" name="value">
-                </label>
-            </td>
-            <td>
-                <label>
-                    ttl (seconds)
-                    <input type="text" name="ttl">
-                </label>
-            </td>
-            <td>
-                <button type="submit">Store value</button>
-            </td>
-        </tr>
-    </table>
+    {% if cache_value %}
+        <p>A value has been cached. The value is: {{ cache_value }}</p>
+    {% else %}
+        <p>No value has been stored in the cache so far or it already expired.</p>
+    {% endif %}
 
-    <p>
-        <a href="..">Back to the index</a>
-    </p>
-</form>
+    <form action="/cache/store" method="post">
+        <table>
+            <tr>
+                <td>
+                    <label>
+                        Value
+                        <input type="text" name="value">
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        ttl (seconds)
+                        <input type="text" name="ttl">
+                    </label>
+                </td>
+                <td>
+                    <button type="submit">Store value</button>
+                </td>
+            </tr>
+        </table>
+
+        <p>
+            Caching is easy.
+        </p>
+
+        <pre><code class="language-php">
+class Caching extends AbstractController
+{
+    public function __construct(Repository $repository, View $view, private readonly CacheInterface $cache)
+    {
+        parent::__construct($repository, $view);
+    }
+
+    #[Route(path: '/cache/index')]
+    public function index(ServerRequestInterface $request): ResponseInterface
+    {
+        $value = $this->cache->get('app/cache_demo');
+        return $this->render('cache/index.html.twig', ['cache_value' => $value]);
+    }
+
+    #[Route(path: '/cache/store', method: Route::POST)]
+    public function store(ServerRequestInterface $request): ResponseInterface
+    {
+        $body = $request->getParsedBody();
+        if (isset($body['value'], $body['ttl'])) {
+            $value = $body['value'];
+            $ttl = (int)$body['ttl'];
+
+            $this->cache->set('app/cache_demo', $value, $ttl);
+        }
+        return $this->redirect('/cache/index');
+    }
+}
+        </code></pre>
+
+        <p>
+            <a href="..">Back to the index</a>
+        </p>
+    </form>
+{% endblock %}

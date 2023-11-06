@@ -29,7 +29,6 @@ services:
       - host.docker.internal:host-gateway
     environment:
       SSH_AUTH_SOCK: $SSH_AUTH_SOCK
-      VXVR_BS_CONTEXT: Dev
 
   mail:
     image: axllent/mailpit

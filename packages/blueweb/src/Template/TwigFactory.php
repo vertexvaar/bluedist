@@ -20,7 +20,7 @@ readonly class TwigFactory
     public function __construct(
         private array $templatePaths,
         private Environment $environment,
-        private array $extensions,
+        private iterable $extensions,
         private PackageExtras $packageExtras,
     ) {
     }

@@ -79,16 +79,16 @@
             Have a look at the code which creates a fruit from the form above:
         </p>
 
-        <pre>
-            $arguments = $this->request->getParsedBody();
-            if (isset($arguments['name'], $arguments['color'])) {
-                $fruit = new Fruit();
-                $fruit->setColor($arguments['color']);
-                $fruit->setName($arguments['name']);
-                $fruit->save();
-            }
-            $this->redirect('listFruits');
-        </pre>
+        <pre><code class="language-php">
+$arguments = $this->request->getParsedBody();
+if (isset($arguments['name'], $arguments['color'])) {
+    $fruit = new Fruit();
+    $fruit->setColor($arguments['color']);
+    $fruit->setName($arguments['name']);
+    $fruit->save();
+}
+$this->redirect('listFruits');
+        </code></pre>
 
         <p>
             As I promised you, it is easy as pie. If you want to alter the Model, say add a new property, just do it.

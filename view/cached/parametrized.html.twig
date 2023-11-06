@@ -17,6 +17,25 @@
     </p>
 
     <p>
+        The action cache attribute supports caching based on GET params.
+    </p>
+
+    <pre><code class="language-php">
+class Cached extends AbstractController
+{
+    #[Route('/cached/params')]
+    #[ActionCache(params: ['foo'])]
+    public function parametrized(ServerRequestInterface $serverRequest): ResponseInterface
+    {
+        return $this->render('cached/parametrized.html.twig', [
+            'renderTime' => new DateTimeImmutable('now'),
+            'foo' => $serverRequest->getQueryParams()['foo'],
+        ]);
+    }
+}
+    </code></pre>
+
+    <p>
         You can also <a href="/cached/clearCache">clear all caches</a>. (You will be redirected to the index page).
     </p>
 

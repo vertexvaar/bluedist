@@ -1,10 +1,33 @@
 <?php
 
-$root = dirname(__DIR__);
-$data = $root . '/tests/_data/functional/' . uniqid('', true) . '/';
+use function CoStack\Lib\concat_paths;
 
-register_shutdown_function(static fn() => exec('rm -f ' . escapeshellarg($root . '/.env')));
-file_put_contents($root . '/.env', "VXVR_BS_CONTEXT=Testing\nVXVR_BS_ROOT=" . $data);
+$root = dirname(__DIR__);
+putenv('VXVR_BS_TEST_ROOT=' . $root);
+$data = concat_paths($root, 'tests/_data/functional', uniqid('', true));
+
+$dotEnvFile = concat_paths($root, '.env');
+if (file_exists($dotEnvFile)) {
+    rename($dotEnvFile, $dotEnvFile . '.backup');
+}
+
+register_shutdown_function(
+    static function () use ($dotEnvFile): void {
+        exec('rm -f ' . escapeshellarg($dotEnvFile));
+        if (file_exists($dotEnvFile . '.backup')) {
+            rename($dotEnvFile . '.backup', $dotEnvFile);
+        }
+    },
+);
+file_put_contents(
+    $dotEnvFile,
+    <<<ENV
+APP_ENV=test
+APP_DEBUG=true
+
+VXVR_BS_ROOT=$data
+ENV,
+);
 
 register_shutdown_function(static fn() => exec('rm -rf ' . escapeshellarg($data)));
 if (!mkdir($data, 0777, true) && !is_dir($data)) {
@@ -12,5 +35,5 @@ if (!mkdir($data, 0777, true) && !is_dir($data)) {
 }
 
 putenv('VXVR_BS_ROOT=' . $data);
-exec('cp -a ' . escapeshellarg($root . '/config/') . ' ' . escapeshellarg($data));
-exec('cp -a ' . escapeshellarg($root . '/view/') . ' ' . escapeshellarg($data));
+exec('cp -a ' . escapeshellarg(concat_paths($root, 'config')) . ' ' . escapeshellarg($data));
+exec('cp -a ' . escapeshellarg(concat_paths($root, 'view')) . ' ' . escapeshellarg($data));

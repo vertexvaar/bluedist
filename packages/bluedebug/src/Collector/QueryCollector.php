@@ -9,6 +9,7 @@ use VerteXVaaR\BlueDebug\Collector\Query\QueryExecution;
 use VerteXVaaR\BlueDebug\CollectorRendering;
 
 use function hrtime;
+use function implode;
 
 class QueryCollector implements Collector
 {
@@ -43,7 +44,8 @@ class QueryCollector implements Collector
 
         $table = [];
         foreach ($this->queries as $query) {
-            $table[$query->query] = $query->getCount() . ' (' . ($query->getCumulatedDuration() / 1000000) . 'ms)';
+            $table[$this->queryToTableKey($query)] = $query->getCount()
+                . ' (' . ($query->getCumulatedDuration() / 1000000) . 'ms)';
         }
 
         return new CollectorRendering(
@@ -51,5 +53,15 @@ class QueryCollector implements Collector
             (string)$count,
             $table,
         );
+    }
+
+    protected function queryToTableKey(CollectedQuery $query): string
+    {
+        $string = $query->query;
+        $contextStrings = [];
+        foreach ($query->context as $name => $value) {
+            $contextStrings[] = $name . '="' . $value . '"';
+        }
+        return $string . ' ' . implode(', ', $contextStrings);
     }
 }

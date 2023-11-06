@@ -9,8 +9,12 @@ use Codeception\Module;
 use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Dotenv\Dotenv;
 use VerteXVaaR\BlueContainer\Generated\DI;
 use VerteXVaaR\BlueWeb\Application;
+
+use function CoStack\Lib\concat_paths;
+use function getenv;
 
 class Functional extends Module
 {
@@ -18,6 +22,17 @@ class Functional extends Module
 
     public function amOnPage(string $path): void
     {
+        $dotEnvFile = concat_paths(getenv('VXVR_BS_TEST_ROOT'), '.env');
+        if (file_exists($dotEnvFile)) {
+            $dotenv = new Dotenv();
+            $dotenv->usePutenv();
+            $dotenv->loadEnv($dotEnvFile, null, 'dev', [], true);
+        }
+
+        if (empty(ini_get('date.timezone'))) {
+            date_default_timezone_set('UTC');
+        }
+
         $request = new ServerRequest('GET', $path);
 
         $di = new DI();

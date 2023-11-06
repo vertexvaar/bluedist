@@ -28,7 +28,7 @@ class LoginCest
             $I->setCookie('XDEBUG_SESSION', 'XDEBUG_ECLIPSE');
         }
 
-        $I->see('User (anonymous session)');
+        $I->see('Session: (anonymous)');
 
         $I->amOnPage('/login');
         $I->submitForm('#login', [
@@ -36,14 +36,14 @@ class LoginCest
             'password' => 'password',
         ]);
         // Requires bluesprints debug package
-        $I->see('User (authenticated): admin');
+        $I->see('Session: admin');
 
         $I->seeCookie('auth');
 
         $I->amOnPage('/logout');
 
         // Requires bluesprints debug package
-        $I->see('User (anonymous session)');
+        $I->see('Session: (anonymous)');
 
         $I->dontSeeCookie('auth');
     }

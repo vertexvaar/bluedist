@@ -15,7 +15,7 @@ services:
   VerteXVaaR\BlueWeb\Template\TwigFactory:
     public: true
     arguments:
-      $extensions: [ ]
+      $extensions: !tagged_iterator twig.extension
 
   Twig\Environment:
     factory: [ '@VerteXVaaR\BlueWeb\Template\TwigFactory', 'create' ]
