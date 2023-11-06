@@ -1,0 +1,30 @@
+{
+  "name": "vertexvaar/blueconfig",
+  "description": "Config component for bluesprints",
+  "type": "library",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "Oliver Eglseder",
+      "email": "bluesprints@vxvr.de",
+      "homepage": "http://vxvr.de/",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "VerteXVaaR\\BlueConfig\\": "src/"
+    }
+  },
+  "require": {
+    "php": "8.2.*",
+    "symfony/console": "^v6.3.4",
+    "symfony/yaml": "^v6.3.7"
+  },
+  "extra": {
+    "vertexvaar/bluesprints": {
+      "services": "svc",
+      "commands": "config"
+    }
+  }
+}

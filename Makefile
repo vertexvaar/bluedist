@@ -42,12 +42,12 @@ start:
 ## Starts composer-install
 composer:
 	echo "$(EMOJI_package) Installing composer dependencies"
-	docker compose exec php composer $(ARGS)
+	docker compose exec php vendor/bin/composer $(ARGS)
 
 ## Starts composer-install
 composer-install:
 	echo "$(EMOJI_package) Installing composer dependencies"
-	docker compose exec php composer install
+	docker compose exec php vendor/bin/composer install
 
 ## Create necessary directories
 create-dirs:

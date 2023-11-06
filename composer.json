@@ -26,7 +26,8 @@
     "vertexvaar/bluescheduler": "@dev",
     "vertexvaar/blueweb": "@dev",
     "vertexvaar/bluelog": "@dev",
-    "symfony/http-client": "*"
+    "symfony/http-client": "*",
+    "vertexvaar/blueconfig": "@dev"
   },
   "autoload": {
     "psr-4": {

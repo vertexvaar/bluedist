@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  VerteXVaaR\BlueConfig\:
+    resource: '../src/*'
+
+  VerteXVaaR\BlueConfig\Config:
+    public: true
+    shared: true
+    factory: [ '@VerteXVaaR\BlueConfig\ConfigFactory', 'build' ]

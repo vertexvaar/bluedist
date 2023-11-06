@@ -20,7 +20,8 @@
     "php": "8.2.*",
     "co-stack/lib": "^v6.0.0",
     "psr/simple-cache": "^3.0.0",
-    "vertexvaar/bluecontainer": "*"
+    "vertexvaar/bluecontainer": "*",
+    "vertexvaar/blueconfig": "*"
   },
   "replace": {
     "symfony/polyfill-php54": "*",

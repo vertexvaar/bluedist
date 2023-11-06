@@ -1,0 +1,4 @@
+filePermissions: '0755'
+folderPermissions: '0755'
+auth:
+  cookieAuthName: blue-auth

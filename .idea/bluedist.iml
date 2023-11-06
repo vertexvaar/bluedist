@@ -13,6 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/packages/bluescheduler/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueScheduler\" />
       <sourceFolder url="file://$MODULE_DIR$/packages/blueweb/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueWeb\" />
       <sourceFolder url="file://$MODULE_DIR$/packages/bluelog/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueLog\" />
+      <sourceFolder url="file://$MODULE_DIR$/packages/blueconfig/src" isTestSource="false" packagePrefix="VerteXVaaR\BlueConfig\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/behat/gherkin" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeception/codeception" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/codeception/lib-asserts" />
@@ -123,6 +124,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-client-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/options-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/vertexvaar/bluelog" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/vertexvaar/blueconfig" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

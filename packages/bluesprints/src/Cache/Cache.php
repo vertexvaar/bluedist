@@ -8,8 +8,8 @@ use DateInterval;
 use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 use SplFileInfo;
+use VerteXVaaR\BlueConfig\Config;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
-use VerteXVaaR\BlueSprints\Environment\Config;
 
 use function clearstatcache;
 use function CoStack\Lib\concat_paths;
@@ -90,7 +90,7 @@ readonly class Cache implements CacheInterface
         $cacheFile = concat_paths($this->cacheRoot, $key);
         $path = dirname($cacheFile);
         clearstatcache(false, $cacheFile);
-        if (!is_dir($path) && mkdir($path, $this->config->folderPermissions, true) && !is_dir($path)) {
+        if (!is_dir($path) && mkdir($path, $this->config->get('folderPermissions'), true) && !is_dir($path)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         return (bool)file_put_contents($cacheFile, json_encode($cacheEntry, JSON_THROW_ON_ERROR));
@@ -135,6 +135,7 @@ readonly class Cache implements CacheInterface
         foreach ($keys as $key) {
             $this->delete($key);
         }
+        return true;
     }
 
     public function has(string $key): bool

@@ -11,8 +11,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SplFileInfo;
+use VerteXVaaR\BlueConfig\Config;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
-use VerteXVaaR\BlueSprints\Environment\Config;
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
 use function CoStack\Lib\concat_paths;
@@ -91,7 +91,7 @@ class FileStore implements Store, LoggerAwareInterface
 
         if (
             !is_dir($classFolder)
-            && !mkdir($classFolder, $this->config->folderPermissions, true)
+            && !mkdir($classFolder, $this->config->get('folderPermissions'), true)
             && !is_dir($classFolder)
         ) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $classFolder));

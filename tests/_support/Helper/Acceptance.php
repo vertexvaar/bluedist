@@ -4,8 +4,8 @@ namespace VerteXVaaR\BlueDistTest\Helper;
 
 use Codeception\Module;
 use VerteXVaaR\BlueAuth\Mvcr\Model\User;
+use VerteXVaaR\BlueConfig\Config;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
-use VerteXVaaR\BlueSprints\Environment\Config;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 use VerteXVaaR\BlueSprints\Store\FileStore;
 
@@ -20,8 +20,8 @@ class Acceptance extends Module
         $user = new User($username);
         $user->hashedPassword = password_hash($password, PASSWORD_ARGON2ID);
         $user->roles = $roles;
-        $config = new Config();
         $packageExtras = new PackageExtras();
+        $config = new Config($packageExtras);
         $store = new FileStore($config, $packageExtras);
         $repo = new Repository($store);
         $repo->persist($user);

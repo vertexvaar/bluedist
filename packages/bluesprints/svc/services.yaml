@@ -10,10 +10,6 @@ services:
     public: true
     shared: true
 
-  VerteXVaaR\BlueSprints\Environment\Config:
-    public: true
-    shared: true
-
   Psr\SimpleCache\CacheInterface: '@VerteXVaaR\BlueSprints\Cache\Cache'
 
   VerteXVaaR\BlueSprints\Cache\Cache:
