@@ -8,7 +8,6 @@ use VerteXVaaR\BlueConfig\Definition\Definition;
 use VerteXVaaR\BlueConfig\Structure\Node;
 use VerteXVaaR\BlueConfig\Structure\OctalNumberNode;
 use VerteXVaaR\BlueConfig\Structure\RootNode;
-use VerteXVaaR\BlueConfig\Structure\StringNode;
 
 use function decoct;
 use function str_pad;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDebug\Collector;
 
-use VerteXVaaR\BlueDebug\CollectorRendering;
+use VerteXVaaR\BlueDebug\Rendering\CollectorRendering;
 
 use function array_pop;
 use function get_object_vars;

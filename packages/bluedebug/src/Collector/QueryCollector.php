@@ -6,7 +6,7 @@ namespace VerteXVaaR\BlueDebug\Collector;
 
 use VerteXVaaR\BlueDebug\Collector\Query\CollectedQuery;
 use VerteXVaaR\BlueDebug\Collector\Query\QueryExecution;
-use VerteXVaaR\BlueDebug\CollectorRendering;
+use VerteXVaaR\BlueDebug\Rendering\CollectorRendering;
 
 use function hrtime;
 use function implode;

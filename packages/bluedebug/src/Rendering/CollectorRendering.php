@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueDebug;
+namespace VerteXVaaR\BlueDebug\Rendering;
 
 readonly class CollectorRendering
 {

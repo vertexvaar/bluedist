@@ -13,8 +13,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
-use function twig_slice;
-
 class RoutingMiddleware implements MiddlewareInterface
 {
     public function __construct(private readonly array $data)
@@ -36,14 +34,14 @@ class RoutingMiddleware implements MiddlewareInterface
             ),
             Dispatcher::METHOD_NOT_ALLOWED => throw new Exception(
                 'Method not allowed for route "' . $path . '"',
-                1699381583
+                1699381583,
             ),
         };
         $routeEncapsulation = new RouteEncapsulation(
             new ($matchedRoute['class'])(...$matchedRoute['vars']),
             $matchedRoute['controller'],
             $matchedRoute['action'],
-            $routingResult[2]
+            $routingResult[2],
         );
         $request = $request->withAttribute('route', $routeEncapsulation);
         return $handler->handle($request);

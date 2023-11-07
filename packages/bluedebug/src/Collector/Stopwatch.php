@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueDebug\Collector;
 
 use Exception;
-use VerteXVaaR\BlueDebug\CollectorRendering;
+use VerteXVaaR\BlueDebug\Rendering\CollectorRendering;
 
 use function hrtime;
 use function round;

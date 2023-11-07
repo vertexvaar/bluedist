@@ -5,20 +5,13 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueDebug\Collector;
 
 use Psr\Http\Message\ServerRequestInterface;
-use VerteXVaaR\BlueDebug\CollectorRendering;
+use VerteXVaaR\BlueDebug\Rendering\CollectorRendering;
 
 use function array_diff_assoc;
 use function array_filter;
 use function array_keys;
-use function array_reduce;
 use function array_shift;
 use function end;
-use function get_class;
-use function get_object_vars;
-use function implode;
-use function is_array;
-use function is_object;
-use function json_encode;
 
 class RequestCollector implements Collector
 {
@@ -74,7 +67,7 @@ class RequestCollector implements Collector
         foreach ($previousAttributes as $key => $value) {
             if (!isset($newAttributes[$key])) {
                 $diff['removedAttribute'][$key] = $value;
-            } elseif($newAttributes[$key] !== $value) {
+            } elseif ($newAttributes[$key] !== $value) {
                 $diff['changedAttribute'][$key] = $value;
             }
         }
@@ -84,23 +77,6 @@ class RequestCollector implements Collector
             }
         }
 
-        $diff = array_filter($diff);
-        $result = '';
-        foreach ($diff as $name => $changes) {
-            $result .= $name . ' ' . $this->dump($changes);
-        }
-        return $result;
-    }
-
-    protected function dump(array $value): string
-    {
-        return array_reduce($value, function ($carry, $element) {
-            if (is_array($element)) {
-                $element = $this->dump($element);
-            } elseif (is_object($element)) {
-                $element = json_encode(get_object_vars($element)) . ' (' . get_class($element) . ')';
-            }
-            return $carry . ' ' . $element;
-        }, '');
+        return array_filter($diff);
     }
 }

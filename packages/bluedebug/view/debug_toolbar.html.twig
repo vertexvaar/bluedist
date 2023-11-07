@@ -36,6 +36,11 @@
         white-space: nowrap;
     }
 
+    .infobox td, .infobox th {
+        text-align: left;
+        vertical-align: top;
+    }
+
     .flexbox-item:hover .infobox {
         visibility: visible;
     }
@@ -50,7 +55,29 @@
                         {% for key, value in rendering.popupTable %}
                             <tr>
                                 <th>{{ key|raw }}</th>
-                                <td>{{ value }}</td>
+                                {% if value is iterable %}
+                                    <td>
+                                        <table>
+                                            {% for subKey, subValue in value %}
+                                                <tr>{{ subKey|raw }}</tr>
+                                                {% if subValue is iterable %}
+                                                    <td>
+                                                        <table>
+                                                            {% for subSubKey, subSubValue in subValue %}
+                                                                <tr>{{ subSubKey|raw }}</tr>
+                                                                <td>{{ subSubValue|json_encode() }}</td>
+                                                            {% endfor %}
+                                                        </table>
+                                                    </td>
+                                                {% else %}
+                                                    <td>{{ subValue }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </table>
+                                    </td>
+                                {% else %}
+                                    <td>{{ value }}</td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                     </table>

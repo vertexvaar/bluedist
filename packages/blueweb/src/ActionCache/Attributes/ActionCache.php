@@ -13,7 +13,7 @@ class ActionCache
         public int $ttl = 60 * 60 * 24,
         public array $matches = [],
         public array $params = [],
-        public bool $interchangeableParams = true
+        public bool $interchangeableParams = true,
     ) {
     }
 }

@@ -11,7 +11,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Twig\Environment as View;
 use VerteXVaaR\BlueDebug\Collector\CollectorCollection;
-use VerteXVaaR\BlueDebug\CollectorRendering;
+use VerteXVaaR\BlueDebug\Rendering\CollectorRendering;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 

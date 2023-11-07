@@ -6,7 +6,7 @@ namespace VerteXVaaR\BlueDebug\Collector;
 
 use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
 use VerteXVaaR\BlueAuth\Mvcr\Model\User;
-use VerteXVaaR\BlueDebug\CollectorRendering;
+use VerteXVaaR\BlueDebug\Rendering\CollectorRendering;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
 use function implode;
