@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueWeb\Caching\DependencyInjection;
+namespace VerteXVaaR\BlueWeb\ActionCache\DependencyInjection;
 
 use Exception;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use VerteXVaaR\BlueWeb\Caching\Attributes\ActionCache;
-use VerteXVaaR\BlueWeb\Caching\Middleware\ActionCacheMiddleware;
+use VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache;
+use VerteXVaaR\BlueWeb\ActionCache\Middleware\ActionCacheMiddleware;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function array_keys;
@@ -54,7 +54,7 @@ class ActionCacheCompilerPass implements CompilerPassInterface
                     }
 
                     $reflectionCacheAttribute = $reflectionCacheAttributes[0];
-                    /** @var ActionCache $cacheAttribute */
+                    /** @var \VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache $cacheAttribute */
                     $cacheAttribute = $reflectionCacheAttribute->newInstance();
                     $cachedActions[$class][$reflectionMethod->getName()] = [
                         'ttl' => $cacheAttribute->ttl,

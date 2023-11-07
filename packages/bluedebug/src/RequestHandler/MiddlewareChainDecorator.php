@@ -17,7 +17,11 @@ class MiddlewareChainDecorator extends MiddlewareChain
         private readonly RequestCollector $requestCollector,
         private readonly ResponseCollector $responseCollector,
     ) {
-        parent::__construct($this->middlewareChain->middlewares, $this->middlewareChain->requestHandler);
+        parent::__construct(
+            $this->middlewareChain->container,
+            $this->middlewareChain->middlewares,
+            $this->middlewareChain->requestHandler,
+        );
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

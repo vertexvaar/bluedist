@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueWeb\Caching\Attributes;
+namespace VerteXVaaR\BlueWeb\ActionCache\Attributes;
 
 use Attribute;
 

@@ -2,7 +2,7 @@
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Twig\Extension\AbstractExtension;
-use VerteXVaaR\BlueWeb\Caching\DependencyInjection\ActionCacheCompilerPass;
+use VerteXVaaR\BlueWeb\ActionCache\DependencyInjection\ActionCacheCompilerPass;
 use VerteXVaaR\BlueWeb\Controller\Controller;
 use VerteXVaaR\BlueWeb\Middleware\DependencyInjection\MiddlewareCompilerPass;
 use VerteXVaaR\BlueWeb\Routing\DependencyInjection\RouteCollectorCompilerPass;

@@ -14,7 +14,7 @@ readonly class DefinitionService
      * @param array<Definition> $definitions
      */
     public function __construct(
-        private array $definitions,
+        private iterable $definitions,
     ) {
     }
 

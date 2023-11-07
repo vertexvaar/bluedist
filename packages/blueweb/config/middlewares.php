@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use VerteXVaaR\BlueWeb\Caching\Middleware\ActionCacheMiddleware;
+use VerteXVaaR\BlueWeb\ActionCache\Middleware\ActionCacheMiddleware;
 use VerteXVaaR\BlueWeb\Routing\Middleware\RoutingMiddleware;
 
 return [

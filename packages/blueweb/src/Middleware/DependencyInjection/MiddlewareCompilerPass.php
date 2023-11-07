@@ -8,7 +8,6 @@ use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
 use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 use VerteXVaaR\BlueContainer\Service\DependencyOrderingService;
@@ -34,11 +33,14 @@ class MiddlewareCompilerPass implements CompilerPassInterface
 
         $middlewareServices = [];
         foreach ($middlewares as $middleware) {
-            $middlewareServices[] = new Reference($middleware['service']);
+            $service = $middleware['service'];
+            $definition = $container->findDefinition($service);
+            $definition->setPublic(true);
+            $middlewareServices[] = $service;
         }
 
-        $registry = $container->getDefinition(MiddlewareChain::class);
-        $registry->setArgument('$middlewares', $middlewareServices);
+        $middlewareChain = $container->findDefinition(MiddlewareChain::class);
+        $middlewareChain->setArgument('$middlewares', $middlewareServices);
     }
 
     private function loadMiddlewares(PackageInterface $package, ContainerBuilder $container): array

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueWeb\Middleware;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -19,9 +20,10 @@ use function reset;
 class MiddlewareChain implements RequestHandlerInterface
 {
     /**
-     * @param array<MiddlewareInterface> $middlewares
+     * @param array<class-string<MiddlewareInterface>> $middlewares
      */
     public function __construct(
+        protected ContainerInterface $container,
         protected array $middlewares,
         protected readonly RequestHandlerInterface $requestHandler,
     ) {
@@ -34,8 +36,10 @@ class MiddlewareChain implements RequestHandlerInterface
 
         if (false !== $middleware) {
             next($this->middlewares);
+            /** @var MiddlewareInterface $handler */
+            $handler = $this->container->get($middleware);
             try {
-                return $middleware->process($request, $this);
+                return $handler->process($request, $this);
             } finally {
                 null === key($this->middlewares) ? end($this->middlewares) : prev($this->middlewares);
             }

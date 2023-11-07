@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueWeb\Caching\Middleware;
+namespace VerteXVaaR\BlueWeb\ActionCache\Middleware;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;

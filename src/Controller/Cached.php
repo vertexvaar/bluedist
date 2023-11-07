@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\SimpleCache\CacheInterface;
 use Twig\Environment as View;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
-use VerteXVaaR\BlueWeb\Caching\Attributes\ActionCache;
+use VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
