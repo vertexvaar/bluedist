@@ -14,10 +14,10 @@ use VerteXVaaR\BlueLog\LoggerFactory;
 use function array_keys;
 use function str_replace;
 
-class InjectLoggerCompilerPass implements CompilerPassInterface
+readonly class InjectLoggerCompilerPass implements CompilerPassInterface
 {
     public function __construct(
-        protected readonly string $tagName,
+        protected string $tagName,
     ) {
     }
 

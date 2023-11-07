@@ -27,13 +27,13 @@ use function unserialize;
 
 use const DIRECTORY_SEPARATOR as DS;
 
-class FileStore implements Store, LoggerAwareInterface
+readonly class FileStore implements Store, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly Config $config,
-        private readonly PackageExtras $packageExtras,
+        private Config $config,
+        private PackageExtras $packageExtras,
     ) {
     }
 

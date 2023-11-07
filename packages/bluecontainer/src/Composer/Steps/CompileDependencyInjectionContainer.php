@@ -20,7 +20,7 @@ use function file_put_contents;
 use function is_dir;
 use function sprintf;
 
-class CompileDependencyInjectionContainer implements Step
+readonly class CompileDependencyInjectionContainer implements Step
 {
     public function run(ContainerBuilder $container): void
     {

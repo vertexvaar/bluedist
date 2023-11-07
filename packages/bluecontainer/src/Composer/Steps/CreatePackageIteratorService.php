@@ -14,7 +14,7 @@ use function array_combine;
 use function array_key_exists;
 use function array_map;
 
-class CreatePackageIteratorService implements Step
+readonly class CreatePackageIteratorService implements Step
 {
     public function run(ContainerBuilder $container): void
     {

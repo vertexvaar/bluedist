@@ -13,7 +13,7 @@ use VerteXVaaR\BlueScheduler\SchedulerTaskRegistry;
 
 use function array_keys;
 
-class SchedulerTaskCompilerPass implements CompilerPassInterface
+readonly class SchedulerTaskCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {

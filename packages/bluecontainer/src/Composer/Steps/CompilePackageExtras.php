@@ -23,7 +23,7 @@ use function strlen;
 use function substr;
 use function var_export;
 
-class CompilePackageExtras implements Step
+readonly class CompilePackageExtras implements Step
 {
     public function run(ContainerBuilder $container): void
     {

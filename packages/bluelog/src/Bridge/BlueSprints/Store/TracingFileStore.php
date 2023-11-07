@@ -12,11 +12,16 @@ use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 use VerteXVaaR\BlueSprints\Store\FileStore;
 use VerteXVaaR\BlueSprints\Store\Store;
 
-class TracingFileStore implements Store
+use function getenv;
+
+readonly class TracingFileStore implements Store
 {
+    protected bool $enabled;
+
     public function __construct(
-        private readonly FileStore $inner,
+        private FileStore $inner,
     ) {
+        $this->enabled = !empty(getenv('SENTRY_DSN'));
     }
 
     public function findByIdentifier(string $class, string $identifier): ?object
@@ -59,8 +64,11 @@ class TracingFileStore implements Store
         }
     }
 
-    private function startTrace(string $action): Transaction
+    private function startTrace(string $action): ?Transaction
     {
+        if (!$this->enabled) {
+            return null;
+        }
         $transactionContext = new TransactionContext();
         $transactionContext->setName('Filesystem Operation');
         $transactionContext->setOp($action);
@@ -83,8 +91,11 @@ class TracingFileStore implements Store
         return $transaction;
     }
 
-    private function endTrace(Transaction $transaction)
+    private function endTrace(?Transaction $transaction)
     {
+        if (!$this->enabled || null === $transaction) {
+            return null;
+        }
         SentrySdk::getCurrentHub()->getSpan()->finish();
 
         // Set the current span back to the transaction since we just finished the previous span

@@ -16,7 +16,7 @@ use function umask;
 
 use const STR_PAD_LEFT;
 
-class BluesprintsDefinition implements Definition
+readonly class BluesprintsDefinition implements Definition
 {
     public function get(): Node
     {

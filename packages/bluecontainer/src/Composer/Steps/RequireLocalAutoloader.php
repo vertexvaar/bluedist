@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use function file_exists;
 
-class RequireLocalAutoloader implements Step
+readonly class RequireLocalAutoloader implements Step
 {
     public function run(ContainerBuilder $container): void
     {
