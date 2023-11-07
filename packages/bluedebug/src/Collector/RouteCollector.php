@@ -20,7 +20,7 @@ readonly class RouteCollector implements Collector
 
     public function render(): CollectorRendering
     {
-        $routeEncapsulation = $this->requestCollector->getRequest()->getAttribute('route');
+        $routeEncapsulation = $this->requestCollector->getLastRequest()->getAttribute('route');
         $objectVars = $this->objectVarsRecursive($routeEncapsulation);
         $table = [];
         $this->dumpArray($objectVars, $table);

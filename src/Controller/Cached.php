@@ -36,13 +36,14 @@ class Cached extends AbstractController
     }
 
     #[Route('/cached/params')]
-    #[ActionCache(params: ['foo'])]
+    #[Route('/cached/params/{foo}')]
+    #[ActionCache(matches: ['foo'], params: ['foo'])]
     public function parametrized(ServerRequestInterface $serverRequest): ResponseInterface
     {
         $cacheControl = version_compare($serverRequest->getProtocolVersion(), '1.0', '==')
             ? $serverRequest->getHeaderLine('Pragma')
             : $serverRequest->getHeaderLine('Cache-Control');
-        $foo = $serverRequest->getQueryParams()['foo'];
+        $foo = $serverRequest->getAttribute('route')->matches['foo'] ?? $serverRequest->getQueryParams()['foo'];
         return $this->render('cached/parametrized.html.twig', [
             'renderTime' => new DateTimeImmutable('now'),
             'cacheControl' => $cacheControl,

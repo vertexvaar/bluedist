@@ -3,7 +3,9 @@
 namespace VerteXVaaR\BlueWeb\Routing\DependencyInjection;
 
 use Composer\IO\IOInterface;
-use OutOfBoundsException;
+use FastRoute\DataGenerator\GroupCountBased;
+use FastRoute\RouteCollector;
+use FastRoute\RouteParser\Std;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
@@ -12,13 +14,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 use VerteXVaaR\BlueWeb\Routing\Attributes\RouteAttribute;
 use VerteXVaaR\BlueWeb\Routing\Middleware\RoutingMiddleware;
-use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
 use function array_keys;
 use function array_merge;
 use function get_class;
 use function get_object_vars;
 use function is_object;
+use function krsort;
 use function sprintf;
 
 class RouteCollectorCompilerPass implements CompilerPassInterface
@@ -34,10 +36,11 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
         $io = $container->get('io');
         $io->write('Loading routes from controller attributes', true, IOInterface::VERBOSE);
 
+        $collectedRoutes = [];
         $compiledRoutes = [];
         $controllers = $container->findTaggedServiceIds($this->tagName);
         foreach (array_keys($controllers) as $controller) {
-            $definition = $container->getDefinition($controller);
+            $definition = $container->findDefinition($controller);
             $definition->setPublic(true);
             $controllerClass = $definition->getClass();
             try {
@@ -82,33 +85,28 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
                         true,
                         IOInterface::VERBOSE,
                     );
-                    $compiledRoutes[$route->method][$route->priority][] = new RouteEncapsulation(
-                        $route,
-                        $controllerClass,
-                        $methodName,
-                    );
+                    $collectedRoutes[$route->priority][] = [
+                        'controller' => $controllerClass,
+                        'action' => $methodName,
+                        'class' => get_class($route),
+                        'vars' => get_object_vars($route),
+                    ];
                 }
             }
         }
+        krsort($collectedRoutes);
+        $collectedRoutes = array_merge([], ...$collectedRoutes);
 
-        /** @var array<string, array<int, array<RouteEncapsulation>>> $compiledRoutes */
-        foreach ($compiledRoutes as $method => $routesByPriority) {
-            krsort($routesByPriority);
-            $compiledRoutes[$method] = array_merge([], ...$routesByPriority);
+        $parser = new Std();
+        $generator = new GroupCountBased();
+        $routeCollector = new RouteCollector($parser, $generator);
+        foreach ($collectedRoutes as $route) {
+            $routeCollector->addRoute($route['vars']['method'], $route['vars']['path'], $route);
         }
+        $data = $routeCollector->getData();
 
         $definition = $container->getDefinition(RoutingMiddleware::class);
-        try {
-            $routes = $definition->getArgument('$routes');
-        } catch (OutOfBoundsException $exception) {
-            $routes = [];
-        }
-        foreach ($compiledRoutes as $method => $encapsulatedRoutes) {
-            foreach ($encapsulatedRoutes as $encapsulatedRoute) {
-                $routes[$method][$encapsulatedRoute->route->path] = $this->getObjectVarsRecursive($encapsulatedRoute);
-            }
-        }
-        $definition->setArgument('$routes', $routes);
+        $definition->setArgument('$data', $data);
 
         $io->write('Loaded routes from controller attributes', true, IOInterface::VERBOSE);
     }

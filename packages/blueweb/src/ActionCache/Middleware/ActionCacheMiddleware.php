@@ -12,8 +12,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\SimpleCache\CacheInterface;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
+use VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache;
 use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
+use function array_merge;
+use function array_unique;
 use function CoStack\Lib\concat_paths;
 use function hash;
 use function json_encode;
@@ -51,7 +54,8 @@ class ActionCacheMiddleware implements MiddlewareInterface
             $cacheHash,
         );
 
-        if (!$this->forceCacheEvasion($request) && $contents = $this->cache->get($cacheKey)) {
+        $forceCacheEvasion = $this->forceCacheEvasion($request);
+        if (!$forceCacheEvasion && $contents = $this->cache->get($cacheKey)) {
             return $this->createResponseFromContent($contents);
         }
 
@@ -63,7 +67,11 @@ class ActionCacheMiddleware implements MiddlewareInterface
         $ttl = $this->cacheResponseContents($response, $routeEncapsulation, $cacheKey);
 
         if ($this->environment->context !== Context::Production) {
-            $response = $response->withAddedHeader('X-Bluesprints-Cache', 'Set for ' . $ttl);
+            $headerLine = 'Set for ' . $ttl;
+            if ($forceCacheEvasion) {
+                $headerLine .= ' (forced)';
+            }
+            $response = $response->withAddedHeader('X-Bluesprints-Cache', $headerLine);
         }
 
         return $response;
@@ -89,18 +97,54 @@ class ActionCacheMiddleware implements MiddlewareInterface
 
     protected function getCacheHash(RouteEncapsulation $route, ServerRequestInterface $request): string
     {
-        $params = $this->cachedActions[$route->controller][$route->action]['params'];
-        if (empty($params)) {
+        $actionCache = new ActionCache(...$this->cachedActions[$route->controller][$route->action]);
+        if (empty($actionCache->params) && empty($actionCache->matches)) {
             return 'none';
         }
 
+        if ($actionCache->interchangeableParams) {
+            $cacheKeyValues = $this->getInterchangeableCacheKeyValues($request, $actionCache);
+        } else {
+            $cacheKeyValues = $this->getDistinctCacheKeyValues($request, $actionCache);
+        }
+
+        return hash('sha1', json_encode($cacheKeyValues, JSON_THROW_ON_ERROR));
+    }
+
+    protected function getInterchangeableCacheKeyValues(
+        ServerRequestInterface $request,
+        ActionCache $actionCache,
+    ): array {
+        $keys = array_unique(array_merge($actionCache->params, $actionCache->matches));
+
+        $queryParams = $request->getQueryParams();
+        $matches = $request->getAttribute('route')->matches;
+
+        $values = [];
+        foreach ($keys as $key) {
+            $values[$key] = $matches[$key] ?? $queryParams[$key] ?? null;
+        }
+        ksort($values);
+
+        return $values;
+    }
+
+    protected function getDistinctCacheKeyValues(ServerRequestInterface $request, ActionCache $actionCache): array
+    {
         $queryParams = $request->getQueryParams();
         $cacheKeyParams = [];
-        foreach ($params as $name) {
+        foreach ($actionCache->params as $name) {
             $cacheKeyParams[$name] = $queryParams[$name] ?? null;
         }
         ksort($cacheKeyParams);
-        return hash('sha1', json_encode($cacheKeyParams, JSON_THROW_ON_ERROR));
+
+        $givenMatches = $request->getAttribute('route')->matches;
+        $cacheKeyMatches = [];
+        foreach ($actionCache->matches as $name) {
+            $cacheKeyMatches[$name] = $givenMatches[$name] ?? null;
+        }
+        ksort($cacheKeyMatches);
+        return [$cacheKeyParams, $cacheKeyMatches];
     }
 
     protected function cacheResponseContents(

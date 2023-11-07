@@ -13,7 +13,7 @@
             <ul>
                 {% for fruit in fruits %}
                     <li>
-                        <a href="editFruit?fruit={{ fruit.identifier }}">
+                        <a href="editFruit/{{ fruit.identifier }}">
                             I am a
                             {% if fruit.name %}
                                 {{ fruit.name }}

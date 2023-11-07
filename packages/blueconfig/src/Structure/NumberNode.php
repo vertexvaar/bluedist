@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueConfig\Structure;
 
-readonly class StringNode implements Node
+readonly class NumberNode implements Node
 {
     public function __construct(
         private string $key,
         private string $name,
         private string $description,
-        private string $default,
+        private int|float $default,
     ) {
     }
 
@@ -29,13 +29,13 @@ readonly class StringNode implements Node
         return $this->description;
     }
 
-    public function getDefault(): string
+    public function getDefault(): int|float
     {
         return $this->default;
     }
 
     public function getType(): string
     {
-        return 'string';
+        return 'number';
     }
 }

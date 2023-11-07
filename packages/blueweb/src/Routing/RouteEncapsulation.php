@@ -12,6 +12,7 @@ readonly class RouteEncapsulation
         public Route $route,
         public string $controller,
         public string $action,
+        public array $matches,
     ) {
     }
 }

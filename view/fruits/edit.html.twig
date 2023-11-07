@@ -10,9 +10,7 @@
             list.
         </p>
 
-        <form action="updateFruit" method="post">
-            <input type="hidden" name="id" value="{{ fruit.identifier }}">
-
+        <form action="/updateFruit/{{ fruit.identifier }}" method="post">
             <p>
                 <label>
                     Name
@@ -29,24 +27,34 @@
             <input type="submit" value="Update it!">
         </form>
 
-        <form action="deleteFruit" method="post">
-            <input type="hidden" name="fruit" value="{{ fruit.identifier }}"/>
+        <form action="/deleteFruit/{{ fruit.identifier }}" method="post">
             <input type="submit" value="Or delete it :)">
         </form>
 
-
         <h2>The code behind this object update</h2>
 
-        <pre>
-        $arguments = $this->request->getParsedBody();
-        if (isset($arguments['identifier'], $arguments['name'], $arguments['color'])) {
-            $fruit = Fruit::findByIdentifier($arguments['identifier']);
-            $fruit->setName($arguments['name']);
-            $fruit->setColor($arguments['color']);
-            $fruit->save();
-        }
-        $this->redirect('listFruits');
-    </pre>
+        <pre><code class="language-php">
+$arguments = $this->request->getParsedBody();
+if (isset($arguments['identifier'], $arguments['name'], $arguments['color'])) {
+    $fruit = Fruit::findByIdentifier($arguments['identifier']);
+    $fruit->setName($arguments['name']);
+    $fruit->setColor($arguments['color']);
+    $fruit->save();
+}
+$this->redirect('listFruits');
+        </code></pre>
+
+        <h2>Routing with GET path instead of parameters</h2>
+
+        <pre><code class="language-php">
+#[Route(path: '/editFruit/{fruit}')]
+public function editFruit(ServerRequestInterface $request): ResponseInterface
+{
+    $fruitIdentifier = $request->getAttribute('route')->matches['fruit'];
+    $fruit = $this->repository->findByIdentifier(Fruit::class, $fruitIdentifier);
+    return $this->render('fruits/edit.html.twig', ['fruit' => $fruit]);
+}
+        </code></pre>
 
         <h2>About safe requests</h2>
 
@@ -62,7 +70,7 @@
         <h2>Try it</h2>
 
         <p>
-            <a href="updateFruit?name=failure&color=black&identifier={{ fruit.identifier }}">This link</a> will not work
+            <a href="/updateFruit?name=failure&color=black&identifier={{ fruit.identifier }}">This link</a> will not work
             since the
             request parameters are expected to exist in POST.
             You will be redirected to the listFruits view.

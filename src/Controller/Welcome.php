@@ -61,7 +61,7 @@ class Welcome extends AbstractController implements LoggerAwareInterface
             $fruit->name = $fruitData['name'];
             $this->repository->persist($fruit);
         }
-        return $this->redirect('listFruits');
+        return $this->redirect('/listFruits');
     }
 
     #[Route(path: '/createFruit', method: Route::POST)]
@@ -74,13 +74,14 @@ class Welcome extends AbstractController implements LoggerAwareInterface
             $fruit->name = $arguments['name'];
             $this->repository->persist($fruit);
         }
-        return $this->redirect('listFruits');
+        return $this->redirect('/listFruits');
     }
 
-    #[Route(path: '/editFruit')]
+    #[Route(path: '/editFruit/{fruit}')]
     public function editFruit(ServerRequestInterface $request): ResponseInterface
     {
-        $fruit = $this->repository->findByIdentifier(Fruit::class, $request->getQueryParams()['fruit']);
+        $fruitIdentifier = $request->getAttribute('route')->matches['fruit'];
+        $fruit = $this->repository->findByIdentifier(Fruit::class, $fruitIdentifier);
         return $this->render('fruits/edit.html.twig', ['fruit' => $fruit]);
     }
 
@@ -88,15 +89,16 @@ class Welcome extends AbstractController implements LoggerAwareInterface
      * 'GET' route registration only to be able to redirect the user for demonstration purposes.
      */
     #[Route(path: '/updateFruit')]
-    #[AuthorizedRoute(path: '/updateFruit', method: 'POST', requireAuthorization: true)]
+    #[AuthorizedRoute(path: '/updateFruit/{fruit}', method: 'POST', requireAuthorization: true)]
     public function updateFruit(ServerRequestInterface $request): ResponseInterface
     {
         if ($request->getMethod() === 'GET') {
-            return $this->redirect('listFruits');
+            return $this->redirect('/listFruits');
         }
+        $fruitIdentifier = $request->getAttribute('route')->matches['fruit'];
         $arguments = $request->getParsedBody();
-        if (isset($arguments['id'], $arguments['name'], $arguments['color'])) {
-            $fruit = $this->repository->findByIdentifier(Fruit::class, $arguments['id']);
+        if (isset($arguments['name'], $arguments['color'])) {
+            $fruit = $this->repository->findByIdentifier(Fruit::class, $fruitIdentifier);
             if (null === $fruit) {
                 return $this->redirect('listFruits');
             }
@@ -104,17 +106,18 @@ class Welcome extends AbstractController implements LoggerAwareInterface
             $fruit->color = $arguments['color'];
             $this->repository->persist($fruit);
         }
-        return $this->redirect('listFruits');
+        return $this->redirect('/listFruits');
     }
 
-    #[AuthorizedRoute(path: '/deleteFruit', method: 'POST', requiredRoles: ['user'])]
+    #[AuthorizedRoute(path: '/deleteFruit/{fruit}', method: 'POST', requiredRoles: ['user'])]
     public function deleteFruit(ServerRequestInterface $request): ResponseInterface
     {
-        $fruit = $this->repository->findByIdentifier(Fruit::class, $request->getParsedBody()['fruit']);
+        $fruitIdentifier = $request->getAttribute('route')->matches['fruit'];
+        $fruit = $this->repository->findByIdentifier(Fruit::class, $fruitIdentifier);
         if (null !== $fruit) {
             $this->repository->delete($fruit);
         }
-        return $this->redirect('listFruits');
+        return $this->redirect('/listFruits');
     }
 
     #[AuthorizedRoute(path: '/deleteAllFruits', method: 'POST', requiredRoles: ['admin'])]
@@ -124,6 +127,6 @@ class Welcome extends AbstractController implements LoggerAwareInterface
         foreach ($fruits as $fruit) {
             $this->repository->delete($fruit);
         }
-        return $this->redirect('listFruits');
+        return $this->redirect('/listFruits');
     }
 }

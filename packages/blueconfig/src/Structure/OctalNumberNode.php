@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueConfig\Structure;
 
-readonly class StringNode implements Node
+readonly class OctalNumberNode implements Node
 {
     public function __construct(
         private string $key,
@@ -36,6 +36,6 @@ readonly class StringNode implements Node
 
     public function getType(): string
     {
-        return 'string';
+        return 'octal';
     }
 }

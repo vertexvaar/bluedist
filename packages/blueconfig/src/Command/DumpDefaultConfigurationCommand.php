@@ -33,7 +33,7 @@ class DumpDefaultConfigurationCommand extends Command
         $config = array_replace_recursive($defaultConfig, $this->config->get());
 
         $dumper = new Dumper(2);
-        $yamlContent = $dumper->dump($config, 5, 0);
+        $yamlContent = $dumper->dump($config, 5);
 
         $configFile = concat_paths(
             $this->packageExtras->getPath($this->packageExtras->rootPackageName, 'config'),

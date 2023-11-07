@@ -27,7 +27,7 @@ use function unserialize;
 
 use const DIRECTORY_SEPARATOR as DS;
 
-readonly class FileStore implements Store, LoggerAwareInterface
+class FileStore implements Store, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

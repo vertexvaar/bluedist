@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueConfig\Factory;
 
 use VerteXVaaR\BlueConfig\Config;
+use VerteXVaaR\BlueConfig\Definition\DefinitionService;
 use VerteXVaaR\BlueConfig\Provider\Provider;
 
 use function array_replace_recursive;
@@ -16,6 +17,7 @@ readonly class ConfigFactory
      */
     public function __construct(
         private iterable $providers,
+        private DefinitionService $definitionService,
     ) {
     }
 
@@ -25,6 +27,8 @@ readonly class ConfigFactory
         foreach ($this->providers as $provider) {
             $config[] = $provider->get();
         }
-        return new Config(array_replace_recursive([], ...$config));
+        $config = array_replace_recursive([], ...$config);
+        $this->definitionService->cast($config);
+        return new Config($config);
     }
 }

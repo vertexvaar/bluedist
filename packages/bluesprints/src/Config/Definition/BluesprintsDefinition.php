@@ -6,6 +6,7 @@ namespace VerteXVaaR\BlueSprints\Config\Definition;
 
 use VerteXVaaR\BlueConfig\Definition\Definition;
 use VerteXVaaR\BlueConfig\Structure\Node;
+use VerteXVaaR\BlueConfig\Structure\OctalNumberNode;
 use VerteXVaaR\BlueConfig\Structure\RootNode;
 use VerteXVaaR\BlueConfig\Structure\StringNode;
 
@@ -24,13 +25,13 @@ readonly class BluesprintsDefinition implements Definition
             'bluedist JSON schema',
             'Schema for the configuration YAML',
             [
-                new StringNode(
+                new OctalNumberNode(
                     'filePermissions',
                     'File Permission Mask',
                     'Permission to set for new files.',
                     $this->getUmask(),
                 ),
-                new StringNode(
+                new OctalNumberNode(
                     'folderPermissions',
                     'Folder Permission Mask',
                     'Permission to set for new folders.',

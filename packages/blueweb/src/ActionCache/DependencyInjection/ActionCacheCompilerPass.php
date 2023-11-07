@@ -14,6 +14,7 @@ use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function array_keys;
 use function count;
+use function get_object_vars;
 
 class ActionCacheCompilerPass implements CompilerPassInterface
 {
@@ -56,10 +57,7 @@ class ActionCacheCompilerPass implements CompilerPassInterface
                     $reflectionCacheAttribute = $reflectionCacheAttributes[0];
                     /** @var \VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache $cacheAttribute */
                     $cacheAttribute = $reflectionCacheAttribute->newInstance();
-                    $cachedActions[$class][$reflectionMethod->getName()] = [
-                        'ttl' => $cacheAttribute->ttl,
-                        'params' => $cacheAttribute->params,
-                    ];
+                    $cachedActions[$class][$reflectionMethod->getName()] = get_object_vars($cacheAttribute);
                 }
             }
         }

@@ -10,6 +10,9 @@ use VerteXVaaR\BlueDebug\Collector\RequestCollector;
 use VerteXVaaR\BlueDebug\Collector\ResponseCollector;
 use VerteXVaaR\BlueWeb\Middleware\MiddlewareChain;
 
+use function current;
+use function get_class;
+
 class MiddlewareChainDecorator extends MiddlewareChain
 {
     public function __construct(
@@ -26,9 +29,14 @@ class MiddlewareChainDecorator extends MiddlewareChain
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $this->requestCollector->collect($request);
+        $middleware = current($this->middlewares) ?: get_class($this->requestHandler);
+
+        $this->requestCollector->collect($request, $middleware);
+
         $response = parent::handle($request);
-        $this->responseCollector->collect($response);
+
+        $this->responseCollector->collect($response, $middleware);
+
         return $response;
     }
 }

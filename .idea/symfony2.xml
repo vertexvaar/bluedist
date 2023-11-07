@@ -8,7 +8,7 @@
         <twig_namespace custom="true" namespaceType="ADD_PATH" path="view" />
         <twig_namespace custom="true" namespace="vertexvaar_blueauth" namespaceType="ADD_PATH" path="packages/blueauth/view" />
         <twig_namespace custom="true" namespace="vertexvaar_bluedebug" namespaceType="ADD_PATH" path="packages/bluedebug/view" />
-        <twig_namespace custom="true" namespace="vertexvaar_bluesprints" namespaceType="ADD_PATH" path="packages/bluesprints/view" />
+        <twig_namespace custom="true" namespace="vertexvaar_blueweb" namespaceType="ADD_PATH" path="packages/blueweb/view" />
       </list>
     </option>
   </component>
