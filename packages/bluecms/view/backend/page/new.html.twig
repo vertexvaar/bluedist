@@ -1,0 +1,17 @@
+{% extends "@vertexvaar_bluecms/layout.html.twig" %}
+
+{% block content %}
+    <h1>New Page</h1>
+
+    <form action="/backend/page/save" method="post">
+        <label>
+            Title
+            <input type="text" name="title">
+        </label>
+        <label>
+            Slug
+            <input type="text" name="slug">
+        </label>
+        <button type="submit">Create</button>
+    </form>
+{% endblock %}

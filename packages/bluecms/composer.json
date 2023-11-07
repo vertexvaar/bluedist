@@ -1,0 +1,30 @@
+{
+  "name": "vertexvaar/bluecms",
+  "description": "CMS component for bluesprints",
+  "type": "library",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "Oliver Eglseder",
+      "email": "bluesprints@vxvr.de",
+      "homepage": "http://vxvr.de/",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "VerteXVaaR\\BlueCms\\": "src/"
+    }
+  },
+  "require": {
+    "php": "8.2.*",
+    "vertexvaar/blueweb": "*",
+    "vertexvaar/blueauth": "*"
+  },
+  "extra": {
+    "vertexvaar/bluesprints": {
+      "services": "svc",
+      "view": "view"
+    }
+  }
+}

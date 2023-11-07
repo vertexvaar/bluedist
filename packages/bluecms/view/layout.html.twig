@@ -1,0 +1,21 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        {% block head %}
+            <title>{{ pageTitle }}</title>
+        {% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="/css/darcula.min.css" />
+        {% endblock %}
+    </head>
+
+    <body>
+        {% block content %}No content in here{% endblock %}
+        {% block javascripts %}
+            <script type="text/javascript" src="/js/highlight.min.js"></script>
+            <script>hljs.highlightAll();</script>
+        {% endblock %}
+    </body>
+</html>

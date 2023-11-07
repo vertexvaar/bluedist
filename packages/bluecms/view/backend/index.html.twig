@@ -1,0 +1,32 @@
+{% extends "@vertexvaar_bluecms/layout.html.twig" %}
+
+{% block content %}
+    <h1>Backend</h1>
+
+    <a href="/backend/page/new">New page</a>
+
+    <p>
+        Pages
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Slug</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for page in pages %}
+                <tr>
+                    <td>{{ page.title }}</td>
+                    <td>{{ page.slug }}</td>
+                    <td>
+                        <a href="/backend/page/edit/{{ page.identifier }}">Edit</a>
+                        <a href="/cms{{ page.slug }}">Show</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
