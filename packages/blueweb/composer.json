@@ -24,7 +24,7 @@
     "ramsey/uuid": "^4.7.4",
     "symfony/dotenv": "^v6.3.0",
     "twig/twig": "^v3.7.1",
-    "vertexvaar/bluecontainer": "*",
+    "vertexvaar/bluesprints": "*",
     "nikic/fast-route": "^v1.3.0"
   },
   "suggest": {
