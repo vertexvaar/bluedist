@@ -17,7 +17,7 @@
     }
   },
   "require": {
-    "php": "8.2.*",
+    "php": "^8.2",
     "co-stack/lib": "^v6.0.0",
     "psr/simple-cache": "^3.0.0",
     "vertexvaar/bluecontainer": "*",
