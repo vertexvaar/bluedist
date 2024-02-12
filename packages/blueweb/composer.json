@@ -20,7 +20,7 @@
     "php": "^8.2",
     "guzzlehttp/psr7": "^2.6",
     "psr/http-server-middleware": "^1.0",
-    "psr/http-server-handler": "^1.0",
+    "psr/simple-cache": "^3.0.0",
     "ramsey/uuid": "^4.7.4",
     "symfony/dotenv": "^v6.3.0",
     "twig/twig": "^v3.7.1",
