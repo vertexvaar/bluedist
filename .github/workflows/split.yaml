@@ -1,0 +1,15 @@
+on:
+  push:
+    branches: [ "master" ]
+    tags:
+      - "*"
+
+jobs:
+  label_issue:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: git config --unset-all http.https://github.com/.extraheader
+      - run: for dir in packages/*; do git remote add ${dir##*/} https://__token__:$GITHUB_TOKEN@github.com/vertexvaar/${dir##*/}.git; git fetch ${dir##*/}; git subtree split --prefix=packages/${dir##*/} -b main; git push --force ${dir##*/} main; git remote remove ${dir##*/}; git branch -D main; done;
