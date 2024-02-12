@@ -17,7 +17,15 @@ if (empty(ini_get('date.timezone'))) {
     date_default_timezone_set('UTC');
 }
 
-require_once(__DIR__ . '/../../../vendor/autoload.php');
+if (isset($GLOBALS['_composer_autoload_path']) && file_exists($GLOBALS['_composer_autoload_path'])) {
+    require $GLOBALS['_composer_autoload_path'];
+} elseif (file_exists(__DIR__ . '/../../../autoload.php')) {
+    require_once(__DIR__ . '/../../../autoload.php');
+} elseif(file_exists(__DIR__ . '/../../../vendor/autoload.php')) {
+    require_once(__DIR__ . '/../../../vendor/autoload.php');
+} else {
+    throw new Exception('Could not identifie composer autoload. Have you installed this package with composer?');
+}
 
 if (file_exists($root . '/.env')) {
     $dotenv = new Dotenv();
