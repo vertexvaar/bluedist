@@ -26,7 +26,7 @@ class GenerateJsonSchemaCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $schema = $this->definitionService->getSchema();
-        $jsonString = json_encode($schema, JSON_THROW_ON_ERROR);
+        $jsonString = json_encode($schema, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
         $configPath = $this->packageExtras->getPath($this->packageExtras->rootPackageName, 'config');
         file_put_contents(concat_paths($configPath, 'schema.json'), $jsonString);
         return Command::SUCCESS;
