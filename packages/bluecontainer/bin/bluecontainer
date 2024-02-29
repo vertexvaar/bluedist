@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use VerteXVaaR\BlueContainer\Console\BlueContainerApplication;
+
+require $GLOBALS['_composer_autoload_path'];
+
+$app = new BlueContainerApplication('BlueContainer', '1.0');
+$app->run();

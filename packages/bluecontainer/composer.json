@@ -23,9 +23,14 @@
     "symfony/dependency-injection": "^v7.0",
     "symfony/config": "^v7.0",
     "symfony/yaml": "^v7.0",
-    "co-stack/lib": "^v6.0"
+    "co-stack/lib": "^v6.0",
+    "symfony/process": "^v7.0",
+    "symfony/console": "^v7.0"
   },
   "extra": {
     "class": "\\VerteXVaaR\\BlueContainer\\Composer\\Plugin"
-  }
+  },
+  "bin": [
+    "bin/bluecontainer"
+  ]
 }

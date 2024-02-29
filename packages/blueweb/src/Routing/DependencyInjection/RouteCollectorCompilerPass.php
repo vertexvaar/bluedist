@@ -9,6 +9,8 @@ use FastRoute\RouteParser\Std;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
@@ -32,12 +34,12 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        /** @var IOInterface $io */
-        $io = $container->get('io');
-        $io->write('Loading routes from controller attributes', true, IOInterface::VERBOSE);
+        /** @var OutputInterface $output */
+        $output = $container->get('_output');
+        $errorOutput = $output instanceof ConsoleOutput ? $output->getErrorOutput() : $output;
+        $output->writeln('Loading routes from controller attributes', OutputInterface::VERBOSITY_VERBOSE);
 
         $collectedRoutes = [];
-        $compiledRoutes = [];
         $controllers = $container->findTaggedServiceIds($this->tagName);
         foreach (array_keys($controllers) as $controller) {
             $definition = $container->findDefinition($controller);
@@ -46,7 +48,7 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
             try {
                 $reflection = new ReflectionClass($controllerClass);
             } catch (ReflectionException $exception) {
-                $io->writeError(
+                $errorOutput->writeln(
                     sprintf(
                         'Could not reflect controller "%s". Exception: %s',
                         $controllerClass,
@@ -57,10 +59,9 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
             }
             $reflectionMethods = $reflection->getMethods();
             if (empty($reflectionMethods)) {
-                $io->write(
+                $output->writeln(
                     sprintf('Controller "%s" does not define any methods', $controllerClass),
-                    true,
-                    IOInterface::VERBOSE,
+                    OutputInterface::VERBOSITY_VERBOSE,
                 );
                 continue;
             }
@@ -73,7 +74,7 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
                     /** @var Route $route */
                     $route = $attribute->newInstance();
                     $methodName = $reflectionMethod->getName();
-                    $io->write(
+                    $output->writeln(
                         sprintf(
                             'Found route [%d][%s] "%s" in controller "%s" method "%s"',
                             $route->priority,
@@ -82,8 +83,7 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
                             $controllerClass,
                             $methodName,
                         ),
-                        true,
-                        IOInterface::VERBOSE,
+                        OutputInterface::VERBOSITY_VERBOSE,
                     );
                     $collectedRoutes[$route->priority][] = [
                         'controller' => $controllerClass,
@@ -108,20 +108,6 @@ class RouteCollectorCompilerPass implements CompilerPassInterface
         $definition = $container->getDefinition(RoutingMiddleware::class);
         $definition->setArgument('$data', $data);
 
-        $io->write('Loaded routes from controller attributes', true, IOInterface::VERBOSE);
-    }
-
-    protected function getObjectVarsRecursive(object $object): array
-    {
-        $vars = get_object_vars($object);
-        foreach ($vars as $index => $var) {
-            if (is_object($var)) {
-                $vars[$index] = [
-                    'class' => get_class($var),
-                    'vars' => $this->getObjectVarsRecursive($var),
-                ];
-            }
-        }
-        return $vars;
+        $output->writeln('Loaded routes from controller attributes', OutputInterface::VERBOSITY_VERBOSE);
     }
 }

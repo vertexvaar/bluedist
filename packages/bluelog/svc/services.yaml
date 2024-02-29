@@ -19,6 +19,6 @@ services:
     decorates: VerteXVaaR\BlueScheduler\Scheduler
     public: true
 
-  VerteXVaaR\BlueLog\Bridge\BlueSprints\Store\TracingFileStore:
-    decorates: VerteXVaaR\BlueSprints\Store\FileStore
-    public: true
+#  VerteXVaaR\BlueLog\Bridge\BlueSprints\Store\TracingFileStore:
+#    decorates: VerteXVaaR\BlueSprints\Store\FileStore
+#    public: true

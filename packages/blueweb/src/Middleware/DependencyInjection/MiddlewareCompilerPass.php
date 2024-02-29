@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueWeb\Middleware\DependencyInjection;
 
-use Composer\IO\IOInterface;
-use Composer\Package\PackageInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
-use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 use VerteXVaaR\BlueContainer\Service\DependencyOrderingService;
 use VerteXVaaR\BlueWeb\Middleware\MiddlewareChain;
 use VerteXVaaR\BlueWeb\Middleware\MiddlewareRegistry;
@@ -22,11 +20,7 @@ class MiddlewareCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        /** @var PackageIterator $packageIterator */
-        $packageIterator = $container->get('package_iterator');
-        $middlewares = $packageIterator->map(
-            fn(PackageInterface $package) => $this->loadMiddlewares($package, $container),
-        );
+        $middlewares = $this->loadMiddlewares($container);
 
         $dependencyOrderingService = new DependencyOrderingService();
         $middlewares = $dependencyOrderingService->orderByDependencies($middlewares);
@@ -43,48 +37,48 @@ class MiddlewareCompilerPass implements CompilerPassInterface
         $middlewareChain->setArgument('$middlewares', $middlewareServices);
     }
 
-    private function loadMiddlewares(PackageInterface $package, ContainerBuilder $container): array
+    private function loadMiddlewares(ContainerBuilder $container): array
     {
-        $io = $container->get('io');
+        /** @var OutputInterface $output */
+        $output = $container->get('_output');
         $packageExtras = $container->get(PackageExtras::class);
 
-        $packageName = $package->getName();
-        $absoluteMiddlewaresPath = $packageExtras->getPath($packageName, 'middlewares');
-
-        if (null === $absoluteMiddlewaresPath) {
-            $io->write(
-                sprintf(
-                    'Package %s does not define extra.vertexvaar/bluesprints.middlewares, skipping',
-                    $package->getName(),
-                ),
-                true,
-                IOInterface::VERY_VERBOSE,
-            );
-            return [];
-        }
-        $absoluteMiddlewaresFile = concat_paths($absoluteMiddlewaresPath, 'middlewares.php');
-
-        if (!file_exists($absoluteMiddlewaresFile)) {
-            $io->write(
-                sprintf(
-                    'Package %s defines extra.vertexvaar/bluesprints.config, but middlewares.php does not exist',
-                    $package->getName(),
-                ),
-                true,
-                IOInterface::VERY_VERBOSE,
-            );
-            return [];
-        }
-
         $middlewares = [];
-        $io->write(
-            sprintf('Loading middlewares.php from package %s', $package->getName()),
-            true,
-            IOInterface::VERBOSE,
-        );
-        $packageMiddlewares = require $absoluteMiddlewaresFile;
-        foreach ($packageMiddlewares as $index => $packageMiddleware) {
-            $middlewares[$index] = $packageMiddleware;
+
+        foreach ($packageExtras->getPackageNames() as $packageName) {
+            $absoluteMiddlewaresPath = $packageExtras->getPath($packageName, 'middlewares');
+
+            if (null === $absoluteMiddlewaresPath) {
+                $output->writeln(
+                    sprintf(
+                        'Package %s does not define extra.vertexvaar/bluesprints.middlewares, skipping',
+                        $packageName,
+                    ),
+                    OutputInterface::VERBOSITY_VERY_VERBOSE,
+                );
+                continue;
+            }
+            $absoluteMiddlewaresFile = concat_paths($absoluteMiddlewaresPath, 'middlewares.php');
+
+            if (!file_exists($absoluteMiddlewaresFile)) {
+                $output->writeln(
+                    sprintf(
+                        'Package %s defines extra.vertexvaar/bluesprints.config, but middlewares.php does not exist',
+                        $packageName,
+                    ),
+                    OutputInterface::VERBOSITY_VERY_VERBOSE,
+                );
+                continue;
+            }
+
+            $output->writeln(
+                sprintf('Loading middlewares.php from package %s', $packageName),
+                OutputInterface::VERBOSITY_VERBOSE,
+            );
+            $packageMiddlewares = require $absoluteMiddlewaresFile;
+            foreach ($packageMiddlewares as $index => $packageMiddleware) {
+                $middlewares[$index] = $packageMiddleware;
+            }
         }
         return $middlewares;
     }

@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueTranslation\DependencyInjection;
 
-use Composer\IO\IOInterface;
-use Composer\Package\Package;
-use Composer\Package\PackageInterface;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
-use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 use VerteXVaaR\BlueTranslation\TranslatorFactory;
 
 use function array_key_exists;
@@ -26,62 +24,59 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        /** @var IOInterface $io */
-        $io = $container->get('io');
+        /** @var OutputInterface $output */
+        $output = $container->get('_output');
+        $errorOutput = $output instanceof ConsoleOutput ? $output->getErrorOutput() : $output;
 
-        $io->write('Loading translation resources', true, IOInterface::VERBOSE);
+        $output->writeln('Loading translation resources', OutputInterface::VERBOSITY_VERBOSE);
 
-        /** @var PackageIterator $packageIterator */
-        $packageIterator = $container->get('package_iterator');
-        $translations = $packageIterator->map(
-            fn(Package $package) => $this->getTranslationResources($package, $container),
-        );
+        $translations = $this->getTranslationResources($container);
 
         $definition = $container->getDefinition(TranslatorFactory::class);
         $loaders = $definition->getArgument('$loader');
 
         foreach (array_keys($translations) as $loader) {
             if (!array_key_exists($loader, $loaders)) {
-                $io->writeError('Missing translation loader for ' . $loader . '. Removing resources!');
+                $errorOutput->writeln('Missing translation loader for ' . $loader . '. Removing resources!');
                 unset($translations[$loader]);
             }
         }
 
         $definition->setArgument('$resources', $translations);
 
-        $io->write('Loaded translation resources', true, IOInterface::VERBOSE);
+        $output->writeln('Loaded translation resources', OutputInterface::VERBOSITY_VERBOSE);
     }
 
-    private function getTranslationResources(PackageInterface $package, ContainerBuilder $container): array
+    private function getTranslationResources(ContainerBuilder $container): array
     {
-        /** @var IOInterface $io */
-        $io = $container->get('io');
+        /** @var OutputInterface $output */
+        $output = $container->get('_output');
         /** @var PackageExtras $packageExtras */
         $packageExtras = $container->get(PackageExtras::class);
 
-        $packageName = $package->getName();
-        $absoluteTranslationsPath = $packageExtras->getPath($packageName, 'translations');
+        foreach ($packageExtras->getPackageNames() as $packageName) {
+            $absoluteTranslationsPath = $packageExtras->getPath($packageName, 'translations');
 
-        if (null === $absoluteTranslationsPath) {
-            return [];
-        }
-        $recursiveDirectoryIterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator(
-                $absoluteTranslationsPath,
-                FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS,
-            ),
-        );
-        $translations = [];
-        /** @var SplFileInfo $file */
-        foreach ($recursiveDirectoryIterator as $file) {
-            [$catalogue, $language] = explode('.', $file->getBasename());
-            $pathname = $file->getPathname();
-            $io->write(
-                sprintf('Found translation resource "%s', $pathname),
-                true,
-                IOInterface::VERBOSE,
+            if (null === $absoluteTranslationsPath) {
+                return [];
+            }
+            $recursiveDirectoryIterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(
+                    $absoluteTranslationsPath,
+                    FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS,
+                ),
             );
-            $translations[$file->getExtension()][$catalogue][$language][] = $pathname;
+            $translations = [];
+            /** @var SplFileInfo $file */
+            foreach ($recursiveDirectoryIterator as $file) {
+                [$catalogue, $language] = explode('.', $file->getBasename());
+                $pathname = $file->getPathname();
+                $output->writeln(
+                    sprintf('Found translation resource "%s', $pathname),
+                    OutputInterface::VERBOSITY_VERBOSE,
+                );
+                $translations[$file->getExtension()][$catalogue][$language][] = $pathname;
+            }
         }
         return $translations;
     }

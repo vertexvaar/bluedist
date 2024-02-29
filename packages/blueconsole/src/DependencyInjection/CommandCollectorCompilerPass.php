@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueConsole\DependencyInjection;
 
-use Composer\IO\IOInterface;
-use Composer\Package\PackageInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use VerteXVaaR\BlueConsole\BlueApplication;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
-use VerteXVaaR\BlueContainer\Helper\PackageIterator;
 
 use function CoStack\Lib\concat_paths;
 use function file_exists;
@@ -21,59 +19,58 @@ class CommandCollectorCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $io = $container->get('io');
-        /** @var PackageIterator $packageIterator */
-        $packageIterator = $container->get('package_iterator');
+        /** @var OutputInterface $output */
+        $output = $container->get('_output');
 
-        $io->write('Loading commands', true, IOInterface::VERBOSE);
+        $output->writeln('Loading commands', OutputInterface::VERBOSITY_VERBOSE);
 
-        $commands = $packageIterator->map(
-            fn(PackageInterface $package): array => $this->loadCommands($package, $container),
-        );
-
-        foreach ($commands as $index => $command) {
-            $commands[$index] = new Reference($command);
-        }
+        $commands = $this->loadCommands($container);
 
         $blueApplication = $container->getDefinition(BlueApplication::class);
         $blueApplication->setArgument('$commands', $commands);
 
-        $io->write('Loaded commands', true, IOInterface::VERBOSE);
+        $output->writeln('Loaded commands', OutputInterface::VERBOSITY_VERBOSE);
     }
 
-    private function loadCommands(PackageInterface $package, ContainerBuilder $container): array
+    private function loadCommands(ContainerBuilder $container): array
     {
-        $io = $container->get('io');
-        $packageExtra = $container->get(PackageExtras::class);
+        /** @var OutputInterface $output */
+        $output = $container->get('_output');
+        $packageExtras = $container->get(PackageExtras::class);
 
-        $packageName = $package->getName();
+        $commands =[];
+        foreach ($packageExtras->getPackageNames() as $packageName) {
 
-        $absoluteCommandsPath = $packageExtra->getPath($packageName, 'commands');
+            $absoluteCommandsPath = $packageExtras->getPath($packageName, 'commands');
 
-        if (null === $absoluteCommandsPath) {
-            $io->write(
-                sprintf('Package %s does not define extra.vertexvaar/bluesprints.commands, skipping', $packageName),
-                true,
-                IOInterface::VERY_VERBOSE,
-            );
-            return [];
+            if (null === $absoluteCommandsPath) {
+                $output->writeln(
+                    sprintf('Package %s does not define extra.vertexvaar/bluesprints.commands, skipping', $packageName),
+                    OutputInterface::VERBOSITY_VERY_VERBOSE,
+                );
+                continue;
+            }
+
+            $absoluteCommandsFile = concat_paths($absoluteCommandsPath, 'commands.php');
+            if (!file_exists($absoluteCommandsFile)) {
+                $output->writeln(
+                    sprintf(
+                        'Package %s defines extra.vertexvaar/bluesprints.commands, but the file commands.php does not exist',
+                        $packageName,
+                    ),
+                    OutputInterface::VERBOSITY_VERBOSE,
+                );
+                continue;
+            }
+
+            $output->writeln(sprintf('Found commands.php in package %s', $packageName), OutputInterface::VERBOSITY_VERBOSE);
+
+            $packageCommands = require $absoluteCommandsFile;
+            foreach ($packageCommands as $index => $command) {
+                $commands[] = new Reference($command);
+            }
         }
 
-        $absoluteCommandsFile = concat_paths($absoluteCommandsPath, 'commands.php');
-        if (!file_exists($absoluteCommandsFile)) {
-            $io->write(
-                sprintf(
-                    'Package %s defines extra.vertexvaar/bluesprints.commands, but the file commands.php does not exist',
-                    $packageName,
-                ),
-                true,
-                IOInterface::VERBOSE,
-            );
-            return [];
-        }
-
-        $io->write(sprintf('Found commands.php in package %s', $packageName), true, IOInterface::VERBOSE);
-
-        return require $absoluteCommandsFile;
+        return $commands;
     }
 }

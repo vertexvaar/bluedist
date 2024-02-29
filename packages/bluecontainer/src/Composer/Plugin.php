@@ -6,32 +6,14 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
-use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use VerteXVaaR\BlueContainer\Composer\Steps\CompileDependencyInjectionContainer;
-use VerteXVaaR\BlueContainer\Composer\Steps\CompilePackageExtras;
-use VerteXVaaR\BlueContainer\Composer\Steps\CreatePackageIteratorService;
-use VerteXVaaR\BlueContainer\Composer\Steps\RequireLocalAutoloader;
-use VerteXVaaR\BlueContainer\Composer\Steps\Step;
+use Symfony\Component\Process\Process;
 
-use function getcwd;
-use function getenv;
-use function putenv;
-use function sprintf;
+use function CoStack\Lib\concat_paths;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
     private Composer $composer;
     private IOInterface $io;
-    /**
-     * @var array<class-string<Step>>
-     */
-    private array $steps = [
-        RequireLocalAutoloader::class,
-        CreatePackageIteratorService::class,
-        CompilePackageExtras::class,
-        CompileDependencyInjectionContainer::class,
-    ];
 
     public function activate(Composer $composer, IOInterface $io): void
     {
@@ -62,20 +44,24 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $this->io->write('Generating container');
 
-        if (!getenv('VXVR_BS_ROOT')) {
-            putenv('VXVR_BS_ROOT=' . getcwd());
-        }
-        $this->io->write(sprintf("VXVR_BS_ROOT=%s", getenv('VXVR_BS_ROOT')), true, IOInterface::VERBOSE);
+        $phpBinary = $_ENV['_'];
 
-        $container = new ContainerBuilder();
-        $container->set('composer', $this->composer);
-        $container->set('io', $this->io);
-        $container->setAlias(ContainerInterface::class, 'service_container');
+        $binDir = $this->composer->getConfig()->get('bin-dir');
+        $blueContainerBinary = concat_paths($binDir, 'bluecontainer');
 
-        /** @var Step $step */
-        foreach ($this->steps as $step) {
-            $step = new $step;
-            $step->run($container);
+        $cmd = [];
+        $cmd[] = $phpBinary;
+        $cmd[] = $blueContainerBinary;
+        $cmd[] = 'compile';
+        $process = new Process($cmd, $_ENV['PWD'], $_ENV, null, 60 * 60);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            $this->io->writeError('Failed generating DI container');
+            $this->io->writeError($process->getOutput());
+            $this->io->writeError($process->getErrorOutput());
+            return;
         }
+        $this->io->write('Generated DI container');
+        $this->io->write($process->getOutput());
     }
 }
