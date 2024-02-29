@@ -8,6 +8,7 @@ use Symfony\Component\Yaml\Parser;
 use VerteXVaaR\BlueContainer\Generated\PackageExtras;
 
 use function CoStack\Lib\concat_paths;
+use function file_exists;
 
 readonly class ConfigurationFileProvider implements Provider
 {
@@ -22,6 +23,9 @@ readonly class ConfigurationFileProvider implements Provider
             $this->packageExtras->getPath($this->packageExtras->rootPackageName, 'config'),
             'config.yaml',
         );
+        if (!file_exists($configFile)) {
+            return [];
+        }
         $yaml = new Parser();
         return $yaml->parseFile($configFile) ?? [];
     }
