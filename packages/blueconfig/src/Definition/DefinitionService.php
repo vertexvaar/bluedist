@@ -94,7 +94,7 @@ readonly class DefinitionService
                         'integer' => (int)$config[$key],
                         'string' => (string)$config[$key],
                         'number' => (float)$config[$key],
-                        'octal' => octdec($config[$key]),
+                        'octal' => $config[$key],
                     };
                 }
             }
