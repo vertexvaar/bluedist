@@ -60,7 +60,7 @@ readonly class DefinitionService
             $schemaDefinition['default'] = $default;
         }
         if ($node instanceof ObjectNode) {
-            $schemaDefinition['properties'] = [];
+            $schemaDefinition['properties'] ??= [];
             foreach ($node->getChildren() as $child) {
                 $childKey = $child->getKey();
                 $schemaDefinition['properties'][$childKey] = [];
