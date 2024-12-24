@@ -9,6 +9,7 @@ use Composer\Plugin\PluginInterface;
 use Symfony\Component\Process\Process;
 
 use function CoStack\Lib\concat_paths;
+use function str_ends_with;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
@@ -44,13 +45,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $this->io->write('Generating container');
 
-        $phpBinary = $_ENV['_'];
+        $binary = $_ENV['_'];
+        if (!str_ends_with($binary, 'php')) {
+            $binary = 'php';
+        }
 
         $binDir = $this->composer->getConfig()->get('bin-dir');
         $blueContainerBinary = concat_paths($binDir, 'bluecontainer');
 
         $cmd = [];
-        $cmd[] = $phpBinary;
+        $cmd[] = $binary;
         $cmd[] = $blueContainerBinary;
         $cmd[] = 'compile';
         $process = new Process($cmd, $_ENV['PWD'], $_ENV, null, 60 * 60);
