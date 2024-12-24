@@ -27,6 +27,7 @@ services:
       - host.docker.internal:host-gateway
     environment:
       SSH_AUTH_SOCK: $SSH_AUTH_SOCK
+      PHP_IDE_CONFIG: serverName=local.bluedist.com
 
   mail:
     image: axllent/mailpit
