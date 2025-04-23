@@ -21,6 +21,7 @@ use function file_get_contents;
 use function getenv;
 use function is_dir;
 use function mkdir;
+use function octdec;
 use function serialize;
 use function str_replace;
 use function unserialize;
@@ -91,7 +92,7 @@ class FileStore implements Store, LoggerAwareInterface
 
         if (
             !is_dir($classFolder)
-            && !mkdir($classFolder, $this->config->get('folderPermissions'), true)
+            && !mkdir($classFolder, octdec($this->config->get('folderPermissions')), true)
             && !is_dir($classFolder)
         ) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $classFolder));

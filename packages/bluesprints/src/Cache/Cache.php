@@ -26,6 +26,7 @@ use function is_numeric;
 use function json_decode;
 use function json_encode;
 use function mkdir;
+use function octdec;
 use function sprintf;
 use function time;
 use function unlink;
@@ -90,7 +91,7 @@ readonly class Cache implements CacheInterface
         $cacheFile = concat_paths($this->cacheRoot, $key);
         $path = dirname($cacheFile);
         clearstatcache(false, $cacheFile);
-        if (!is_dir($path) && mkdir($path, $this->config->get('folderPermissions'), true) && !is_dir($path)) {
+        if (!is_dir($path) && mkdir($path, octdec($this->config->get('folderPermissions')), true) && !is_dir($path)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
         return (bool)file_put_contents($cacheFile, json_encode($cacheEntry, JSON_THROW_ON_ERROR));

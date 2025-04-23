@@ -50,7 +50,7 @@ readonly class DefinitionService
         $type = $node->getType();
         if (!$useInternalSchema) {
             $type = match ($type) {
-                'octal' => 'integer',
+                'octal' => 'string',
                 default => $type,
             };
         }
