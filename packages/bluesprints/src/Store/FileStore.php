@@ -37,7 +37,7 @@ class FileStore implements Store, LoggerAwareInterface
     ) {
     }
 
-    public function findByIdentifier(string $class, string $identifier): ?object
+    public function findByIdentifier(string $class, string $identifier): ?Entity
     {
         $databaseFolder = $this->getFolder($class);
         $databaseFile = concat_paths($databaseFolder, $identifier);

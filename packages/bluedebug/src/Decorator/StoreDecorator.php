@@ -18,7 +18,7 @@ class StoreDecorator implements Store
     ) {
     }
 
-    public function findByIdentifier(string $class, string $identifier): ?object
+    public function findByIdentifier(string $class, string $identifier): ?Entity
     {
         return $this->queryCollector->execute(
             'findByIdentifier',

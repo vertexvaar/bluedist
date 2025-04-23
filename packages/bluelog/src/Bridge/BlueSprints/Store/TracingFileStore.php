@@ -24,7 +24,7 @@ readonly class TracingFileStore implements Store
         $this->enabled = !empty(getenv('SENTRY_DSN'));
     }
 
-    public function findByIdentifier(string $class, string $identifier): ?object
+    public function findByIdentifier(string $class, string $identifier): ?Entity
     {
         $transaction = $this->startTrace('findByIdentifier');
         try {
