@@ -66,18 +66,7 @@ readonly class AuthenticationService
 
     public function forcePersistentSession(ServerRequestInterface $request): Session
     {
-        $session = $request->getAttribute('session');
-        if (null === $session) {
-            $sessionIdentifier = $request->getCookieParams()[$this->config->get('auth.cookieAuthName')] ?? null;
-            if (null === $sessionIdentifier) {
-                $session = new Session(Uuid::uuid4()->toString());
-            } else {
-                $session = $this->repository->findByIdentifier(Session::class, $sessionIdentifier);
-                if (null === $session) {
-                    $session = new Session(Uuid::uuid4()->toString());
-                }
-            }
-        }
+        $session = $request->getAttribute('session') ?? $this->loadSessionFromRequest($request);
         $this->repository->persist($session);
         setcookie($this->config->get('auth.cookieAuthName'), $session->identifier);
         return $session;
