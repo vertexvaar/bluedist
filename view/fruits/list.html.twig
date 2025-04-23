@@ -13,7 +13,7 @@
             <ul>
                 {% for fruit in fruits %}
                     <li>
-                        <a href="editFruit/{{ fruit.identifier }}">
+                        <a href="/editFruit/{{ fruit.identifier }}">
                             I am a
                             {% if fruit.name %}
                                 {{ fruit.name }}
@@ -95,7 +95,7 @@ $this->redirect('listFruits');
         </p>
 
         <p>
-            <a href="..">Back to the index</a>
+            <a href="/">Back to the index</a>
         </p>
     </section>
 {% endblock %}
