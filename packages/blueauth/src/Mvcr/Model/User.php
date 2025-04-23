@@ -10,10 +10,9 @@ use function in_array;
 
 class User extends Entity
 {
-    public string $username;
-    public string $hashedPassword;
+    public ?string $hashedPassword = null;
     /** @var array<string> */
-    public array $roles;
+    public array $roles = [];
 
     public function hasRoles(array $roles): bool
     {
