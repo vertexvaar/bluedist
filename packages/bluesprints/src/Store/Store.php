@@ -10,6 +10,7 @@ interface Store
 {
     public function findByIdentifier(string $class, string $identifier): ?Entity;
 
+    /** @param class-string<Entity> $class */
     public function findAll(string $class): array;
 
     public function store(Entity $entity): void;
