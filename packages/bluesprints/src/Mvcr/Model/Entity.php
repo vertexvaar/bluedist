@@ -6,7 +6,7 @@ namespace VerteXVaaR\BlueSprints\Mvcr\Model;
 
 abstract class Entity
 {
-    public function __construct(public readonly string $identifier)
-    {
-    }
+    public function __construct(
+        public readonly string $identifier,
+    ) {}
 }

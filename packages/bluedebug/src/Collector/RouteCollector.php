@@ -14,9 +14,9 @@ use function is_object;
 
 readonly class RouteCollector implements Collector
 {
-    public function __construct(private RequestCollector $requestCollector)
-    {
-    }
+    public function __construct(
+        private RequestCollector $requestCollector,
+    ) {}
 
     public function render(): CollectorRendering
     {

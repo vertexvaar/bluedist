@@ -17,8 +17,9 @@ use const PASSWORD_ARGON2ID;
 
 class CreateUserCommand extends Command
 {
-    public function __construct(private readonly Repository $repository)
-    {
+    public function __construct(
+        private readonly Repository $repository,
+    ) {
         parent::__construct('app:user:create');
     }
 

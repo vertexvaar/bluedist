@@ -8,9 +8,9 @@ use function CoStack\Lib\array_value;
 
 readonly class Config
 {
-    public function __construct(private array $config)
-    {
-    }
+    public function __construct(
+        private array $config,
+    ) {}
 
     public function get(string $path = ''): mixed
     {

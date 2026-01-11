@@ -10,9 +10,9 @@ use Twig\TwigFilter;
 
 class TranslateTwigExtension extends AbstractExtension
 {
-    public function __construct(private readonly Translator $translator)
-    {
-    }
+    public function __construct(
+        private readonly Translator $translator,
+    ) {}
 
     public function getFilters(): array
     {

@@ -12,8 +12,9 @@ class OutputAlreadySentException extends BluesprintsException
     public const CODE = 1695812166;
 
     #[Pure]
-    public function __construct(?Throwable $previous = null)
-    {
+    public function __construct(
+        ?Throwable $previous = null,
+    ) {
         parent::__construct(self::MESSAGE, self::CODE, $previous);
     }
 }

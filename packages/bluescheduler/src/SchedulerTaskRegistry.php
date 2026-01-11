@@ -6,7 +6,7 @@ namespace VerteXVaaR\BlueScheduler;
 
 readonly class SchedulerTaskRegistry
 {
-    public function __construct(public array $tasks)
-    {
-    }
+    public function __construct(
+        public array $tasks,
+    ) {}
 }

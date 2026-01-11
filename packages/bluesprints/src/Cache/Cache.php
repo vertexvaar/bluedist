@@ -37,8 +37,10 @@ readonly class Cache implements CacheInterface
 {
     private string $cacheRoot;
 
-    public function __construct(private Config $config, private PackageExtras $packageExtras)
-    {
+    public function __construct(
+        private Config $config,
+        private PackageExtras $packageExtras,
+    ) {
         $this->cacheRoot = $packageExtras->getPath($this->packageExtras->rootPackageName, 'cache')
             ?? concat_paths(getenv('VXVR_BS_ROOT'), 'var/cache');
     }

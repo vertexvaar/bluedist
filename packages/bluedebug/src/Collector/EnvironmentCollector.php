@@ -9,9 +9,9 @@ use VerteXVaaR\BlueSprints\Environment\Environment;
 
 readonly class EnvironmentCollector implements Collector
 {
-    public function __construct(private Environment $environment)
-    {
-    }
+    public function __construct(
+        private Environment $environment,
+    ) {}
 
     public function render(): CollectorRendering
     {

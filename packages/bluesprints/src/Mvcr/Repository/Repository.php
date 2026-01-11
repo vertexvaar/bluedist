@@ -9,9 +9,9 @@ use VerteXVaaR\BlueSprints\Store\Store;
 
 readonly class Repository
 {
-    public function __construct(private Store $store)
-    {
-    }
+    public function __construct(
+        private Store $store,
+    ) {}
 
     public function findByIdentifier(string $className, string $identifier): ?Entity
     {

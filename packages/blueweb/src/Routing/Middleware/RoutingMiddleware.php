@@ -15,9 +15,9 @@ use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
 class RoutingMiddleware implements MiddlewareInterface
 {
-    public function __construct(private readonly array $data)
-    {
-    }
+    public function __construct(
+        private readonly array $data,
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

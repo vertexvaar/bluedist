@@ -12,9 +12,9 @@ use VerteXVaaR\BlueDebug\Collector\Stopwatch;
 
 readonly class CollectRequestDurationMiddleware implements MiddlewareInterface
 {
-    public function __construct(private Stopwatch $stopwatch)
-    {
-    }
+    public function __construct(
+        private Stopwatch $stopwatch,
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

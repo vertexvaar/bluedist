@@ -10,9 +10,9 @@ use VerteXVaaR\BlueWeb\Middleware\MiddlewareChain;
 
 readonly class Application
 {
-    public function __construct(private MiddlewareChain $middlewareChain)
-    {
-    }
+    public function __construct(
+        private MiddlewareChain $middlewareChain,
+    ) {}
 
     public function run(ServerRequestInterface $request): ResponseInterface
     {
