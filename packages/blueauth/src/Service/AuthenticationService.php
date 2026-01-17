@@ -39,7 +39,7 @@ readonly class AuthenticationService
             $this->logout($session);
             return;
         }
-        if (null === $user->hashedPassword && password_verify($password, $user->hashedPassword)) {
+        if (null !== $user->hashedPassword && password_verify($password, $user->hashedPassword)) {
             $session->authenticate($username);
             setcookie($this->config->get('auth.cookieAuthName'), $session->identifier);
             $this->repository->persist($session);
