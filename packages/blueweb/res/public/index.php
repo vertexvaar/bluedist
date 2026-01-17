@@ -34,5 +34,7 @@ $request = ServerRequest::fromGlobals();
 $di = new DI();
 $di->set(ServerRequestInterface::class, $request);
 
-$response = $di->get(Application::class)->run($request);
-$di->get(ResponseEmitter::class)->emit($response);
+$application = $di->get(Application::class);
+$response = $application->run($request);
+$responseEmitter = $di->get(ResponseEmitter::class);
+$responseEmitter->emit($response);
