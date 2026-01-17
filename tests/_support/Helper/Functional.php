@@ -10,7 +10,7 @@ use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Dotenv\Dotenv;
-use VerteXVaaR\BlueFoundation\Generated\DI;
+use VerteXVaaR\BlueFoundation\DI;
 use VerteXVaaR\BlueWeb\Application;
 
 use function CoStack\Lib\concat_paths;

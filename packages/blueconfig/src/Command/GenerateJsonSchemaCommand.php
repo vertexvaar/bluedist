@@ -8,7 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use VerteXVaaR\BlueConfig\Definition\DefinitionService;
-use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\PackageExtras;
 
 use function CoStack\Lib\concat_paths;
 use function file_put_contents;

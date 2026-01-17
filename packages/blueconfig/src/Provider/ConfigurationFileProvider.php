@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueConfig\Provider;
 
 use Symfony\Component\Yaml\Parser;
-use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\PackageExtras;
 
 use function CoStack\Lib\concat_paths;
 use function file_exists;

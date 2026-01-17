@@ -17,21 +17,17 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use VerteXVaaR\BlueFoundation\Composer\Steps\Step;
-use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\PackageExtras;
 
 use function array_key_last;
 use function CoStack\Lib\concat_paths;
+use function CoStack\Lib\mkdir_deep;
 use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
 use function getcwd;
-use function getenv;
 use function is_dir;
 use function json_decode;
-use function mkdir;
-use function putenv;
-use function rtrim;
 use function sprintf;
 use function str_starts_with;
 use function strlen;
@@ -49,18 +45,24 @@ class CompileCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!getenv('VXVR_BS_ROOT')) {
-            putenv('VXVR_BS_ROOT=' . rtrim(getcwd(), '/') . '/');
+        $rootPath = getcwd();
+
+        $bootstrapPath = concat_paths($rootPath, 'bootstrap');
+        if (!mkdir_deep($bootstrapPath)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $bootstrapPath));
         }
-        $rootPath = getenv('VXVR_BS_ROOT');
+
+        $this->compilePackageExtras($rootPath, $bootstrapPath);
+        $this->compileContainer($input, $output, $bootstrapPath);
+
+        $this->dumpBootstrap($rootPath, $bootstrapPath);
+
+        return self::SUCCESS;
+    }
+
+    private function compilePackageExtras(string $rootPath, string $bootstrapPath): void
+    {
         $rootPathLength = strlen($rootPath);
-
-        $output->writeln(sprintf("VXVR_BS_ROOT=%s", $rootPath), OutputInterface::VERBOSITY_VERBOSE);
-
-        $container = new ContainerBuilder();
-        $container->set('_input', $input);
-        $container->set('_output', $output);
-        $container->setAlias(ContainerInterface::class, 'service_container');
 
         $installed = InstalledVersions::getAllRawData();
         $installed = $installed[array_key_last($installed)];
@@ -93,20 +95,56 @@ class CompileCommand extends Command
         }
 
         $pathsCode = var_export($packagePaths, true);
-
-        $generatedClassesFolder = __DIR__ . '/../../Generated';
-        if (
-            !is_dir($generatedClassesFolder)
-            && !mkdir($generatedClassesFolder, 0777, true)
-            && !is_dir($generatedClassesFolder)
-        ) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $generatedClassesFolder));
-        }
-        $packageExtras = concat_paths($generatedClassesFolder, 'PackageExtras.php');
-
         $code = $this->renderPackageExtras($root['name'], $pathsCode);
-        file_put_contents($packageExtras, $code);
-        require $packageExtras;
+        $packageExtrasFilePath = concat_paths($bootstrapPath, 'PackageExtras.php');
+        file_put_contents($packageExtrasFilePath, $code);
+        require $packageExtrasFilePath;
+    }
+
+    private function renderPackageExtras(string $rootPackageName, string $pathsCode): string
+    {
+        return <<<PHP
+            <?php
+            
+            declare(strict_types=1);
+            
+            namespace VerteXVaaR\BlueFoundation;
+            
+            use function CoStack\Lib\concat_paths;
+            
+            readonly class PackageExtras
+            {
+                public string \$rootPath;
+                public function __construct(
+                    public string \$rootPackageName = '$rootPackageName',
+                    private array \$paths = $pathsCode,
+                ) {
+                    \$this->rootPath = realpath(__DIR__ . '/../');
+                }
+            
+                public function getPath(string \$package, string \$type): ?string
+                {
+                    if (!isset(\$this->paths[\$package][\$type])) {
+                        return null;
+                    }
+                    return concat_paths(\$this->rootPath, \$this->paths[\$package][\$type]);
+                }
+            
+                public function getPackageNames(): array
+                {
+                    return array_keys(\$this->paths);
+                }
+            }
+
+            PHP;
+    }
+
+    private function compileContainer(InputInterface $input, OutputInterface $output, string $bootstrapPath): void
+    {
+        $container = new ContainerBuilder();
+        $container->set('_input', $input);
+        $container->set('_output', $output);
+        $container->setAlias(ContainerInterface::class, 'service_container');
 
         $packageExtrasDefinition = new Definition(PackageExtras::class);
         $packageExtrasDefinition->setPublic(true);
@@ -118,10 +156,9 @@ class CompileCommand extends Command
 
         $dumper = new PhpDumper($container);
         file_put_contents(
-            __DIR__ . '/../../Generated/DI.php',
-            $dumper->dump(['class' => 'DI', 'namespace' => 'VerteXVaaR\\BlueFoundation\\Generated']),
+            concat_paths($bootstrapPath, 'DI.php'),
+            $dumper->dump(['class' => 'DI', 'namespace' => 'VerteXVaaR\\BlueFoundation']),
         );
-        return self::SUCCESS;
     }
 
     private function loadServices(ContainerBuilder $container, OutputInterface $output): void
@@ -158,6 +195,7 @@ class CompileCommand extends Command
                 $loader = new YamlFileLoader($container, new FileLocator($servicesPath));
                 $loader->load('services.yaml');
             }
+
             if (file_exists(concat_paths($servicesPath, 'services.php'))) {
                 $output->writeln(
                     sprintf('Loading services.php from package %s', $packageName),
@@ -169,40 +207,46 @@ class CompileCommand extends Command
         }
     }
 
-    private function renderPackageExtras(string $rootPackageName, string $pathsCode): string
+    private function dumpBootstrap(string $rootPath, string $bootstrapPath): void
     {
-        return <<<PHP
-<?php
+        $file = concat_paths($bootstrapPath, 'bootstrap.php');
+        file_put_contents(
+            $file,
+            <<<PHP
+                <?php
+                
+                use Symfony\Component\Dotenv\Dotenv;
+                use VerteXVaaR\BlueWeb\ErrorHandler\ErrorHandler;
 
-declare(strict_types=1);
+                \$rootDir = dirname(__DIR__) . DIRECTORY_SEPARATOR;
+                putenv('VXVR_BS_ROOT=' . \$rootDir);
+                
+                require(__DIR__ . '/../vendor/autoload.php');
+                require(__DIR__ . '/DI.php');
+                require(__DIR__ . '/PackageExtras.php');
 
-namespace VerteXVaaR\BlueFoundation\Generated;
+                \$dotenvFile = \$rootDir . '.env';
+                if (file_exists(\$dotenvFile)) {
+                    \$dotenv = new Dotenv();
+                    \$dotenv->usePutenv();
+                    \$dotenv->loadEnv(\$dotenvFile, null, 'dev', [], true);
+                }
 
-use function array_keys;use function CoStack\Lib\concat_paths;
+                \$localDotenvFile = \$rootDir . '.local.env';
+                if (file_exists(\$localDotenvFile)) {
+                    \$dotenv = new Dotenv();
+                    \$dotenv->usePutenv();
+                    \$dotenv->loadEnv(\$localDotenvFile, null, 'dev', [], true);
+                }
+                
+                if (empty(ini_get('date.timezone'))) {
+                    date_default_timezone_set('UTC');
+                }
 
-readonly class PackageExtras
-{
-    public string \$rootPath;
-    public function __construct(
-        public string \$rootPackageName = '$rootPackageName',
-        private array \$paths = $pathsCode,
-    ) {
-        \$this->rootPath = getenv('VXVR_BS_ROOT');
+                \$errorHandler = new ErrorHandler();
+                \$errorHandler->register();
+                PHP,
+        );
     }
 
-    public function getPath(string \$package, string \$type): ?string
-    {
-        if (!isset(\$this->paths[\$package][\$type])) {
-            return null;
-        }
-        return concat_paths(\$this->rootPath, \$this->paths[\$package][\$type]);
-    }
-    
-    public function getPackageNames(): array
-    {
-        return array_keys(\$this->paths);
-    }
-}
-PHP;
-    }
 }

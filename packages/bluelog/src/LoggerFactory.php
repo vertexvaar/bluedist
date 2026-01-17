@@ -12,7 +12,7 @@ use Sentry\ClientBuilder;
 use Sentry\Monolog\Handler;
 use Sentry\SentrySdk;
 use Sentry\State\Hub;
-use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\PackageExtras;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueFoundation\Console;
 
 use Symfony\Component\Console\Application;
-use VerteXVaaR\BlueFoundation\Console\Command\CacheDotenvFileCommand;
 use VerteXVaaR\BlueFoundation\Console\Command\CompileCommand;
 
 class BlueFoundationApplication extends Application
@@ -15,7 +14,6 @@ class BlueFoundationApplication extends Application
         string $version = 'UNKNOWN',
     ) {
         parent::__construct($name, $version);
-        $this->add(new CompileCommand());
-        $this->add(new CacheDotenvFileCommand());
+        $this->addCommand(new CompileCommand());
     }
 }

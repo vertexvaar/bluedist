@@ -35,7 +35,8 @@
       "services": "svc",
       "view": "view",
       "middlewares": "config",
-      "translations": "translations"
+      "translations": "translations",
+      "resources": "res"
     }
   }
 }

@@ -7,7 +7,7 @@ namespace VerteXVaaR\BlueTranslation;
 use Locale;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Translation\Translator;
-use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\PackageExtras;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 

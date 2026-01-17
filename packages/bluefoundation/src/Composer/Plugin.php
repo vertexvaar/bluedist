@@ -6,6 +6,7 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Symfony\Component\Process\PhpSubprocess;
 use Symfony\Component\Process\Process;
 
 use function CoStack\Lib\concat_paths;
@@ -44,43 +45,23 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function postAutoloadDump(): void
     {
-        $this->io->write('Generating container');
-
-        $binary = $_ENV['_'] ?? '';
-        if (!str_ends_with($binary, 'php')) {
-            $binary = 'php';
-        }
+        $this->io->write('Compiling bootstrap');
 
         $binDir = $this->composer->getConfig()->get('bin-dir');
         $blueContainerBinary = concat_paths($binDir, 'bluefoundation');
 
         $cmd = [];
-        $cmd[] = $binary;
         $cmd[] = $blueContainerBinary;
         $cmd[] = 'compile';
-        $process = new Process($cmd, $_ENV['PWD'] ?? getcwd(), $_ENV, null, 60 * 60);
+        $process = new PhpSubprocess($cmd, $_ENV['PWD'] ?? getcwd(), $_ENV, 60 * 60);
         $process->run();
         if (!$process->isSuccessful()) {
-            $this->io->writeError('Failed generating DI container');
+            $this->io->writeError('Bootstrap compilation failed');
             $this->io->writeError($process->getOutput());
             $this->io->writeError($process->getErrorOutput());
             return;
         }
-        $this->io->write('Generated DI container');
-
-        $cmd = [];
-        $cmd[] = $binary;
-        $cmd[] = $blueContainerBinary;
-        $cmd[] = 'cache:dotenv-file';
-        $process = new Process($cmd, $_ENV['PWD'] ?? getcwd(), $_ENV, null, 60 * 60);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            $this->io->writeError('Failed caching dotenv');
-            $this->io->writeError($process->getOutput());
-            $this->io->writeError($process->getErrorOutput());
-            return;
-        }
-        $this->io->write('Compiled dotenv cache');
+        $this->io->write('Compiled bootstrap');
         $this->io->write($process->getOutput());
     }
 }

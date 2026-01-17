@@ -12,7 +12,7 @@ use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SplFileInfo;
 use VerteXVaaR\BlueConfig\Config;
-use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\PackageExtras;
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
 use function CoStack\Lib\concat_paths;

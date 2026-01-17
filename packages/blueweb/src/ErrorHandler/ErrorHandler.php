@@ -6,11 +6,13 @@ namespace VerteXVaaR\BlueWeb\ErrorHandler;
 
 use Parsedown;
 use Throwable;
-use VerteXVaaR\BlueFoundation\Generated\DI;
+use VerteXVaaR\BlueFoundation\DI;
+use VerteXVaaR\BlueFoundation\PackageExtras;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 
 use function class_exists;
+use function CoStack\Lib\concat_paths;
 use function file_exists;
 use function file_get_contents;
 use function get_class;
@@ -21,6 +23,7 @@ use function is_string;
 use function nl2br;
 use function set_error_handler;
 use function set_exception_handler;
+use function sprintf;
 use function var_dump;
 use function var_export;
 
@@ -132,7 +135,10 @@ class ErrorHandler
     {
         if (false === $this->cssIncluded) {
             $this->cssIncluded = true;
-            echo '<link href="/css/error.css" rel="stylesheet">';
+            $packageExtras = new PackageExtras();
+            $resourcesPath = $packageExtras->getPath('vertexvaar/blueweb', 'resources');
+            $errorCss = concat_paths($resourcesPath, 'public/css/error.css');
+            echo sprintf('<style>%s</style>', file_get_contents($errorCss));
         }
     }
 }
