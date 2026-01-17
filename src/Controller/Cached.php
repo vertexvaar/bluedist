@@ -43,7 +43,7 @@ class Cached extends AbstractController
         $cacheControl = version_compare($serverRequest->getProtocolVersion(), '1.0', '==')
             ? $serverRequest->getHeaderLine('Pragma')
             : $serverRequest->getHeaderLine('Cache-Control');
-        $foo = $serverRequest->getAttribute('route')->matches['foo'] ?? $serverRequest->getQueryParams()['foo'];
+        $foo = $serverRequest->getAttribute('route')->matches['foo'] ?? $serverRequest->getQueryParams()['foo'] ?? null;
         return $this->render('cached/parametrized.html.twig', [
             'renderTime' => new DateTimeImmutable('now'),
             'cacheControl' => $cacheControl,
