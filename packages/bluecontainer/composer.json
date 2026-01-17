@@ -17,7 +17,7 @@
     }
   },
   "require": {
-    "php": "^8.2",
+    "php": "8.4.*",
     "composer-plugin-api": "^2.0",
     "psr/container": "^2.0",
     "symfony/dependency-injection": "^v7.0",

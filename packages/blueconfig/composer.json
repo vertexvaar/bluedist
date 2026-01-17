@@ -17,7 +17,7 @@
     }
   },
   "require": {
-    "php": "^8.2",
+    "php": "8.4.*",
     "symfony/console": "^v7.0",
     "symfony/yaml": "^v7.0"
   },

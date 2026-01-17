@@ -17,7 +17,7 @@
     }
   },
   "require": {
-    "php": "^8.2",
+    "php": "8.4.*",
     "ext-intl": "*",
     "symfony/translation": "^v7.0",
     "twig/twig": "^v3.7.1",
