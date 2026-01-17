@@ -1,6 +1,6 @@
 <?php
 
-namespace VerteXVaaR\BlueContainer\Composer;
+namespace VerteXVaaR\BlueFoundation\Composer;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
@@ -52,7 +52,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         }
 
         $binDir = $this->composer->getConfig()->get('bin-dir');
-        $blueContainerBinary = concat_paths($binDir, 'bluecontainer');
+        $blueContainerBinary = concat_paths($binDir, 'bluefoundation');
 
         $cmd = [];
         $cmd[] = $binary;
@@ -67,6 +67,20 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             return;
         }
         $this->io->write('Generated DI container');
+
+        $cmd = [];
+        $cmd[] = $binary;
+        $cmd[] = $blueContainerBinary;
+        $cmd[] = 'cache:dotenv-file';
+        $process = new Process($cmd, $_ENV['PWD'] ?? getcwd(), $_ENV, null, 60 * 60);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            $this->io->writeError('Failed caching dotenv');
+            $this->io->writeError($process->getOutput());
+            $this->io->writeError($process->getErrorOutput());
+            return;
+        }
+        $this->io->write('Compiled dotenv cache');
         $this->io->write($process->getOutput());
     }
 }

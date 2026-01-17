@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use VerteXVaaR\BlueContainer\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
 use VerteXVaaR\BlueTranslation\TranslatorFactory;
 
 use function array_key_exists;

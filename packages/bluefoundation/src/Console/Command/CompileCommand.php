@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueContainer\Console\Command;
+namespace VerteXVaaR\BlueFoundation\Console\Command;
 
 use Composer\InstalledVersions;
 use Psr\Container\ContainerInterface;
@@ -17,8 +17,8 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use VerteXVaaR\BlueContainer\Composer\Steps\Step;
-use VerteXVaaR\BlueContainer\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\Composer\Steps\Step;
+use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
 
 use function array_key_last;
 use function CoStack\Lib\concat_paths;
@@ -119,7 +119,7 @@ class CompileCommand extends Command
         $dumper = new PhpDumper($container);
         file_put_contents(
             __DIR__ . '/../../Generated/DI.php',
-            $dumper->dump(['class' => 'DI', 'namespace' => 'VerteXVaaR\\BlueContainer\\Generated']),
+            $dumper->dump(['class' => 'DI', 'namespace' => 'VerteXVaaR\\BlueFoundation\\Generated']),
         );
         return self::SUCCESS;
     }
@@ -176,7 +176,7 @@ class CompileCommand extends Command
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueContainer\Generated;
+namespace VerteXVaaR\BlueFoundation\Generated;
 
 use function array_keys;use function CoStack\Lib\concat_paths;
 

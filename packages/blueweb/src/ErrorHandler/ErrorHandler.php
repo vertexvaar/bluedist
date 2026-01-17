@@ -6,7 +6,7 @@ namespace VerteXVaaR\BlueWeb\ErrorHandler;
 
 use Parsedown;
 use Throwable;
-use VerteXVaaR\BlueContainer\Generated\DI;
+use VerteXVaaR\BlueFoundation\Generated\DI;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 

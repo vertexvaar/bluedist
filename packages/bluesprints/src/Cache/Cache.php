@@ -9,7 +9,7 @@ use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 use SplFileInfo;
 use VerteXVaaR\BlueConfig\Config;
-use VerteXVaaR\BlueContainer\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
 
 use function clearstatcache;
 use function CoStack\Lib\concat_paths;

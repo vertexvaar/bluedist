@@ -5,7 +5,7 @@ namespace VerteXVaaR\BlueDistTest\Helper;
 use Codeception\Module;
 use VerteXVaaR\BlueAuth\Mvcr\Model\User;
 use VerteXVaaR\BlueConfig\Config;
-use VerteXVaaR\BlueContainer\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 use VerteXVaaR\BlueSprints\Store\FileStore;
 

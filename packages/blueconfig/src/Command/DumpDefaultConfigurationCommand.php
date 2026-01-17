@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Dumper;
 use VerteXVaaR\BlueConfig\Config;
 use VerteXVaaR\BlueConfig\Definition\DefinitionService;
-use VerteXVaaR\BlueContainer\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
 
 use function array_replace_recursive;
 use function CoStack\Lib\concat_paths;

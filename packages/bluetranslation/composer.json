@@ -21,7 +21,7 @@
     "ext-intl": "*",
     "symfony/translation": "^v7.0",
     "twig/twig": "^v3.7.1",
-    "vertexvaar/bluecontainer": "*",
+    "vertexvaar/bluefoundation": "*",
     "vertexvaar/bluesprints": "*"
   },
   "extra": {

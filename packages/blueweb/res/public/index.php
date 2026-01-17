@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 use GuzzleHttp\Psr7\ServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\Dotenv\Dotenv;
-use VerteXVaaR\BlueContainer\Generated\DI;
+use VerteXVaaR\BlueFoundation\Generated\DI;
 use VerteXVaaR\BlueWeb\Application;
 use VerteXVaaR\BlueWeb\ErrorHandler\ErrorHandler;
 use VerteXVaaR\BlueWeb\ResponseEmitter;
+
+use function CoStack\Lib\concat_paths;
 
 $root = getenv('VXVR_BS_ROOT');
 if (!$root) {
@@ -16,11 +17,7 @@ if (!$root) {
     putenv('VXVR_BS_ROOT=' . $root);
 }
 
-if (file_exists($root . '/.env')) {
-    $dotenv = new Dotenv();
-    $dotenv->usePutenv();
-    $dotenv->loadEnv($root . '/.env', null, 'dev', [], true);
-}
+include concat_paths($root, 'dotenv.php');
 
 if (empty(ini_get('date.timezone'))) {
     date_default_timezone_set('UTC');

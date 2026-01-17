@@ -20,7 +20,7 @@
     "php": "8.4.*",
     "co-stack/lib": "^v6.0.0",
     "psr/simple-cache": "^3.0.0",
-    "vertexvaar/bluecontainer": "*",
+    "vertexvaar/bluefoundation": "*",
     "vertexvaar/blueconfig": "*",
     "psr/log": "^3.0"
   },

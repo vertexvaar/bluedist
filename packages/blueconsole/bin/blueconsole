@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 use Symfony\Component\Dotenv\Dotenv;
 use VerteXVaaR\BlueConsole\BlueApplication;
-use VerteXVaaR\BlueContainer\Generated\DI;
+use VerteXVaaR\BlueFoundation\Generated\DI;
 
 $root = getenv('VXVR_BS_ROOT');
 if (!$root) {

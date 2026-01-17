@@ -8,7 +8,7 @@ use Twig\Cache\FilesystemCache;
 use Twig\Environment as View;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
-use VerteXVaaR\BlueContainer\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 

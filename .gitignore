@@ -6,3 +6,4 @@
 /var
 /.env.local
 /composer.lock
+/dotenv.php

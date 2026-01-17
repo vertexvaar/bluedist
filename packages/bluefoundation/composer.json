@@ -1,6 +1,6 @@
 {
-  "name": "vertexvaar/bluecontainer",
-  "description": "Dependency Injection Container for bluesprints",
+  "name": "vertexvaar/bluefoundation",
+  "description": "Foundation for bluesprints. DI container and other precompiled stuff",
   "type": "composer-plugin",
   "license": "GPL-3.0+",
   "authors": [
@@ -13,7 +13,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "VerteXVaaR\\BlueContainer\\": "src/"
+      "VerteXVaaR\\BlueFoundation\\": "src/"
     }
   },
   "require": {
@@ -28,9 +28,9 @@
     "symfony/console": "^v7.0"
   },
   "extra": {
-    "class": "\\VerteXVaaR\\BlueContainer\\Composer\\Plugin"
+    "class": "\\VerteXVaaR\\BlueFoundation\\Composer\\Plugin"
   },
   "bin": [
-    "bin/bluecontainer"
+    "bin/bluefoundation"
   ]
 }

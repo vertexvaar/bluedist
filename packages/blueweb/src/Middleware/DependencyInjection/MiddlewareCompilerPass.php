@@ -7,8 +7,8 @@ namespace VerteXVaaR\BlueWeb\Middleware\DependencyInjection;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use VerteXVaaR\BlueContainer\Generated\PackageExtras;
-use VerteXVaaR\BlueContainer\Service\DependencyOrderingService;
+use VerteXVaaR\BlueFoundation\Generated\PackageExtras;
+use VerteXVaaR\BlueFoundation\Service\DependencyOrderingService;
 use VerteXVaaR\BlueWeb\Middleware\MiddlewareChain;
 use VerteXVaaR\BlueWeb\Middleware\MiddlewareRegistry;
 

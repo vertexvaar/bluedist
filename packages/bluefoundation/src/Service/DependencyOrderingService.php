@@ -18,7 +18,7 @@
 
 declare(strict_types=1);
 
-namespace VerteXVaaR\BlueContainer\Service;
+namespace VerteXVaaR\BlueFoundation\Service;
 
 use UnexpectedValueException;
 

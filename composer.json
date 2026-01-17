@@ -19,7 +19,7 @@
     "php": "8.4.*",
     "ext-json": "*",
     "vertexvaar/bluesprints": "@dev",
-    "vertexvaar/bluecontainer": "@dev",
+    "vertexvaar/bluefoundation": "@dev",
     "vertexvaar/blueauth": "@dev",
     "vertexvaar/bluetranslation": "@dev",
     "vertexvaar/blueconsole": "@dev",
@@ -45,7 +45,7 @@
   },
   "config": {
     "allow-plugins": {
-      "vertexvaar/bluecontainer": true,
+      "vertexvaar/bluefoundation": true,
       "php-http/discovery": true
     }
   },
