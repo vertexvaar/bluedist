@@ -8,5 +8,5 @@ use VerteXVaaR\BlueDebug\Rendering\CollectorRendering;
 
 interface Collector
 {
-    public function render(): CollectorRendering;
+    public function render(): ?CollectorRendering;
 }

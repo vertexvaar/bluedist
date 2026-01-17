@@ -69,7 +69,7 @@ readonly class DefinitionService
         }
     }
 
-    public function getDefaultConfig(array $schemaDefinition = null, mixed &$config = []): array
+    public function getDefaultConfig(?array $schemaDefinition = null, mixed &$config = []): array
     {
         $schemaDefinition ??= $this->getSchema()['properties'];
         foreach ($schemaDefinition as $key => $definition) {
@@ -82,7 +82,7 @@ readonly class DefinitionService
         return $config;
     }
 
-    public function cast(array &$config, array $schemaDefinition = null): void
+    public function cast(array &$config, ?array $schemaDefinition = null): void
     {
         $schemaDefinition ??= $this->getSchema(true);
         foreach ($schemaDefinition['properties'] as $key => $subDefinition) {
