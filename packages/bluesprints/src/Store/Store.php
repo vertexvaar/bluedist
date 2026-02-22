@@ -20,4 +20,7 @@ interface Store
     public function store(Entity $entity): void;
 
     public function delete(Entity $entity): void;
+
+    /** @param class-string<T> $class */
+    public function countAll(string $class): int;
 }

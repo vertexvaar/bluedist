@@ -56,18 +56,29 @@ class FileStore implements Store, LoggerAwareInterface
         );
     }
 
-    public function findAll(string $class): array
+    public function findAll(string $class, ?int $limit = null, ?int $offset = null): array
     {
         $databaseFolder = $this->getFolder($class);
 
         $results = [];
         /** @var SplFileInfo[] $fileSystemIterator */
         $fileSystemIterator = new FilesystemIterator($databaseFolder, FilesystemIterator::SKIP_DOTS);
+
+        $fetchLimit = $offset * -1 + $limit;
+
         foreach ($fileSystemIterator as $file) {
+            if ($fetchLimit < 0) {
+                ++$fetchLimit;
+                continue;
+            }
             $results[] = unserialize(
                 file_get_contents($file->getPathname()),
                 ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]],
             );
+            if ($offset >= $fetchLimit) {
+                break;
+            }
+            ++$fetchLimit;
         }
         return $results;
     }
@@ -103,5 +114,20 @@ class FileStore implements Store, LoggerAwareInterface
         }
 
         return $classFolder;
+    }
+
+    public function countAll(string $class): int
+    {
+        $databaseFolder = $this->getFolder($class);
+
+        $count = 0;
+
+        /** @var SplFileInfo[] $fileSystemIterator */
+        $fileSystemIterator = new FilesystemIterator($databaseFolder, FilesystemIterator::SKIP_DOTS);
+        foreach ($fileSystemIterator as $file) {
+            ++$count;
+        }
+
+        return $count;
     }
 }

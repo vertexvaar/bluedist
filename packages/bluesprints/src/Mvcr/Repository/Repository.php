@@ -49,4 +49,23 @@ readonly class Repository
     {
         $this->store->delete($entity);
     }
+
+    /**
+     * @param class-string<T> $className
+     *
+     * @return PaginatedResult<T>
+     */
+    public function paginate(string $className, ?int $page = null, int $perPage = 10): PaginatedResult
+    {
+        $index = max(0, ($page ?? 1) - 1);
+        $perPage = max(1, $perPage);
+
+        $offset = $index * $perPage;
+        $limit = $perPage;
+
+        $all = $this->store->countAll($className);
+        $selected = $this->store->findAll($className, $limit, $offset);
+
+        return new PaginatedResult($selected, $all, $index + 1, $perPage);
+    }
 }

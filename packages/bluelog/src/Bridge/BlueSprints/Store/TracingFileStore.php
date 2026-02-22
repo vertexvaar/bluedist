@@ -34,11 +34,11 @@ readonly class TracingFileStore implements Store
         }
     }
 
-    public function findAll(string $class): array
+    public function findAll(string $class, ?int $limit = null, ?int $offset = null): array
     {
         $transaction = $this->startTrace('findAll');
         try {
-            return $this->inner->findAll($class);
+            return $this->inner->findAll($class, $limit, $offset);
         } finally {
             $this->endTrace($transaction);
         }
@@ -59,6 +59,16 @@ readonly class TracingFileStore implements Store
         $transaction = $this->startTrace('delete');
         try {
             $this->inner->delete($entity);
+        } finally {
+            $this->endTrace($transaction);
+        }
+    }
+
+    public function countAll(string $class): int
+    {
+        $transaction = $this->startTrace('countAll');
+        try {
+            return $this->inner->countAll($class);
         } finally {
             $this->endTrace($transaction);
         }

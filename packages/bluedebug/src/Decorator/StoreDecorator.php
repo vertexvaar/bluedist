@@ -32,7 +32,7 @@ class StoreDecorator implements Store
         );
     }
 
-    public function findAll(string $class): array
+    public function findAll(string $class, ?int $limit = null, ?int $offset = null): array
     {
         return $this->queryCollector->execute(
             'findAll',
@@ -58,6 +58,16 @@ class StoreDecorator implements Store
             'delete',
             ['class' => $entity::class],
             $this->inner->delete(...),
+            func_get_args(),
+        );
+    }
+
+    public function countAll(string $class): int
+    {
+        return $this->queryCollector->execute(
+            'countAll',
+            ['class' => $class],
+            $this->inner->countAll(...),
             func_get_args(),
         );
     }
