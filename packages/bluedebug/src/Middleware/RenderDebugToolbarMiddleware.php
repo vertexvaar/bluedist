@@ -42,7 +42,7 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
         /** @var array<CollectorRendering> $collectorRenderings */
         $collectorRenderings = iterator_to_array($this->collectorCollection->render());
 
-        if ($response->getStatusCode() >= 300) {
+        if ($response->getStatusCode() >= 300 || $response->getHeaderLine('Content-Type') !== 'text/html') {
             $table = [];
             foreach ($collectorRenderings as $rendering) {
                 $table['<b>' . $rendering->title . '</b>'] = $rendering->shortInformation;

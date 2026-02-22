@@ -19,7 +19,7 @@ abstract class AbstractController implements Controller
 
     protected function render(string $template, array $context = []): ResponseInterface
     {
-        return new Response(200, [], $this->view->render($template, $context));
+        return new Response(200, ['Content-Type' => 'text/html'], $this->view->render($template, $context));
     }
 
     protected function redirect($url, $code = 303): ResponseInterface
