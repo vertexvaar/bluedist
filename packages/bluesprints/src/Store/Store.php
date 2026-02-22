@@ -6,12 +6,16 @@ namespace VerteXVaaR\BlueSprints\Store;
 
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
+/**
+ * @template T of Entity
+ */
 interface Store
 {
+    /** @return null|T */
     public function findByIdentifier(string $class, string $identifier): ?Entity;
 
-    /** @param class-string<Entity> $class */
-    public function findAll(string $class): array;
+    /** @param class-string<T> $class */
+    public function findAll(string $class, ?int $limit = null, ?int $offset = null): array;
 
     public function store(Entity $entity): void;
 

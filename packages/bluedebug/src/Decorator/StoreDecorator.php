@@ -10,6 +10,10 @@ use VerteXVaaR\BlueSprints\Store\Store;
 
 use function func_get_args;
 
+/**
+ * @template T of Entity
+ * @implements Store<T>
+ */
 class StoreDecorator implements Store
 {
     public function __construct(

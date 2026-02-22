@@ -28,6 +28,10 @@ use function unserialize;
 
 use const DIRECTORY_SEPARATOR as DS;
 
+/**
+ * @template T of Entity
+ * @implements Store<T>
+ */
 class FileStore implements Store, LoggerAwareInterface
 {
     use LoggerAwareTrait;
