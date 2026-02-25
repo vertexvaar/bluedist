@@ -54,11 +54,12 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
         /** @var PackageExtras $packageExtras */
         $packageExtras = $container->get(PackageExtras::class);
 
+        $translations = [];
         foreach ($packageExtras->getPackageNames() as $packageName) {
             $absoluteTranslationsPath = $packageExtras->getPath($packageName, 'translations');
 
             if (null === $absoluteTranslationsPath) {
-                return [];
+                continue;
             }
             $recursiveDirectoryIterator = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator(
@@ -66,7 +67,6 @@ class TranslationSourceCompilerPass implements CompilerPassInterface
                     FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS,
                 ),
             );
-            $translations = [];
             /** @var SplFileInfo $file */
             foreach ($recursiveDirectoryIterator as $file) {
                 [$catalogue, $language] = explode('.', $file->getBasename());
