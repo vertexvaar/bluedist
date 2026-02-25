@@ -28,6 +28,7 @@ use function var_dump;
 use function var_export;
 
 use const E_ALL;
+use const PHP_SAPI;
 
 class ErrorHandler
 {
@@ -35,6 +36,9 @@ class ErrorHandler
 
     public function register(): void
     {
+        if (PHP_SAPI === 'cli') {
+            return;
+        }
         set_exception_handler($this->handleException(...));
         set_error_handler($this->printErrorPage(...), E_ALL);
     }
