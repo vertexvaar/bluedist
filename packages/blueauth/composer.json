@@ -18,7 +18,8 @@
   },
   "require": {
     "php": "8.4.*",
-    "vertexvaar/blueweb": "*"
+    "vertexvaar/blueweb": "*",
+    "firebase/php-jwt": "*"
   },
   "extra": {
     "vertexvaar/bluesprints": {

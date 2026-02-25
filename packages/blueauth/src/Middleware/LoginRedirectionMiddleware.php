@@ -37,8 +37,8 @@ readonly class LoginRedirectionMiddleware implements MiddlewareInterface
         $response = $handler->handle($request);
 
         if (
-            $request->getUri()->getPath() === '/login'
-            && $response->getStatusCode() === 303
+            303 === $response->getStatusCode()
+            && '/login' === $request->getUri()->getPath()
         ) {
             $session = $request->getAttribute('session');
             $cacheKey = 'previousRequest/' . $session->identifier;
@@ -60,7 +60,7 @@ readonly class LoginRedirectionMiddleware implements MiddlewareInterface
                 $previousRequest = $previousRequest->withAttribute('session', $session);
                 return $handler->handle($previousRequest);
             }
-            return new Response(303, ['Location' => '/']);
+            return $response;
         }
         if ($response->getStatusCode() === 403) {
             $session = $request->getAttribute('session');

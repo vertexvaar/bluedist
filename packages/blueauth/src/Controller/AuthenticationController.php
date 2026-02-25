@@ -38,10 +38,7 @@ class AuthenticationController extends AbstractController
     public function logout(ServerRequestInterface $request): ResponseInterface
     {
         $session = $request->getAttribute('session');
-
-        if ($session->isAuthenticated()) {
-            $this->authenticationService->logout($session);
-        }
+        $this->authenticationService->logout($session);
         return $this->redirect('/');
     }
 
