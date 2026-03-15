@@ -105,6 +105,6 @@ readonly class AuthenticationService
 
         $jwt = JWT::encode($payload, getenv('APP_SECRET'), 'HS256', 'app_secret');
 
-        setcookie($this->config->get('auth.cookieAuthName'), $jwt);
+        setcookie($this->config->get('auth.cookieAuthName'), $jwt, time() + 3600, '/');
     }
 }
