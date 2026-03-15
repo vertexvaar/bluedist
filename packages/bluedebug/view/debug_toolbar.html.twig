@@ -1,118 +1,376 @@
+{% macro render_data(data) %}
+    {% if data is iterable %}
+        <table class="nested-data">
+            {% for key, value in data %}
+                <tr>
+                    <th class="nested-key">{{ key|raw }}</th>
+                    <td class="nested-val">
+                        {{ _self.render_data(value) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        {% set encoded = data|json_encode(constant('JSON_PRETTY_PRINT')) %}
+        {% if encoded matches '/^[{[]/' %}
+            <pre class="val-json">{{ encoded|replace({'\\/': '/'})|raw }}</pre>
+        {% else %}
+            {% set type = data is same as(null) ? 'null' : (data is same as(true) or data is same as(false) ? 'boolean' : 'string') %}
+            <span class="val-{{ type }}">
+                {% if type == 'null' %}null
+                {% elseif type == 'boolean' %}{{ data ? 'true' : 'false' }}
+                {% else %}{{ encoded|raw }}{% endif %}
+            </span>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
 <div id="blue-debug-toolbar-host-{{ requestId }}">
     <template shadowrootmode="open">
         <style>
             :host {
                 all: initial;
                 display: block;
-                position: relative;
-                width: 100%;
-                background-color: #333333;
-                color: #cccccc;
+                position: fixed;
+                z-index: 2147483647;
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-                font-size: 14px;
-                line-height: 1.5;
+                font-size: 13px;
+                line-height: 1.4;
+                box-sizing: border-box;
             }
+
+            :host(.pos-bottom) { bottom: 0; left: 0; right: 0; width: 100%; height: auto; }
+            :host(.pos-top) { top: 0; left: 0; right: 0; width: 100%; height: auto; }
+            :host(.pos-right) { top: 0; right: 0; bottom: 0; height: 100%; width: 350px; }
+            :host(.pos-left) { top: 0; left: 0; bottom: 0; height: 100%; width: 350px; }
 
             .flexbox-panel {
                 position: relative;
-                width: calc(100% - 10px);
-                background-color: #333333;
-                color: #cccccc;
-
+                width: 100%;
+                height: 100%;
+                background-color: #222222;
+                color: #dddddd;
                 display: flex;
+                gap: 0;
+                box-sizing: border-box;
+            }
+
+            :host(.pos-bottom) .flexbox-panel,
+            :host(.pos-top) .flexbox-panel {
                 flex-direction: row;
                 flex-wrap: nowrap;
                 justify-content: center;
                 align-items: center;
-                align-content: center;
+                padding: 0 10px;
+                height: 35px;
+            }
+
+            :host(.pos-right) .flexbox-panel,
+            :host(.pos-left) .flexbox-panel {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: stretch;
+                overflow-y: auto;
+                overflow-x: hidden;
             }
 
             .flexbox-item {
-                padding: 5px;
                 flex: 0 1 auto;
                 position: relative;
+                cursor: pointer;
             }
 
-            .flexbox-item:hover {
-                flex: 0 1 auto;
-                background-color: #444444;
+            :host(.pos-bottom) .flexbox-item,
+            :host(.pos-top) .flexbox-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 0 12px;
+                height: 100%;
+                white-space: nowrap;
+                border-right: 1px solid #333333;
+            }
+
+            :host(.pos-right) .flexbox-item,
+            :host(.pos-left) .flexbox-item {
+                display: block;
+                border-bottom: 1px solid #333333;
+                padding: 12px;
+                white-space: normal;
+                cursor: default;
+            }
+
+            .flexbox-item:hover, .flexbox-item.active {
+                background-color: #2a2a2a;
+            }
+
+            .flexbox-item.locked {
+                background-color: #333333;
+                box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
             }
 
             .infobox {
                 visibility: hidden;
+                opacity: 0;
                 position: absolute;
-                bottom: 100%;
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: #444444;
-                padding: 10px;
-                border-radius: 6px;
-                white-space: nowrap;
+                background-color: #2a2a2a;
+                padding: 15px;
+                border-radius: 4px;
                 z-index: 10001;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+                transition: opacity 0.2s ease-in-out;
+                border: 1px solid #444444;
             }
 
-            .infobox td, .infobox th {
+            .flexbox-item.active .infobox {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .infobox table, .infobox tbody {
+                display: block;
+                width: 100%;
+            }
+
+            .infobox tr {
+                display: flex;
+                flex-flow: row wrap;
+                width: 100%;
+                border-bottom: 1px solid #333;
+            }
+
+            .infobox tr:last-child {
+                border-bottom: none;
+            }
+
+            .infobox th {
+                flex: 1 1 200px;
+                max-width: 100%;
+                padding: 4px 10px;
+                background-color: rgba(255, 255, 255, 0.03);
+            }
+
+            .infobox td {
+                flex: 10 1 400px;
+                max-width: 100%;
+                padding: 4px 10px;
+                min-width: 0;
+            }
+
+            :host(.pos-bottom) .infobox { bottom: 100%; left: 50%; transform: translateX(-50%); }
+            :host(.pos-top) .infobox { top: 100%; left: 50%; transform: translateX(-50%); }
+
+            :host(.pos-bottom) .infobox,
+            :host(.pos-top) .infobox {
+                width: 95vw;
+                max-width: 1600px;
+                min-width: 450px;
+                max-height: 85vh;
+                overflow-y: auto;
+                box-sizing: border-box;
+            }
+
+            :host(.pos-right) .infobox,
+            :host(.pos-left) .infobox {
+                visibility: visible;
+                opacity: 1;
+                position: static;
+                display: block;
+                box-shadow: none;
+                background-color: transparent;
+                padding: 8px 0 0 0;
+                max-height: none;
+                overflow: visible;
+                border: none;
+                transform: none;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            :host(.pos-right) table, :host(.pos-left) table { table-layout: fixed; }
+
+            td, th {
                 text-align: left;
                 vertical-align: top;
-                color: #cccccc;
-                padding: 2px 5px;
+                color: #eeeeee;
+                word-break: break-all;
+                overflow-wrap: anywhere;
+                padding: 2px 6px;
             }
 
-            .infobox table {
-                border-collapse: collapse;
+            th {
+                color: #aaaaaa;
+                font-weight: 600;
+                font-size: 12px;
+                font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
             }
 
-            .flexbox-item:hover .infobox {
-                visibility: visible;
+            tr:nth-child(even) {
+                background-color: rgba(255, 255, 255, 0.02);
+            }
+
+            :host(.pos-right) .infobox tr, :host(.pos-left) .infobox tr {
+                display: block;
+            }
+
+            :host(.pos-right) .infobox th, :host(.pos-left) .infobox th { 
+                background-color: transparent;
+                width: 100%; 
+                display: block; 
+                padding-bottom: 0; 
+                border: none;
+                color: #aaaaaa;
+                font-size: 12px;
+            }
+            :host(.pos-right) .infobox td, :host(.pos-left) .infobox td { 
+                width: 100%; 
+                display: block; 
+                padding-bottom: 8px; 
+                color: #eeeeee; 
+                border: none; 
+            }
+
+            :host(.pos-bottom) th, :host(.pos-top) th { border-right: 1px solid #333; }
+
+            .nested-data {
+                margin: 2px 0;
+                background-color: rgba(0,0,0,0.2);
+                border-radius: 4px;
+                border: 1px solid #333;
+            }
+
+            .nested-data tr {
+                border-bottom: 1px solid #2a2a2a;
+            }
+
+            .nested-key {
+                font-size: 11px;
+                color: #999;
+                padding: 2px 8px;
+                flex: 0 0 130px !important;
+                border-right: 1px solid #333;
+                font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+                background-color: rgba(255,255,255,0.01);
+            }
+
+            .nested-val {
+                padding: 2px 8px;
+                flex: 1 1 auto !important;
             }
 
             a {
                 text-decoration: none;
-                transition: color 0.2s;
+                color: #888888;
+                transition: color 0.2s, background-color 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 6px;
+                border-radius: 4px;
             }
 
             a:hover {
-                color: #ffffff !important;
+                color: #ffffff;
+                background-color: #444444;
+            }
+            
+            .spacer {
+                flex-grow: 1;
+            }
+
+            .icon {
+                width: 16px;
+                height: 16px;
+                stroke: currentColor;
+                stroke-width: 2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                fill: none;
+                display: block;
+            }
+
+            .item-title {
+                font-weight: bold;
+                color: #4dabf7;
+                display: block;
+                margin-bottom: 4px;
+                font-size: 13px;
+            }
+
+            .toolbar-actions {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center;
+                gap: 4px;
+                cursor: default;
+                border-left: 1px solid #333333;
+                position: sticky;
+                bottom: 0;
+                right: 0;
+                background-color: #222222;
+                z-index: 10;
+            }
+
+            :host(.pos-right) .toolbar-actions, :host(.pos-left) .toolbar-actions {
+                border-left: none;
+                border-top: 1px solid #333333;
+                width: 100%;
+                justify-content: center;
+                padding: 5px 0;
+            }
+
+            #resize-handle {
+                display: none;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 4px;
+                cursor: ew-resize;
+                z-index: 2147483647;
+                background-color: transparent;
+            }
+
+            #resize-handle:hover, #resize-handle.active { background-color: #4dabf7; }
+            :host(.pos-left) #resize-handle { display: block; right: 0; }
+            :host(.pos-right) #resize-handle { display: block; left: 0; }
+
+            /* Value formatting */
+            .val-string { color: #e9ecef; }
+            .val-number { color: #ffd43b; }
+            .val-boolean { color: #ff922b; }
+            .val-null { color: #adb5bd; font-style: italic; }
+            
+            /* Pretty Print JSON */
+            .val-json {
+                margin: 0;
+                font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+                font-size: 13px;
+                color: #e9ecef;
+                white-space: pre-wrap;
+                word-break: break-all;
+                background-color: rgba(0,0,0,0.2);
+                padding: 8px;
+                border-radius: 4px;
+                border: 1px solid #333;
             }
         </style>
+        <div id="resize-handle"></div>
         <div id="debugtoolbar" class="flexbox-panel">
             {% for rendering in collectorRenderings %}
                 <div class="flexbox-item">
-                    {{ rendering.title }}: {{ rendering.shortInformation }}
+                    <span class="item-title">{{ rendering.title }}: {{ rendering.shortInformation }}</span>
                     {% if rendering.popupTable %}
                         <div class="infobox">
                             <table>
                                 {% for key, value in rendering.popupTable %}
                                     <tr>
                                         <th>{{ key|raw }}</th>
-                                        {% if value is iterable %}
-                                            <td>
-                                                <table>
-                                                    {% for subKey, subValue in value %}
-                                                        <tr>
-                                                            <th>{{ subKey|raw }}</th>
-                                                            {% if subValue is iterable %}
-                                                                <td>
-                                                                    <table>
-                                                                        {% for subSubKey, subSubValue in subValue %}
-                                                                            <tr>
-                                                                                <th>{{ subSubKey|raw }}</th>
-                                                                                <td>{{ subSubValue|json_encode() }}</td>
-                                                                            </tr>
-                                                                        {% endfor %}
-                                                                    </table>
-                                                                </td>
-                                                            {% else %}
-                                                                <td>{{ subValue }}</td>
-                                                            {% endif %}
-                                                        </tr>
-                                                    {% endfor %}
-                                                </table>
-                                            </td>
-                                        {% else %}
-                                            <td>{{ value }}</td>
-                                        {% endif %}
+                                        <td>
+                                            {{ _self.render_data(value) }}
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </table>
@@ -120,28 +378,170 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <div class="flexbox-item">
-                <a style="color: #cccccc;" href="#" onclick="this.getRootNode().host.remove(); return false;">Close</a>
+            
+            <div class="spacer"></div>
+
+            <div class="flexbox-item toolbar-actions">
+                <a href="#" id="pos-ccw" title="Move Counter-Clockwise">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                </a>
+                <a href="#" id="pos-opposite" title="Move to Opposite Side">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
+                </a>
+                <a href="#" id="pos-cw" title="Move Clockwise">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                </a>
+                <a href="#" id="close-btn" title="Close Debug Toolbar" onclick="this.getRootNode().host.remove(); document.body.style.margin = ''; return false;">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </a>
             </div>
         </div>
     </template>
 </div>
 <script>
-    /**
-     * Polyfill for Declarative Shadow DOM if not supported by the browser.
-     */
-    (function polyfillDeclarativeShadowDom() {
+    (function() {
+        const requestId = '{{ requestId }}';
+        const host = document.getElementById('blue-debug-toolbar-host-' + requestId);
+        if (!host) return;
+
         if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
-            const host = document.querySelector('#blue-debug-toolbar-host-{{ requestId }}');
-            if (host) {
-                const template = host.querySelector('template[shadowrootmode]');
-                if (template) {
-                    const mode = template.getAttribute('shadowrootmode');
-                    const shadowRoot = host.attachShadow({ mode });
-                    shadowRoot.appendChild(template.content);
-                    template.remove();
-                }
+            const template = host.querySelector('template[shadowrootmode]');
+            if (template) {
+                const mode = template.getAttribute('shadowrootmode');
+                const shadowRoot = host.attachShadow({ mode });
+                shadowRoot.appendChild(template.content);
+                template.remove();
             }
         }
+
+        const shadowRoot = host.shadowRoot;
+        if (!shadowRoot) return;
+
+        const positions = ['bottom', 'right', 'top', 'left'];
+        const storageKeyPos = 'blue-debug-toolbar-pos';
+        const storageKeyWidth = 'blue-debug-toolbar-width';
+
+        function setPosition(pos) {
+            host.classList.remove('pos-bottom', 'pos-top', 'pos-right', 'pos-left');
+            host.classList.add('pos-' + pos);
+            document.body.style.marginBottom = ''; document.body.style.marginTop = '';
+            document.body.style.marginRight = ''; document.body.style.marginLeft = '';
+
+            if (pos === 'bottom') document.body.style.marginBottom = '35px';
+            if (pos === 'top') document.body.style.marginTop = '35px';
+            
+            if (pos === 'right' || pos === 'left') {
+                host.style.width = (localStorage.getItem(storageKeyWidth) || '350') + 'px';
+            } else { host.style.width = ''; }
+
+            localStorage.setItem(storageKeyPos, pos);
+            updateBodyMargins();
+        }
+
+        function updateBodyMargins() {
+            const pos = localStorage.getItem(storageKeyPos);
+            if (pos === 'right') document.body.style.marginRight = host.offsetWidth + 'px';
+            if (pos === 'left') document.body.style.marginLeft = host.offsetWidth + 'px';
+        }
+
+        let currentPos = localStorage.getItem(storageKeyPos) || 'bottom';
+        if (!positions.includes(currentPos)) currentPos = 'bottom';
+        setPosition(currentPos);
+
+        const ro = new ResizeObserver(() => updateBodyMargins());
+        ro.observe(host);
+
+        // Smart Positioning for Popups
+        function ensureInViewport(item) {
+            const infobox = item.querySelector('.infobox');
+            if (!infobox) return;
+
+            // Reset to defaults
+            infobox.style.left = '50%';
+            infobox.style.transform = 'translateX(-50%)';
+
+            const rect = infobox.getBoundingClientRect();
+            const padding = 10;
+
+            if (rect.left < padding) {
+                const offset = padding - rect.left;
+                infobox.style.transform = `translateX(calc(-50% + ${offset}px))`;
+            } else if (rect.right > window.innerWidth - padding) {
+                const offset = (window.innerWidth - padding) - rect.right;
+                infobox.style.transform = `translateX(calc(-50% + ${offset}px))`;
+            }
+        }
+
+        // Interaction Logic for Horizontal Mode
+        const items = shadowRoot.querySelectorAll('.flexbox-item:not(.toolbar-actions)');
+        let hoverTimeout = null;
+
+        items.forEach(item => {
+            if (!item.querySelector('.infobox')) return;
+
+            item.addEventListener('mouseenter', () => {
+                const pos = localStorage.getItem(storageKeyPos);
+                if (pos === 'right' || pos === 'left') return;
+                
+                if (hoverTimeout) clearTimeout(hoverTimeout);
+                shadowRoot.querySelectorAll('.flexbox-item.active:not(.locked)').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
+                ensureInViewport(item);
+            });
+
+            item.addEventListener('mouseleave', () => {
+                const pos = localStorage.getItem(storageKeyPos);
+                if (pos === 'right' || pos === 'left' || item.classList.contains('locked')) return;
+                
+                hoverTimeout = setTimeout(() => {
+                    item.classList.remove('active');
+                }, 300);
+            });
+
+            item.addEventListener('click', (e) => {
+                const pos = localStorage.getItem(storageKeyPos);
+                if (pos === 'right' || pos === 'left' || e.target.closest('a')) return;
+
+                const isLocked = item.classList.contains('locked');
+                shadowRoot.querySelectorAll('.flexbox-item.locked').forEach(el => el.classList.remove('locked', 'active'));
+
+                if (!isLocked) {
+                    item.classList.add('locked', 'active');
+                    ensureInViewport(item);
+                } else {
+                    item.classList.remove('locked', 'active');
+                }
+            });
+        });
+
+        // Resize & Position Logic
+        const handle = shadowRoot.querySelector('#resize-handle');
+        let isResizing = false;
+
+        handle.addEventListener('mousedown', () => { isResizing = true; handle.classList.add('active'); document.body.style.cursor = 'ew-resize'; document.body.style.userSelect = 'none'; });
+        window.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+            let newWidth;
+            const pos = localStorage.getItem(storageKeyPos);
+            if (pos === 'left') newWidth = e.clientX;
+            else if (pos === 'right') newWidth = window.innerWidth - e.clientX;
+            if (newWidth >= 200 && newWidth <= window.innerWidth * 0.8) { host.style.width = newWidth + 'px'; localStorage.setItem(storageKeyWidth, newWidth); }
+        });
+        window.addEventListener('mouseup', () => { if (isResizing) { isResizing = false; handle.classList.remove('active'); document.body.style.cursor = ''; document.body.style.userSelect = ''; } });
+
+        const updatePosition = (offset) => {
+            const currentIndex = positions.indexOf(currentPos);
+            const nextIndex = (currentIndex + offset + positions.length) % positions.length;
+            currentPos = positions[nextIndex];
+            setPosition(currentPos);
+        };
+
+        shadowRoot.querySelector('#pos-ccw').addEventListener('click', (e) => { e.preventDefault(); updatePosition(1); });
+        shadowRoot.querySelector('#pos-cw').addEventListener('click', (e) => { e.preventDefault(); updatePosition(-1); });
+        shadowRoot.querySelector('#pos-opposite').addEventListener('click', (e) => { e.preventDefault(); updatePosition(2); });
+        
+        window.addEventListener('resize', () => {
+            shadowRoot.querySelectorAll('.flexbox-item.active').forEach(item => ensureInViewport(item));
+        });
     })();
 </script>

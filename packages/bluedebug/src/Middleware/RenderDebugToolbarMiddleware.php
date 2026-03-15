@@ -45,7 +45,7 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
         if ($response->getStatusCode() >= 300 || $response->getHeaderLine('Content-Type') !== 'text/html') {
             $table = [];
             foreach ($collectorRenderings as $rendering) {
-                $table['<b>' . $rendering->title . '</b>'] = $rendering->shortInformation;
+                $table[$rendering->title] = $rendering->shortInformation;
                 foreach ($rendering->popupTable ?? [] as $key => $value) {
                     $table[$key] = $value;
                 }
@@ -61,7 +61,7 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
 
         $lastRequest = $this->cache->get('last_request');
         if (is_string($lastRequest) && strlen($lastRequest) > 10) {
-            $lastRequest = unserialize($lastRequest, ['allowed_classes' => [CollectorRendering::class]]);
+            $lastRequest = unserialize($lastRequest, ['allowed_classes' => true]);
             array_unshift($collectorRenderings, $lastRequest);
         }
         $contents = $this->view->render('@vertexvaar_bluedebug/debug_toolbar.html.twig', [
