@@ -66,6 +66,7 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
         }
         $contents = $this->view->render('@vertexvaar_bluedebug/debug_toolbar.html.twig', [
             'collectorRenderings' => $collectorRenderings,
+            'requestId' => $request->getAttribute('requestId'),
         ]);
         $this->cache->delete('last_request');
 
