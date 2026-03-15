@@ -90,7 +90,7 @@ class ErrorHandler
             echo '<li><code>';
             echo ($trace['file'] ?? '<file>') . ' @ ' . ($trace['line'] ?? '?') . '<br/>';
             echo ($trace['class'] ?? '') . ($trace['type'] ?? '') . $trace['function'] . '(';
-            foreach ($trace['args'] as $argument) {
+            foreach ($trace['args'] ?? [] as $argument) {
                 if (is_object($argument)) {
                     echo get_class($argument);
                 } elseif (is_array($argument)) {
