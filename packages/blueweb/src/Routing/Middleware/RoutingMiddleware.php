@@ -13,10 +13,10 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
-class RoutingMiddleware implements MiddlewareInterface
+readonly class RoutingMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly array $data,
+        private array $data,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

@@ -16,7 +16,8 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueWeb\Controller;
 
-use Psr\Http\Message\ResponseInterface;use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
+use Psr\Http\Message\ResponseInterface;
+use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 class DefaultController extends AbstractController
 {

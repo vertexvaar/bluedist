@@ -89,7 +89,7 @@ class Welcome extends AbstractController implements LoggerAwareInterface
      * 'GET' route registration only to be able to redirect the user for demonstration purposes.
      */
     #[Route(path: '/updateFruit')]
-    #[AuthorizedRoute(path: '/updateFruit/{fruit}', method: 'POST', requireAuthorization: true)]
+    #[AuthorizedRoute(path: '/updateFruit/{fruit}', method: Route::POST, requireAuthorization: true)]
     public function updateFruit(ServerRequestInterface $request): ResponseInterface
     {
         if ($request->getMethod() === 'GET') {
@@ -109,7 +109,7 @@ class Welcome extends AbstractController implements LoggerAwareInterface
         return $this->redirect('/listFruits');
     }
 
-    #[AuthorizedRoute(path: '/deleteFruit/{fruit}', method: 'POST', requiredRoles: ['user'])]
+    #[AuthorizedRoute(path: '/deleteFruit/{fruit}', method: Route::POST, requiredRoles: ['user'])]
     public function deleteFruit(ServerRequestInterface $request): ResponseInterface
     {
         $fruitIdentifier = $request->getAttribute('route')->matches['fruit'];
@@ -120,7 +120,7 @@ class Welcome extends AbstractController implements LoggerAwareInterface
         return $this->redirect('/listFruits');
     }
 
-    #[AuthorizedRoute(path: '/deleteAllFruits', method: 'POST', requiredRoles: ['admin'])]
+    #[AuthorizedRoute(path: '/deleteAllFruits', method: Route::POST, requiredRoles: ['admin'])]
     public function deleteAllFruits(ServerRequestInterface $request): ResponseInterface
     {
         $fruits = $this->repository->findAll(Fruit::class);

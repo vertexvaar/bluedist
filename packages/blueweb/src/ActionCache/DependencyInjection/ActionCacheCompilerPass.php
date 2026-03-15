@@ -10,20 +10,21 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache;
 use VerteXVaaR\BlueWeb\ActionCache\Middleware\ActionCacheMiddleware;
+use VerteXVaaR\BlueWeb\Enum\HttpMethod;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function array_keys;
 use function count;
 use function get_object_vars;
 
-class ActionCacheCompilerPass implements CompilerPassInterface
+readonly class ActionCacheCompilerPass implements CompilerPassInterface
 {
     public function __construct(
-        private readonly string $tagName,
+        private string $tagName,
     ) {
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $cachedActions = [];
 
@@ -45,17 +46,17 @@ class ActionCacheCompilerPass implements CompilerPassInterface
                     foreach ($reflectionRouteAttributes as $reflectionRouteAttribute) {
                         /** @var Route $routeAttribute */
                         $routeAttribute = $reflectionRouteAttribute->newInstance();
-                        if ($routeAttribute->method !== 'GET') {
+                        if ($routeAttribute->method !== HttpMethod::GET) {
                             throw new Exception(
                                 'Can not cache actions with non-GET routes.'
                                 . ' Method: ' . $class . '::' . $reflectionMethod->getName()
-                                . ' Conflicting Route: ' . $routeAttribute->method . ': ' . $routeAttribute->path,
+                                . ' Conflicting Route: ' . $routeAttribute->method->value . ': ' . $routeAttribute->path,
                             );
                         }
                     }
 
                     $reflectionCacheAttribute = $reflectionCacheAttributes[0];
-                    /** @var \VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache $cacheAttribute */
+                    /** @var ActionCache $cacheAttribute */
                     $cacheAttribute = $reflectionCacheAttribute->newInstance();
                     $cachedActions[$class][$reflectionMethod->getName()] = get_object_vars($cacheAttribute);
                 }

@@ -28,7 +28,7 @@ class Backend extends AbstractController
         return $this->render('@vertexvaar_bluecms/backend/page/new.html.twig');
     }
 
-    #[AuthorizedRoute(path: '/backend/page/save', requiredRoles: ['editor'], method: Route::POST)]
+    #[AuthorizedRoute(path: '/backend/page/save', method: Route::POST, requiredRoles: ['editor'])]
     public function pageSave(ServerRequestInterface $request): ResponseInterface
     {
         $body = $request->getParsedBody();
