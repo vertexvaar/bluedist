@@ -11,6 +11,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TypeError;
+use VerteXVaaR\BlueWeb\Exception\RouteAttributeConstructionException;
 use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
 readonly class RoutingMiddleware implements MiddlewareInterface
@@ -37,12 +39,21 @@ readonly class RoutingMiddleware implements MiddlewareInterface
                 1699381583,
             ),
         };
-        $routeEncapsulation = new RouteEncapsulation(
-            new ($matchedRoute['class'])(...$matchedRoute['vars']),
-            $matchedRoute['controller'],
-            $matchedRoute['action'],
-            $routingResult[2],
-        );
+        try {
+            $routeEncapsulation = new RouteEncapsulation(
+                new ($matchedRoute['class'])(...$matchedRoute['vars']),
+                $matchedRoute['controller'],
+                $matchedRoute['action'],
+                $routingResult[2],
+            );
+        } catch (TypeError $exception) {
+            throw new RouteAttributeConstructionException(
+                $matchedRoute['class'],
+                $matchedRoute['controller'],
+                $matchedRoute['action'],
+                $exception,
+            );
+        }
         $request = $request->withAttribute('route', $routeEncapsulation);
         return $handler->handle($request);
     }
