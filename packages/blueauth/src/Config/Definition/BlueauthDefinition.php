@@ -5,24 +5,45 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueAuth\Config\Definition;
 
 use VerteXVaaR\BlueConfig\Definition\Definition;
+use VerteXVaaR\BlueConfig\Structure\ArrayNode;
 use VerteXVaaR\BlueConfig\Structure\Node;
 use VerteXVaaR\BlueConfig\Structure\ObjectNode;
+use VerteXVaaR\BlueConfig\Structure\RootNode;
 use VerteXVaaR\BlueConfig\Structure\StringNode;
 
 readonly class BlueauthDefinition implements Definition
 {
     public function get(): Node
     {
-        return new ObjectNode(
-            'auth',
-            'Authentication settings',
-            'Set all authentication related settings here',
+        return new RootNode(
+            'root',
+            'root',
             [
-                new StringNode(
-                    'cookieAuthName',
-                    'Authentication Cookie Names',
-                    'Name for the authentication cookie that bluesprints sets',
+                new ObjectNode(
                     'auth',
+                    'Authentication settings',
+                    'Set all authentication related settings here',
+                    [
+                        new StringNode(
+                            'cookieAuthName',
+                            'Authentication Cookie Names',
+                            'Name for the authentication cookie that bluesprints sets',
+                            'auth',
+                        ),
+                    ],
+                ),
+                new ObjectNode(
+                    'security',
+                    'Security settings',
+                    'Set all security related settings here',
+                    [
+                        new ArrayNode(
+                            'trustedProxyAddresses',
+                            'Trusted Proxy Addresses',
+                            'Trusted Proxy Addresses',
+                            [],
+                        ),
+                    ],
                 ),
             ],
         );

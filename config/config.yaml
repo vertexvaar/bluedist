@@ -1,4 +1,9 @@
 auth:
   cookieAuthName: blue-auth
+security:
+  trustedProxyAddresses:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.178.0/24
 filePermissions: '0755'
 folderPermissions: '0755'

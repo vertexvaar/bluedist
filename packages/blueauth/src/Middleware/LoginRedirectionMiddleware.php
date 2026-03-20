@@ -4,33 +4,24 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueAuth\Middleware;
 
-use GuzzleHttp\Psr7\CachingStream;
-use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\ServerRequest;
-use GuzzleHttp\Psr7\Stream;
-use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\SimpleCache\CacheInterface;
-use VerteXVaaR\BlueAuth\Mvcr\Model\Session;
-use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
-use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
-use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
+use VerteXVaaR\BlueConfig\Config;
 
-use function serialize;
-use function unserialize;
+use function CoStack\Lib\inet_match_range;
 
 readonly class LoginRedirectionMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private CacheInterface $cache,
         private AuthenticationService $authenticationService,
-    ) {
-    }
+        private Config $config,
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -42,34 +33,41 @@ readonly class LoginRedirectionMiddleware implements MiddlewareInterface
         ) {
             $session = $request->getAttribute('session');
             $cacheKey = 'previousRequest/' . $session->identifier;
-            if ($session->isAuthenticated() && $this->cache->has($cacheKey)) {
-                $previousRequest = unserialize($this->cache->get($cacheKey), [
-                    'allowed_classes' => [
-                        ServerRequest::class,
-                        Uri::class,
-                        CachingStream::class,
-                        LazyOpenStream::class,
-                        Stream::class,
-                        Session::class,
-                        Route::class,
-                        AuthorizedRoute::class,
-                        RouteEncapsulation::class,
-                    ],
-                ]);
+            if (
+                $session->isAuthenticated()
+                && $this->cache->has($cacheKey)
+            ) {
+                $previousRequestUri = $this->cache->get($cacheKey);
                 $this->cache->delete($cacheKey);
-                $previousRequest = $previousRequest->withAttribute('session', $session);
-                return $handler->handle($previousRequest);
+                return new Response(303, ['Location' => $previousRequestUri]);
             }
             return $response;
         }
-        if ($response->getStatusCode() === 403) {
+        if (
+            403 === $response->getStatusCode()
+            && 'GET' === $request->getMethod()
+        ) {
             $session = $request->getAttribute('session');
             if ($session->isAuthenticated()) {
                 return $response;
             }
             $session = $this->authenticationService->forcePersistentSession($request);
             $cacheKey = 'previousRequest/' . $session->identifier;
-            $this->cache->set($cacheKey, serialize($request));
+            $uri = $request->getUri();
+            $remoteAddress = $request->getServerParams()['REMOTE_ADDR'];
+            if (inet_match_range($remoteAddress, $this->config->get('security.trustedProxyAddresses'))) {
+                if ($request->hasHeader('X-Forwarded-Proto')) {
+                    $forwardedProtocol = $request->getHeaderLine('X-Forwarded-Proto');
+                    if ('https' === $forwardedProtocol) {
+                        $uri = $uri->withScheme('https');
+                    }
+                }
+                if ($request->hasHeader('X-Forwarded-Port')) {
+                    $forwardedPort = $request->getHeaderLine('X-Forwarded-Port');
+                    $uri = $uri->withPort($forwardedPort);
+                }
+            }
+            $this->cache->set($cacheKey, $uri);
             $response = new Response(303, ['Location' => '/login'], 'Login required');
         }
         return $response;
