@@ -1,5 +1,17 @@
 <section>
     <h1>Login</h1>
+
+    {% for flashMessage in flashMessages %}
+        <article class="message {{ flashMessage.severity.bulmaClass }}">
+            <div class="message-header">
+                {{ flashMessage.title }}
+            </div>
+            <div class="message-body">
+                {{ flashMessage.message }}
+            </div>
+        </article>
+    {% endfor %}
+
     <form method="post" action="/login" id="login">
         <table>
             <tr>

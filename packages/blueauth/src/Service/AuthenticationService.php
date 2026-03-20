@@ -39,8 +39,10 @@ readonly class AuthenticationService
         }
         $user = $this->repository->findByIdentifier(User::class, $username);
         if (null === $user) {
-            // Destroy session if user does not exist (anymore)
-            $this->logout($session);
+            if ($session->isAuthenticated()) {
+                // Destroy session if user does not exist (anymore)
+                $this->logout($session);
+            }
 
             return;
         }

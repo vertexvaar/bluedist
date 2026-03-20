@@ -8,12 +8,14 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Twig\Environment as View;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
+use VerteXVaaR\BlueWeb\FlashMessage\FlashMessageService;
 
 abstract class AbstractController implements Controller
 {
     public function __construct(
         protected readonly Repository $repository,
         protected readonly View $view,
+        protected readonly FlashMessageService $flashMessageService,
     ) {
     }
 

@@ -10,6 +10,8 @@ use Twig\Environment as View;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
+use VerteXVaaR\BlueWeb\Enum\Severity;
+use VerteXVaaR\BlueWeb\FlashMessage\FlashMessageService;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function array_key_exists;
@@ -19,19 +21,23 @@ class AuthenticationController extends AbstractController
     public function __construct(
         Repository $repository,
         View $view,
+        FlashMessageService $flashMessageService,
         private readonly AuthenticationService $authenticationService,
     ) {
-        parent::__construct($repository, $view);
+        parent::__construct($repository, $view, $flashMessageService);
     }
 
     #[Route(path: '/login')]
     public function login(ServerRequestInterface $request): ResponseInterface
     {
+        $this->authenticationService->forcePersistentSession($request);
+
         $session = $request->getAttribute('session');
         if ($session->isAuthenticated()) {
             return $this->redirect('/');
         }
-        return $this->render('@vertexvaar_blueauth/login.html.twig');
+        $flashMessages = $this->flashMessageService->get($session->identifier);
+        return $this->render('@vertexvaar_blueauth/login.html.twig', ['flashMessages' => $flashMessages]);
     }
 
     #[Route(path: '/logout')]
@@ -53,6 +59,12 @@ class AuthenticationController extends AbstractController
             if ($session->isAuthenticated()) {
                 return $this->redirect('/');
             }
+            $this->flashMessageService->add(
+                $session,
+                'Login failed',
+                'Check your username and/or password.',
+                Severity::ERROR,
+            );
         }
         return $this->redirect('/login');
     }
