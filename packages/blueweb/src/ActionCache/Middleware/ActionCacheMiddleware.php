@@ -21,7 +21,9 @@ use function CoStack\Lib\concat_paths;
 use function hash;
 use function json_encode;
 use function ksort;
+use function serialize;
 use function str_replace;
+use function unserialize;
 use function version_compare;
 
 use const JSON_THROW_ON_ERROR;
@@ -54,8 +56,12 @@ class ActionCacheMiddleware implements MiddlewareInterface
         );
 
         $forceCacheEvasion = $this->forceCacheEvasion($request);
-        if (!$forceCacheEvasion && $contents = $this->cache->get($cacheKey)) {
-            return $this->createResponseFromContent($contents);
+        if (!$forceCacheEvasion && $this->cache->has($cacheKey)) {
+            $responseCacheEntry = unserialize(
+                $this->cache->get($cacheKey),
+                ['allowed_classes' => [ResponseCacheEntry::class]]
+            );
+            return $this->createResponseFromContent($responseCacheEntry);
         }
 
         $response = $handler->handle($request);
@@ -84,11 +90,14 @@ class ActionCacheMiddleware implements MiddlewareInterface
         return $cacheHeader === 'no-cache';
     }
 
-    protected function createResponseFromContent(string $contents): ResponseInterface
+    protected function createResponseFromContent(ResponseCacheEntry $responseCacheEntry): ResponseInterface
     {
         $response = new Response();
-        $response->getBody()->write($contents);
+        $response->getBody()->write($responseCacheEntry->contents);
         if ($this->environment->context !== Context::Production) {
+            foreach ($responseCacheEntry->headers as $header => $value) {
+                $response = $response->withAddedHeader($header, $value);
+            }
             $response = $response->withAddedHeader('X-Bluesprints-Cache', 'Cached');
         }
         return $response;
@@ -151,13 +160,14 @@ class ActionCacheMiddleware implements MiddlewareInterface
         RouteEncapsulation $route,
         string $cacheKey,
     ): mixed {
+        $headers = $response->getHeaders();
         $body = $response->getBody();
         $body->rewind();
         $contents = $body->getContents();
 
         $ttl = $this->cachedActions[$route->controller][$route->action]['ttl'];
 
-        $this->cache->set($cacheKey, $contents, $ttl);
+        $this->cache->set($cacheKey, serialize(new ResponseCacheEntry($contents, $headers)), $ttl);
 
         return $ttl;
     }
