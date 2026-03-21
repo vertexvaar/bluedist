@@ -6,25 +6,22 @@ namespace VerteXVaaR\BlueAuth\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Twig\Environment as View;
+use Symfony\Contracts\Service\Attribute\Required;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
-use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
 use VerteXVaaR\BlueWeb\Enum\Severity;
-use VerteXVaaR\BlueWeb\FlashMessage\FlashMessageService;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function array_key_exists;
 
 class AuthenticationController extends AbstractController
 {
-    public function __construct(
-        Repository $repository,
-        View $view,
-        FlashMessageService $flashMessageService,
-        private readonly AuthenticationService $authenticationService,
-    ) {
-        parent::__construct($repository, $view, $flashMessageService);
+    private AuthenticationService $authenticationService;
+
+    #[Required]
+    public function injectAuthenticationService(AuthenticationService $authenticationService): void
+    {
+        $this->authenticationService = $authenticationService;
     }
 
     #[Route(path: '/login')]

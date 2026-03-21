@@ -37,11 +37,6 @@
         <pre><code class="language-php">
 class Caching extends AbstractController
 {
-    public function __construct(Repository $repository, View $view, private readonly CacheInterface $cache)
-    {
-        parent::__construct($repository, $view);
-    }
-
     #[Route(path: '/cache/index')]
     public function index(ServerRequestInterface $request): ResponseInterface
     {

@@ -19,8 +19,8 @@
   "require": {
     "php": "8.4.*",
     "composer-plugin-api": "^2.0",
+    "co-stack/dependency-injection-additions": "@dev",
     "psr/container": "^2.0",
-    "symfony/dependency-injection": "^v7.0",
     "symfony/config": "^v7.0",
     "symfony/yaml": "^v7.0",
     "co-stack/lib": "^v6.0",
@@ -28,7 +28,10 @@
     "symfony/console": "^v7.0"
   },
   "extra": {
-    "class": "\\VerteXVaaR\\BlueFoundation\\Composer\\Plugin"
+    "class": "\\VerteXVaaR\\BlueFoundation\\Composer\\Plugin",
+    "vertexvaar/bluesprints": {
+      "services": "svc"
+    }
   },
   "bin": [
     "bin/bluefoundation"

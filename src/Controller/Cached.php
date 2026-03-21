@@ -7,9 +7,6 @@ namespace VerteXVaaR\BlueDist\Controller;
 use DateTimeImmutable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\SimpleCache\CacheInterface;
-use Twig\Environment as View;
-use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 use VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
@@ -19,14 +16,6 @@ use function version_compare;
 
 class Cached extends AbstractController
 {
-    public function __construct(
-        Repository $repository,
-        View $view,
-        private readonly CacheInterface $cache,
-    ) {
-        parent::__construct($repository, $view);
-    }
-
     #[Route('/cached')]
     #[ActionCache(5)]
     public function index(): ResponseInterface

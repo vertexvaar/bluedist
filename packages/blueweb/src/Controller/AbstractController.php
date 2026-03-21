@@ -6,18 +6,25 @@ namespace VerteXVaaR\BlueWeb\Controller;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
+use Psr\SimpleCache\CacheInterface;
 use Twig\Environment as View;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 use VerteXVaaR\BlueWeb\FlashMessage\FlashMessageService;
 
 abstract class AbstractController implements Controller
 {
-    public function __construct(
+    /**
+     * @param Repository $repository
+     * @param View $view
+     * @param FlashMessageService $flashMessageService
+     * @param CacheInterface $cache
+     */
+    final public function __construct(
         protected readonly Repository $repository,
         protected readonly View $view,
         protected readonly FlashMessageService $flashMessageService,
-    ) {
-    }
+        protected readonly CacheInterface $cache,
+    ) {}
 
     protected function render(string $template, array $context = []): ResponseInterface
     {
