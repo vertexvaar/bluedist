@@ -29,9 +29,17 @@ class Welcome extends AbstractController implements LoggerAwareInterface
     }
 
     #[Route(path: '/listFruits')]
-    public function listFruits(): ResponseInterface
+    public function listFruits(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->render('fruits/list.html.twig', ['fruits' => $this->repository->findAll(Fruit::class)]);
+        $queryParams = $request->getQueryParams();
+        $page = isset($queryParams['page']) && is_numeric($queryParams['page']) && $queryParams['page'] > 0
+            ? (int)$queryParams['page']
+            : 1;
+        $pageSize = 10;
+        $paginatedResult = $this->repository->paginate(Fruit::class, $page, $pageSize);
+        return $this->render('fruits/list.html.twig', [
+            'pagination' => $paginatedResult,
+        ]);
     }
 
     #[Route(path: '/createDemoFruits', method: Route::POST)]

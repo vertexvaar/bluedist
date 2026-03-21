@@ -5,13 +5,16 @@
 
         <h1>Some Fruits freshly picked from persistence</h1>
 
-        {% if fruits %}
+        {# Pagination controls above #}
+        {% include 'fruits/_pagination.html.twig' with { pagination: pagination } %}
+
+        {% if pagination.results|length > 0 %}
             <p>
                 Hint: click on a fruit to edit it!
             </p>
 
             <ul>
-                {% for fruit in fruits %}
+                {% for fruit in pagination.results %}
                     <li>
                         <a href="/editFruit/{{ fruit.identifier }}">
                             I am a
@@ -25,6 +28,8 @@
                     </li>
                 {% endfor %}
             </ul>
+            {# Pagination controls below #}
+            {% include 'fruits/_pagination.html.twig' with { pagination: pagination } %}
             <form action="/deleteAllFruits" method="post">
                 <input type="submit" value="Delete all fruits">
             </form>

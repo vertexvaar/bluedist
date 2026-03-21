@@ -2,31 +2,25 @@
 
 namespace VerteXVaaR\BlueSprints\Mvcr\Repository;
 
-use JsonSerializable;
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
 /**
  * @template T of Entity
  */
-readonly class PaginatedResult implements JsonSerializable
+readonly class PaginatedResult
 {
     /**
      * @param array<T> $results
      */
     public function __construct(
-        private array $results,
-        private int $total,
-        private int $currentPage,
-        private int $perPage,
+        public array $results,
+        public int $total,
+        public int $currentPage,
+        public int $perPage,
     ) {}
 
-    public function jsonSerialize(): mixed
+    public function getTotalPages(): int
     {
-        return [
-            'results' => $this->results,
-            'total' => $this->total,
-            'currentPage' => $this->currentPage,
-            'perPage' => $this->perPage,
-        ];
+        return (int)ceil($this->total / $this->perPage);
     }
 }
