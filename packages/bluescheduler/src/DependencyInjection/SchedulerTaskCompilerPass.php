@@ -15,7 +15,7 @@ use function array_keys;
 
 readonly class SchedulerTaskCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $scheduledTasks = [];
 

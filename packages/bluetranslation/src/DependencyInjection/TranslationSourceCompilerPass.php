@@ -22,7 +22,7 @@ use function sprintf;
 
 class TranslationSourceCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         /** @var OutputInterface $output */
         $output = $container->get('_output');

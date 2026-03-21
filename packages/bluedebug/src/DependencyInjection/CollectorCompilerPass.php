@@ -18,7 +18,7 @@ readonly class CollectorCompilerPass implements CompilerPassInterface
     ) {
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $collectorCollection = $container->findDefinition(CollectorCollection::class);
         $collectors = $container->findTaggedServiceIds($this->tagName);
