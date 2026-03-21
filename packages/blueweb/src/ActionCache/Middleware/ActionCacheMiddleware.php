@@ -32,13 +32,12 @@ class ActionCacheMiddleware implements MiddlewareInterface
         private readonly array $cachedActions,
         private readonly CacheInterface $cache,
         private readonly Environment $environment,
-    ) {
-    }
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $routeEncapsulation = $request->getAttribute('route');
-        if (!isset($this->cachedActions[$routeEncapsulation->controller][$routeEncapsulation->action])) {
+        $route = $request->getAttribute('route');
+        if (!isset($this->cachedActions[$route->controller][$route->action])) {
             $response = $handler->handle($request);
             if ($this->environment->context !== Context::Production) {
                 $response = $response->withAddedHeader('X-Bluesprints-Cache', 'Uncached');
@@ -46,11 +45,11 @@ class ActionCacheMiddleware implements MiddlewareInterface
             return $response;
         }
 
-        $cacheHash = $this->getCacheHash($routeEncapsulation, $request);
+        $cacheHash = $this->getCacheHash($route, $request);
         $cacheKey = concat_paths(
             'actions',
-            str_replace('\\', '.', $routeEncapsulation->controller),
-            $routeEncapsulation->action,
+            str_replace('\\', '.', $route->controller),
+            $route->action,
             $cacheHash,
         );
 
@@ -64,7 +63,7 @@ class ActionCacheMiddleware implements MiddlewareInterface
             return $response->withAddedHeader('X-Bluesprints-Cache', 'Not cacheable');
         }
 
-        $ttl = $this->cacheResponseContents($response, $routeEncapsulation, $cacheKey);
+        $ttl = $this->cacheResponseContents($response, $route, $cacheKey);
 
         if ($this->environment->context !== Context::Production) {
             $headerLine = 'Set for ' . $ttl;
