@@ -6,7 +6,7 @@ services:
   VerteXVaaR\BlueDebug\:
     resource: '../src/*'
 
-  VerteXVaaR\BlueDebug\Service\Stopwatch:
+  VerteXVaaR\BlueDebug\Collector\Stopwatch:
     public: true
     shared: true
 
