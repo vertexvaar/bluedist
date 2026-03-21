@@ -217,7 +217,8 @@ class CompileCommand extends Command
     {
         $errorOutput = $output instanceof ConsoleOutput ? $output->getErrorOutput() : $output;
         $packageExtras = $container->get(PackageExtras::class);
-        foreach ($packageExtras->getPackageNames() as $packageName) {
+        $packageNames = $packageExtras->getPackageNames();
+        foreach ($packageNames as $packageName) {
             $servicesPath = $packageExtras->getPath($packageName, 'services');
 
             if (null === $servicesPath) {
@@ -225,7 +226,7 @@ class CompileCommand extends Command
                     sprintf('Package %s does not define extra.vertexvaar/bluesprints.services, skipping', $packageName),
                     OutputInterface::VERBOSITY_VERY_VERBOSE,
                 );
-                return;
+                continue;
             }
 
             if (!is_dir($servicesPath)) {
@@ -236,7 +237,7 @@ class CompileCommand extends Command
                         $servicesPath,
                     ),
                 );
-                return;
+                continue;
             }
 
             if (file_exists(concat_paths($servicesPath, 'services.yaml'))) {
