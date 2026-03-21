@@ -68,6 +68,11 @@ class CommandCollectorCompilerPass implements CompilerPassInterface
             $packageCommands = require $absoluteCommandsFile;
             foreach ($packageCommands as $index => $command) {
                 $commands[] = new Reference($command);
+
+                $output->writeln(
+                    sprintf('  - Added command %s from package %s', $command, $packageName),
+                    OutputInterface::VERBOSITY_DEBUG
+                );
             }
         }
 

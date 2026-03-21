@@ -10,7 +10,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueFoundation\PackageExtras;
 use VerteXVaaR\BlueFoundation\Service\DependencyOrderingService;
 use VerteXVaaR\BlueWeb\Middleware\MiddlewareChain;
-use VerteXVaaR\BlueWeb\Middleware\MiddlewareRegistry;
 
 use function CoStack\Lib\concat_paths;
 use function file_exists;
@@ -20,6 +19,11 @@ class MiddlewareCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
+        /** @var OutputInterface $output */
+        $output = $container->get('_output');
+
+        $output->writeln('Loading middlewares', OutputInterface::VERBOSITY_VERBOSE);
+
         $middlewares = $this->loadMiddlewares($container);
 
         $dependencyOrderingService = new DependencyOrderingService();
@@ -31,10 +35,16 @@ class MiddlewareCompilerPass implements CompilerPassInterface
             $definition = $container->findDefinition($service);
             $definition->setPublic(true);
             $middlewareServices[] = $service;
+            $output->writeln(
+                sprintf('  - Added middleware %s', $service),
+                OutputInterface::VERBOSITY_DEBUG
+            );
         }
 
         $middlewareChain = $container->findDefinition(MiddlewareChain::class);
         $middlewareChain->setArgument('$middlewares', $middlewareServices);
+
+        $output->writeln('Loaded middlewares', OutputInterface::VERBOSITY_VERBOSE);
     }
 
     private function loadMiddlewares(ContainerBuilder $container): array
