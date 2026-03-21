@@ -15,7 +15,7 @@ interface Store
     public function findByIdentifier(string $class, string $identifier): ?Entity;
 
     /** @param class-string<T> $class */
-    public function findAll(string $class, ?int $limit = null, ?int $offset = null): array;
+    public function findAll(string $class, ?int $limit = null, int $offset = 0): array;
 
     public function store(Entity $entity): void;
 

@@ -56,7 +56,7 @@ class FileStore implements Store, LoggerAwareInterface
         );
     }
 
-    public function findAll(string $class, ?int $limit = null, ?int $offset = null): array
+    public function findAll(string $class, ?int $limit = null, int $offset = 0): array
     {
         $databaseFolder = $this->getFolder($class);
 
@@ -64,21 +64,23 @@ class FileStore implements Store, LoggerAwareInterface
         /** @var SplFileInfo[] $fileSystemIterator */
         $fileSystemIterator = new FilesystemIterator($databaseFolder, FilesystemIterator::SKIP_DOTS);
 
-        $fetchLimit = $offset * -1 + $limit;
-
         foreach ($fileSystemIterator as $file) {
-            if ($fetchLimit < 0) {
-                ++$fetchLimit;
+            if ($offset > 0) {
+                --$offset;
                 continue;
             }
+
             $results[] = unserialize(
                 file_get_contents($file->getPathname()),
                 ['allowed_classes' => [$class, DateTime::class, DateTimeImmutable::class]],
             );
-            if ($offset >= $fetchLimit) {
-                break;
+
+            if (null !== $limit) {
+                --$limit;
+                if ($limit <= 0) {
+                    break;
+                }
             }
-            ++$fetchLimit;
         }
         return $results;
     }
