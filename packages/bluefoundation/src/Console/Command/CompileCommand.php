@@ -22,11 +22,16 @@ use VerteXVaaR\BlueFoundation\PackageExtras;
 use function array_key_last;
 use function CoStack\Lib\concat_paths;
 use function CoStack\Lib\mkdir_deep;
+use function count;
+use function explode;
 use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
 use function getcwd;
+use function implode;
+use function is_array;
 use function is_dir;
+use function is_string;
 use function json_decode;
 use function sprintf;
 use function str_starts_with;
@@ -85,11 +90,7 @@ class CompileCommand extends Command
                 continue;
             }
             foreach ($packageComposer['extra']['vertexvaar/bluesprints'] as $name => $path) {
-                $fullPath = concat_paths($installPath, $path);
-                if (str_starts_with($fullPath, $rootPath)) {
-                    $fullPath = substr($fullPath, $rootPathLength);
-                }
-                $packageBlueSprintsExtras[$name] = $fullPath;
+                $packageBlueSprintsExtras[$name] = $this->recursivelyExpandPaths($rootPath, $installPath, $path, $packages);
             }
             $packagePaths[$packageName] = $packageBlueSprintsExtras;
         }
@@ -99,6 +100,45 @@ class CompileCommand extends Command
         $packageExtrasFilePath = concat_paths($bootstrapPath, 'PackageExtras.php');
         file_put_contents($packageExtrasFilePath, $code);
         require $packageExtrasFilePath;
+    }
+
+    private function recursivelyExpandPaths(
+        string $rootPath,
+        string $installPath,
+        string|array $paths,
+        array $packages,
+    ): string|array {
+        if (is_string($paths)) {
+            return $this->resolvePackagePath($paths, $installPath, $rootPath, $packages);
+        }
+        if (is_array($paths)) {
+            foreach ($paths as $index => $path) {
+                $paths[$index] = $this->recursivelyExpandPaths($rootPath, $installPath, $path, $packages);
+            }
+        }
+        return $paths;
+    }
+
+    private function resolvePackagePath(string $path, string $installPath, string $rootPath, array $packages): string
+    {
+        if (!str_starts_with($path, '@')) {
+            $fullPath = concat_paths($installPath, $path);
+            if (str_starts_with($fullPath, $rootPath)) {
+                return substr($fullPath, strlen($rootPath));
+            }
+            return $fullPath;
+        }
+        $path = substr($path, 1);
+        $parts = explode('/', $path, 3);
+        if (count($parts) !== 3) {
+            return implode('/', $path);
+        }
+        $packageName = implode('/', [$parts[0], $parts[1]]);
+        $referredPackage = $packages[$packageName] ?? [];
+        if (!isset($referredPackage['install_path'])) {
+            return implode('/', $path);
+        }
+        return $this->resolvePackagePath($parts[2], $referredPackage['install_path'], $rootPath, $packages);
     }
 
     private function renderPackageExtras(string $rootPackageName, string $pathsCode): string
@@ -122,12 +162,25 @@ class CompileCommand extends Command
                     \$this->rootPath = realpath(__DIR__ . '/../');
                 }
             
-                public function getPath(string \$package, string \$type): ?string
+                public function getPath(string \$package, string \$type): null|string|array
                 {
                     if (!isset(\$this->paths[\$package][\$type])) {
                         return null;
                     }
-                    return concat_paths(\$this->rootPath, \$this->paths[\$package][\$type]);
+                    return \$this->prefixPaths(\$this->paths[\$package][\$type]);
+                }
+            
+                public function prefixPaths(string|array \$paths): string|array
+                {
+                    if (is_string(\$paths)) {
+                        return concat_paths(\$this->rootPath, \$paths);
+                    }
+                    if (is_array(\$paths)) {
+                        foreach (\$paths as \$index => \$path) {
+                            \$paths[\$index] = \$this->prefixPaths(\$path);
+                        }
+                    }
+                    return \$paths;
                 }
             
                 public function getPackageNames(): array
@@ -135,7 +188,6 @@ class CompileCommand extends Command
                     return array_keys(\$this->paths);
                 }
             }
-
             PHP;
     }
 
@@ -217,21 +269,21 @@ class CompileCommand extends Command
                 
                 use Symfony\Component\Dotenv\Dotenv;
                 use VerteXVaaR\BlueWeb\ErrorHandler\ErrorHandler;
-
+                
                 \$rootDir = dirname(__DIR__) . DIRECTORY_SEPARATOR;
                 putenv('VXVR_BS_ROOT=' . \$rootDir);
                 
                 require(__DIR__ . '/../vendor/autoload.php');
                 require(__DIR__ . '/DI.php');
                 require(__DIR__ . '/PackageExtras.php');
-
+                
                 \$dotenvFile = \$rootDir . '.env';
                 if (file_exists(\$dotenvFile)) {
                     \$dotenv = new Dotenv();
                     \$dotenv->usePutenv();
                     \$dotenv->loadEnv(\$dotenvFile, null, 'dev', [], true);
                 }
-
+                
                 \$localDotenvFile = \$rootDir . '.local.env';
                 if (file_exists(\$localDotenvFile)) {
                     \$dotenv = new Dotenv();
@@ -242,11 +294,10 @@ class CompileCommand extends Command
                 if (empty(ini_get('date.timezone'))) {
                     date_default_timezone_set('UTC');
                 }
-
+                
                 \$errorHandler = new ErrorHandler();
                 \$errorHandler->register();
                 PHP,
         );
     }
-
 }

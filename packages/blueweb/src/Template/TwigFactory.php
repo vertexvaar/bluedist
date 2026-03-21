@@ -28,8 +28,10 @@ readonly class TwigFactory
     public function create(): View
     {
         $loader = new FilesystemLoader();
-        foreach ($this->templatePaths as $namespace => $path) {
-            $loader->addPath($path, $namespace);
+        foreach ($this->templatePaths as $namespace => $paths) {
+            foreach ($paths as $path) {
+                $loader->addPath($path, $namespace);
+            }
         }
         $cachePath = $this->packageExtras->getPath($this->packageExtras->rootPackageName, 'var/cache')
             ?? concat_paths(getenv('VXVR_BS_ROOT'), 'var/cache');

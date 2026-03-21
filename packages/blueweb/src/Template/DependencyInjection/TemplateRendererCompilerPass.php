@@ -11,6 +11,8 @@ use Twig\Loader\FilesystemLoader;
 use VerteXVaaR\BlueFoundation\PackageExtras;
 use VerteXVaaR\BlueWeb\Template\TwigFactory;
 
+use function array_merge;
+use function is_string;
 use function sprintf;
 use function strtr;
 
@@ -27,24 +29,72 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
 
         $templatePaths = [];
         foreach ($packageExtras->getPackageNames() as $packageName) {
-            $absoluteViewPath = $packageExtras->getPath($packageName, 'view');
+            $viewConfiguration = $packageExtras->getPath($packageName, 'view');
 
-            if (null !== $absoluteViewPath) {
+            if (null === $viewConfiguration) {
+                $output->writeln(
+                    sprintf(
+                        'No view configuration in package "%s"',
+                        $packageName,
+                    ),
+                    OutputInterface::VERBOSITY_VERY_VERBOSE,
+                );
+                continue;
+            }
+
+            if (is_string($viewConfiguration)) {
                 if ($packageExtras->rootPackageName === $packageName) {
                     $namespace = FilesystemLoader::MAIN_NAMESPACE;
                 } else {
                     $namespace = strtr($packageName, '/', '_');
                 }
+                $viewConfiguration = [
+                    $namespace => $viewConfiguration,
+                ];
+            }
+
+            if (!is_array($viewConfiguration)) {
                 $output->writeln(
                     sprintf(
-                        'Identified templates root %s for namespace %s',
-                        $absoluteViewPath,
-                        $namespace,
+                        'Invalid view configuration in package "%s"',
+                        $packageName,
                     ),
-                    OutputInterface::VERBOSITY_VERBOSE,
                 );
-                $templatePaths[$namespace] = $absoluteViewPath;
+                continue;
             }
+
+            $found = 0;
+
+            foreach ($viewConfiguration as $namespace => $namespacePaths) {
+                foreach ((array)$namespacePaths as $index => $namespacePath) {
+                    $templatePaths[$namespace][$index][] = $namespacePath;
+                    ++$found;
+
+                    $output->writeln(
+                        sprintf(
+                            '  - Adding view namespace "%s" path "%s" from package "%s"',
+                            $namespace,
+                            $namespacePath,
+                            $packageName,
+                        ),
+                        OutputInterface::VERBOSITY_DEBUG,
+                    );
+                }
+            }
+
+            $output->writeln(
+                sprintf(
+                    'Found %d view paths in package "%s"',
+                    $found,
+                    $packageName,
+                ),
+                OutputInterface::VERBOSITY_VERBOSE,
+            );
+        }
+
+        foreach ($templatePaths as $namespace => $indexedPaths) {
+            krsort($indexedPaths);
+            $templatePaths[$namespace] = array_merge([], ...array_values($indexedPaths));
         }
 
         $definition = $container->getDefinition(TwigFactory::class);
