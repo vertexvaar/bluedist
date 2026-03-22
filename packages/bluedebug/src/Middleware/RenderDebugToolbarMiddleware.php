@@ -14,6 +14,7 @@ use VerteXVaaR\BlueDebug\Collector\CollectorCollection;
 use VerteXVaaR\BlueDebug\Rendering\CollectorRendering;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
+use VerteXVaaR\BlueWeb\Middleware\Attribute\AsMiddleware;
 
 use function array_unshift;
 use function is_string;
@@ -22,6 +23,7 @@ use function serialize;
 use function strlen;
 use function unserialize;
 
+#[AsMiddleware('vertexvaar/bluedebug/debugger', ['vertexvaar/bluedebug/collect-request-duration'])]
 readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
 {
     public function __construct(
@@ -29,8 +31,7 @@ readonly class RenderDebugToolbarMiddleware implements MiddlewareInterface
         private Environment $environment,
         private CacheInterface $cache,
         private CollectorCollection $collectorCollection,
-    ) {
-    }
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

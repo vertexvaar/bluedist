@@ -9,7 +9,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use VerteXVaaR\BlueDebug\Collector\Stopwatch;
+use VerteXVaaR\BlueWeb\Middleware\Attribute\AsMiddleware;
 
+#[AsMiddleware('vertexvaar/bluedebug/collect-request-duration', ['*'])]
 readonly class CollectRequestDurationMiddleware implements MiddlewareInterface
 {
     public function __construct(

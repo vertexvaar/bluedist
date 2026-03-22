@@ -13,14 +13,18 @@ use VerteXVaaR\BlueAuth\Mvcr\Model\User;
 use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
+use VerteXVaaR\BlueWeb\Middleware\Attribute\AsMiddleware;
 
+#[AsMiddleware(
+    'vertexvaar/blueauth/authorization',
+    after: ['vertexvaar/bluesprints/routing', 'vertexvaar/blueauth/loginredirect']
+)]
 readonly class AuthorizationMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private Repository $repository,
         private AuthenticationService $authenticationService,
-    ) {
-    }
+    ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

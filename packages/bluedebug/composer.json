@@ -23,8 +23,7 @@
   "extra": {
     "vertexvaar/bluesprints": {
       "services": "svc",
-      "view": "view",
-      "middlewares": "config"
+      "view": "view"
     }
   }
 }

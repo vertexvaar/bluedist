@@ -34,7 +34,6 @@
     "vertexvaar/bluesprints": {
       "services": "svc",
       "view": "view",
-      "middlewares": "config",
       "translations": "translations",
       "resources": "res"
     }

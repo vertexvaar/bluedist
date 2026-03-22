@@ -14,9 +14,15 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\SimpleCache\CacheInterface;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
 use VerteXVaaR\BlueConfig\Config;
+use VerteXVaaR\BlueWeb\Middleware\Attribute\AsMiddleware;
 
 use function CoStack\Lib\inet_match_range;
 
+#[AsMiddleware(
+    'vertexvaar/blueauth/loginredirect',
+    ['vertexvaar/blueauth/authorization'],
+    ['vertexvaar/blueauth/authentication', 'vertexvaar/bluesprints/routing']
+)]
 readonly class LoginRedirectionMiddleware implements MiddlewareInterface
 {
     public function __construct(

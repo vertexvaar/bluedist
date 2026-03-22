@@ -9,7 +9,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use VerteXVaaR\BlueDebug\Collector\SessionCollector;
+use VerteXVaaR\BlueWeb\Middleware\Attribute\AsMiddleware;
 
+#[AsMiddleware(
+    'vertexvaar/bluedebug/collect-session',
+    ['vertexvaar/bluesprints/routing'],
+    ['vertexvaar/blueauth/authentication']
+)]
 class CollectSessionMiddleware implements MiddlewareInterface
 {
     public function __construct(

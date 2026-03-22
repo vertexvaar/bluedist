@@ -13,6 +13,7 @@ use Psr\SimpleCache\CacheInterface;
 use VerteXVaaR\BlueSprints\Environment\Context;
 use VerteXVaaR\BlueSprints\Environment\Environment;
 use VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache;
+use VerteXVaaR\BlueWeb\Middleware\Attribute\AsMiddleware;
 use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
 use function array_merge;
@@ -28,6 +29,7 @@ use function version_compare;
 
 use const JSON_THROW_ON_ERROR;
 
+#[AsMiddleware('vertexvaar/bluesprints/actioncache', after: ['vertexvaar/bluesprints/routing'])]
 class ActionCacheMiddleware implements MiddlewareInterface
 {
     public function __construct(
@@ -59,7 +61,7 @@ class ActionCacheMiddleware implements MiddlewareInterface
         if (!$forceCacheEvasion && $this->cache->has($cacheKey)) {
             $responseCacheEntry = unserialize(
                 $this->cache->get($cacheKey),
-                ['allowed_classes' => [ResponseCacheEntry::class]]
+                ['allowed_classes' => [ResponseCacheEntry::class]],
             );
             return $this->createResponseFromContent($responseCacheEntry);
         }

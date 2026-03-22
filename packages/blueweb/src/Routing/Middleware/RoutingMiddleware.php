@@ -13,8 +13,10 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TypeError;
 use VerteXVaaR\BlueWeb\Exception\RouteAttributeConstructionException;
+use VerteXVaaR\BlueWeb\Middleware\Attribute\AsMiddleware;
 use VerteXVaaR\BlueWeb\Routing\RouteEncapsulation;
 
+#[AsMiddleware('vertexvaar/bluesprints/routing')]
 readonly class RoutingMiddleware implements MiddlewareInterface
 {
     public function __construct(
