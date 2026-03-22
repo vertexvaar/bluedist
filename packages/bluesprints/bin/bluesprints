@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Symfony\Component\Console\Application;
+use VerteXVaaR\BlueFoundation\DI;
+
+$bootstrapFile = getcwd() . '/bootstrap/bootstrap.php';
+require($bootstrapFile);
+
+$di = new DI();
+$application = new Application('BlueApplication', '1.0.0');
+$commandLoader = $di->get('console.command_loader');
+$application->setCommandLoader($commandLoader);
+$application->run();

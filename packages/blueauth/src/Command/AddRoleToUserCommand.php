@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueAuth\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,6 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use VerteXVaaR\BlueAuth\Mvcr\Model\User;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
+#[AsCommand('app:user:addrole')]
 class AddRoleToUserCommand extends Command
 {
     public function __construct(

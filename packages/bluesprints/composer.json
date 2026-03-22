@@ -1,8 +1,8 @@
 {
   "name": "vertexvaar/bluesprints",
   "description": "BlueSprints is a small experimental PHP Project which evolved to a framework",
-  "type": "project",
   "license": "GPL-3.0+",
+  "type": "project",
   "authors": [
     {
       "name": "Oliver Eglseder",
@@ -11,18 +11,13 @@
       "role": "Developer"
     }
   ],
-  "autoload": {
-    "psr-4": {
-      "VerteXVaaR\\BlueSprints\\": "src/"
-    }
-  },
   "require": {
-    "php": "8.4.*",
-    "co-stack/lib": "^v6.0.0",
+    "php": "~8.4.0",
+    "co-stack/lib": "^6.0.0",
+    "psr/log": "^3.0",
     "psr/simple-cache": "^3.0.0",
-    "vertexvaar/bluefoundation": "*",
     "vertexvaar/blueconfig": "*",
-    "psr/log": "^3.0"
+    "vertexvaar/bluefoundation": "*"
   },
   "replace": {
     "symfony/polyfill-php54": "*",
@@ -39,6 +34,14 @@
     "symfony/polyfill-php83": "*",
     "symfony/polyfill-php84": "*"
   },
+  "autoload": {
+    "psr-4": {
+      "VerteXVaaR\\BlueSprints\\": "src/"
+    }
+  },
+  "bin": [
+    "bin/bluesprints"
+  ],
   "extra": {
     "vertexvaar/bluesprints": {
       "services": "svc"

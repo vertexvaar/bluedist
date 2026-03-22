@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueAuth\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,12 +16,13 @@ use function password_hash;
 
 use const PASSWORD_ARGON2ID;
 
+#[AsCommand('app:user:create')]
 class CreateUserCommand extends Command
 {
     public function __construct(
         private readonly Repository $repository,
     ) {
-        parent::__construct('app:user:create');
+        parent::__construct();
     }
 
     protected function configure(): void

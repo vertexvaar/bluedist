@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueConfig\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,13 +15,14 @@ use function CoStack\Lib\concat_paths;
 use function file_put_contents;
 use function json_encode;
 
+#[AsCommand('app:config:generate-json-schema')]
 class GenerateJsonSchemaCommand extends Command
 {
     public function __construct(
         private readonly DefinitionService $definitionService,
         private readonly PackageExtras $packageExtras,
     ) {
-        parent::__construct('app:config:generate-json-schema');
+        parent::__construct();
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
