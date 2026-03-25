@@ -21,109 +21,60 @@ help:
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
+## Initialize and start the project, then install dependencies
+install-project: start composer-install status
+
+## Start DDEV
+start:
+	echo "$(EMOJI_up) Starting the project"
+	ddev start
+	make urls
+
 ## Stop all containers
 stop:
 	echo "$(EMOJI_stop) Shutting down"
-	docker compose stop
-	sleep 0.4
-	docker compose down --remove-orphans
+	ddev stop
 
 ## Removes all containers and volumes
-destroy: stop
+destroy:
 	echo "$(EMOJI_litter) Removing the project"
-	docker compose down -v --remove-orphans
+	ddev delete --omit-snapshot
 
-## Starts docker compose up -d
-start:
-	echo "$(EMOJI_up) Starting the docker project"
-	docker compose up -d --build
-	make urls
-
-## Starts composer-install
-composer:
-	echo "$(EMOJI_package) Installing composer dependencies"
-	docker compose exec php composer $(ARGS)
-
-## Starts composer-install
+## Run composer install
 composer-install:
 	echo "$(EMOJI_package) Installing composer dependencies"
-	docker compose exec php composer install
+	ddev composer install
 
-## Create necessary directories
-create-dirs:
-	echo "$(EMOJI_dividers) Creating required directories"
-
-## Starts composer-install
+## Run composer install without dev dependencies
 composer-install-production:
 	echo "$(EMOJI_package) Installing composer dependencies (without dev)"
-	docker compose exec php composer install --no-dev -ao
-
-install-mkcert:
-	if [[ "$$OSTYPE" == "linux-gnu" ]]; then \
-		if [[ "$$(command -v certutil > /dev/null; echo $$?)" -ne 0 ]]; then sudo apt install libnss3-tools; fi; \
-		if [[ "$$(command -v mkcert > /dev/null; echo $$?)" -ne 0 ]]; then sudo curl -L https://github.com/FiloSottile/mkcert/releases/download/v1.4.1/mkcert-v1.4.1-linux-amd64 -o /usr/local/bin/mkcert; sudo chmod +x /usr/local/bin/mkcert; fi; \
-	elif [[ "$$OSTYPE" == "darwin"* ]]; then \
-	    BREW_LIST=$$(brew ls); \
-		if [[ ! $$BREW_LIST == *"mkcert"* ]]; then brew install mkcert; fi; \
-		if [[ ! $$BREW_LIST == *"nss"* ]]; then brew install nss; fi; \
-	fi;
-	mkcert -install > /dev/null
-
-## Create SSL certificates for dinghy and starting project
-create-certificate: install-mkcert
-	echo "$(EMOJI_secure) Creating SSL certificates for dinghy http proxy"
-	mkdir -p $(HOME)/.dinghy/certs/
-	PROJECT=$$(echo "$${PWD##*/}" | tr -d '.'); \
-	if [[ ! -f $(HOME)/.dinghy/certs/$$PROJECT.docker.key ]]; then mkcert -cert-file $(HOME)/.dinghy/certs/$$PROJECT.docker.crt -key-file $(HOME)/.dinghy/certs/$$PROJECT.docker.key "*.$$PROJECT.docker"; fi;
-	if [[ ! -f $(HOME)/.dinghy/certs/local.bluedist.com.key ]]; then mkcert -cert-file $(HOME)/.dinghy/certs/local.bluedist.com.crt -key-file $(HOME)/.dinghy/certs/local.bluedist.com.key local.bluedist.com; fi;
-	if [[ ! -f $(HOME)/.dinghy/certs/mail.local.bluedist.com.key ]]; then mkcert -cert-file $(HOME)/.dinghy/certs/mail.local.bluedist.com.crt -key-file $(HOME)/.dinghy/certs/mail.local.bluedist.com.key mail.local.bluedist.com; fi;
-
-## Initialize the docker setup
-init-docker: create-dirs create-certificate
-	echo "$(EMOJI_rocket) Initializing docker environment"
-	docker compose pull
-	docker compose up -d --build
-
-## To start an existing project
-install-project: stop add-hosts-entry init-docker composer-install
-	echo "---------------------"
-	echo ""
-	echo "The project is online $(EMOJI_thumbsup)"
-	echo ""
-	echo 'Stop the project with "make stop"'
-	echo ""
-	echo "---------------------"
-	make urls
+	ddev composer install --no-dev -ao
 
 ## Print Project URIs
-urls:
-	PROJECT=$$(echo "$${PWD##*/}" | tr -d '.'); \
-	SERVICES=$$(docker compose ps --services | grep '$(SERVICELIST)'); \
-	LONGEST=$$(($$(echo -e "$$SERVICES\nFrontend:" | wc -L 2> /dev/null || echo 15)+2)); \
-	echo "$(EMOJI_telescope) Project URLs:"; \
-	echo ''; \
-	printf "  %-$${LONGEST}s %s\n" "Frontend:" "https://local.bluedist.com/"; \
-	printf "  %-$${LONGEST}s %s\n" "Mailpit:" "https://mail.local.bluedist.com/"; \
-	for service in $$SERVICES; do \
-		printf "  %-$${LONGEST}s %s\n" "$$service:" "https://$$service.$$PROJECT.docker/"; \
-	done;
+status:
+	ddev status
 
-## Create the hosts entry for the custom project URL (non-dinghy convention)
-add-hosts-entry:
-	echo "$(EMOJI_monkey) Creating Hosts Entry (if not set yet)"
-	SERVICES=$$(command -v getent > /dev/null && echo "getent ahostsv4" || echo "dscacheutil -q host -a name"); \
-	if [ ! "$$($$SERVICES local.bluedist.com | grep 127.0.0.1 > /dev/null; echo $$?)" -eq 0 ]; then sudo bash -c 'echo "127.0.0.1 local.bluedist.com" >> /etc/hosts; echo "Entry was added"'; else echo 'Entry already exists'; fi; \
-	if [ ! "$$($$SERVICES mail.local.bluedist.com | grep 127.0.0.1 > /dev/null; echo $$?)" -eq 0 ]; then sudo bash -c 'echo "127.0.0.1 mail.local.bluedist.com" >> /etc/hosts; echo "Entry was added"'; else echo 'Entry already exists'; fi;
+## Log into the web container
+bash:
+	echo "$(EMOJI_elephant) Logging into the web container"
+	ddev exec bash
 
-## Log into the PHP container
-login-php:
-	echo "$(EMOJI_elephant) Logging into the PHP container"
-	docker compose exec php bash
+## Install Playwright and browsers
+playwright-install:
+	npm install
+	npx playwright install chromium
 
-## Log into the httpd container
-login-httpd:
-	echo "$(EMOJI_helicopter) Logging into HTTPD Container"
-	docker compose exec httpd bash
+## Run all Playwright tests
+playwright-run:
+	npx playwright test
+
+## Run Playwright tests with interactive UI
+playwright-run-ui:
+	npx playwright test --ui
+
+## Open the last Playwright HTML report
+playwright-report:
+	npx playwright show-report
 
 # SETTINGS
 TARGET_MAX_CHAR_NUM := 25
@@ -132,12 +83,16 @@ SHELL := /bin/bash
 VERSION := 1.0.0
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
 
-# COLORS
-GREEN  := $(shell tput -Txterm setaf 2)
-YELLOW := $(shell tput -Txterm setaf 3)
-BLUE   := $(shell tput -Txterm setaf 4)
-WHITE  := $(shell tput -Txterm setaf 7)
-RESET  := $(shell tput -Txterm sgr0)
+# TEXT COLORS
+BLACK   := $(shell tput -Txterm setaf 0)
+RED     := $(shell tput -Txterm setaf 1)
+GREEN   := $(shell tput -Txterm setaf 2)
+YELLOW  := $(shell tput -Txterm setaf 3)
+BLUE    := $(shell tput -Txterm setaf 4)
+MAGENTA := $(shell tput -Txterm setaf 5)
+CYAN    := $(shell tput -Txterm setaf 6)
+WHITE   := $(shell tput -Txterm setaf 7)
+RESET   := $(shell tput -Txterm sgr0)
 
 # EMOJIS (some are padded right with whitespace for text alignment)
 EMOJI_litter := "🚮️"
@@ -164,24 +119,29 @@ EMOJI_helicopter := "🚁️"
 EMOJI_broom := "🧹"
 EMOJI_nutandbolt := "🔩"
 EMOJI_controlknobs := "🎛️"
-
-%:
-	@:
-
-cept-debug:
-	docker compose exec -e PHP_IDE_CONFIG="serverName=local.bluedist.com" php php -dxdebug.mode=debug -dxdebug.remote_autostart=1 -dxdebug.start_with_request=yes -dxdebug.remote_host=host.docker.internal ./vendor/bin/codecept run
-
-cept-run:
-	docker compose exec php ./vendor/bin/codecept run
-
-cept-run-unit:
-	docker compose exec php ./vendor/bin/codecept run unit --recurse-includes
-
-cept-run-functional:
-	docker compose exec php ./vendor/bin/codecept run functional
-
-cept-run-acceptance:
-	docker compose exec php ./vendor/bin/codecept run acceptance
-
-cept-build:
-	docker compose exec php ./vendor/bin/codecept build
+EMOJI_crystal_ball := "🔮"
+EMOJI_triangular_ruler := "📐"
+EMOJI_ping_pong := "🏓"
+EMOJI_face_with_rolling_eyes := "🙄"
+EMOJI_eyes := "👀"
+EMOJI_fire := "🔥"
+EMOJI_runningshirt := "🎽"
+EMOJI_evergreen_tree := "🌲"
+EMOJI_luggage := "🧳"
+EMOJI_fishing_pole := "🎣"
+EMOJI_musical_score := "🎼"
+EMOJI_nerd_face := "🤓"
+EMOJI_digit_zero := "0️"
+EMOJI_digit_one := "1️"
+EMOJI_digit_two := "2️"
+EMOJI_digit_three := "3️"
+EMOJI_digit_four := "4️"
+EMOJI_digit_seven := "7️"
+EMOJI_pig_nose := "🐽"
+EMOJI_customs := "🛃"
+EMOJI_hot_face := "🥵"
+EMOJI_cold_face := "🥶"
+EMOJI_hourglass_not_done := "⏳"
+EMOJI_bullseye := "🎯"
+EMOJI_trumpet := "🎺"
+EMOJI_video_camera := "📹"

@@ -7,4 +7,7 @@
 /var
 /.env.local
 /composer.lock
-/dotenv.php
+/node_modules
+/package-lock.json
+/playwright-report
+/test-results
