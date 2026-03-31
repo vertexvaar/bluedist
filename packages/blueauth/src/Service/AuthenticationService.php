@@ -32,6 +32,9 @@ readonly class AuthenticationService
         string $username,
         #[SensitiveParameter] string $password,
     ): void {
+        if (empty($username) || empty($password)) {
+            return;
+        }
         // If there is a session for another user, delete the session first.
         if (!in_array($session->getUsername(), [null, $username], true)) {
             $this->logout($session);
