@@ -11,7 +11,7 @@ use Twig\Environment as View;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 use VerteXVaaR\BlueWeb\FlashMessage\FlashMessageService;
 
-abstract class AbstractController implements Controller
+abstract class AbstractController
 {
     /**
      * @param Repository $repository

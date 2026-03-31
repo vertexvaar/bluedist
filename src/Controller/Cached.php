@@ -9,11 +9,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
+use VerteXVaaR\BlueWeb\Controller\Attribute\AsController;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function sleep;
 use function version_compare;
 
+#[AsController]
 class Cached extends AbstractController
 {
     #[Route('/cached')]

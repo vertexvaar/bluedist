@@ -9,11 +9,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
+use VerteXVaaR\BlueWeb\Controller\Attribute\AsController;
 use VerteXVaaR\BlueWeb\Enum\Severity;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function array_key_exists;
 
+#[AsController]
 class AuthenticationController extends AbstractController
 {
     private AuthenticationService $authenticationService;

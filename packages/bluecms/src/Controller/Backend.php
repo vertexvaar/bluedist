@@ -9,10 +9,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueCms\Entity\Page;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
+use VerteXVaaR\BlueWeb\Controller\Attribute\AsController;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function base64_encode;
 
+#[AsController]
 class Backend extends AbstractController
 {
     #[AuthorizedRoute(path: '/backend', requiredRoles: ['editor'])]

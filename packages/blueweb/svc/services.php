@@ -4,7 +4,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Twig\Extension\AbstractExtension;
 use VerteXVaaR\BlueWeb\ActionCache\DependencyInjection\ActionCacheCompilerPass;
-use VerteXVaaR\BlueWeb\Controller\Controller;
+use VerteXVaaR\BlueWeb\Controller\Attribute\AsController;
 use VerteXVaaR\BlueWeb\Middleware\Attribute\AsMiddleware;
 use VerteXVaaR\BlueWeb\Middleware\DependencyInjection\MiddlewareCompilerPass;
 use VerteXVaaR\BlueWeb\Routing\DependencyInjection\RouteCollectorCompilerPass;
@@ -21,12 +21,17 @@ return static function (ContainerBuilder $container): void {
             ]);
         },
     );
+    $container->registerAttributeForAutoconfiguration(
+        AsController::class,
+        static function (ChildDefinition $definition, AsController $attribute): void {
+            $definition->addTag('blueweb.controller');
+        },
+    );
 
     $container->addCompilerPass(new MiddlewareCompilerPass());
-    $container->addCompilerPass(new RouteCollectorCompilerPass('vertexvaar.bluesprints.controller'));
+    $container->addCompilerPass(new RouteCollectorCompilerPass('blueweb.controller'));
     $container->addCompilerPass(new TemplateRendererCompilerPass());
-    $container->addCompilerPass(new ActionCacheCompilerPass('vertexvaar.bluesprints.controller'));
+    $container->addCompilerPass(new ActionCacheCompilerPass('blueweb.controller'));
 
-    $container->registerForAutoconfiguration(Controller::class)->addTag('vertexvaar.bluesprints.controller');
     $container->registerForAutoconfiguration(AbstractExtension::class)->addTag('twig.extension');
 };

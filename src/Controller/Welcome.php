@@ -12,8 +12,10 @@ use Ramsey\Uuid\Uuid;
 use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueDist\Model\Fruit;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
+use VerteXVaaR\BlueWeb\Controller\Attribute\AsController;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
+#[AsController]
 class Welcome extends AbstractController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;

@@ -7,8 +7,10 @@ namespace VerteXVaaR\BlueDist\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
+use VerteXVaaR\BlueWeb\Controller\Attribute\AsController;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
+#[AsController]
 class Caching extends AbstractController
 {
     #[Route(path: '/cache/index')]

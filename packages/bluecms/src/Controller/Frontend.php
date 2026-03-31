@@ -8,10 +8,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueCms\Entity\Page;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
+use VerteXVaaR\BlueWeb\Controller\Attribute\AsController;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function base64_encode;
 
+#[AsController]
 class Frontend extends AbstractController
 {
     #[Route(path: '/cms{page:/.*?}', priority: -50)]
