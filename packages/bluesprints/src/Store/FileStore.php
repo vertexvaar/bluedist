@@ -39,11 +39,13 @@ class FileStore implements Store, LoggerAwareInterface
     public function __construct(
         private Config $config,
         private PackageExtras $packageExtras,
-    ) {
-    }
+    ) {}
 
     public function findByIdentifier(string $class, string $identifier): ?Entity
     {
+        if ('' === $identifier) {
+            return null;
+        }
         $databaseFolder = $this->getFolder($class);
         $databaseFile = concat_paths($databaseFolder, $identifier);
         if (!file_exists($databaseFile)) {
@@ -105,7 +107,7 @@ class FileStore implements Store, LoggerAwareInterface
     {
         $databasePath = $this->packageExtras->getPath($this->packageExtras->rootPackageName, 'database')
             ?? concat_paths(getenv('VXVR_BS_ROOT'), 'var/database');
-        $classFolder = concat_paths($databasePath, str_replace('\\', DS, $class),);
+        $classFolder = concat_paths($databasePath, str_replace('\\', DS, $class));
 
         if (
             !is_dir($classFolder)
