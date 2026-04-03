@@ -12,9 +12,12 @@ use VerteXVaaR\BlueFoundation\PackageExtras;
 use VerteXVaaR\BlueWeb\Template\TwigFactory;
 
 use function array_merge;
+use function array_values;
+use function is_array;
 use function is_string;
+use function krsort;
 use function sprintf;
-use function strtr;
+use function str_replace;
 
 class TemplateRendererCompilerPass implements CompilerPassInterface
 {
@@ -46,7 +49,7 @@ class TemplateRendererCompilerPass implements CompilerPassInterface
                 if ($packageExtras->rootPackageName === $packageName) {
                     $namespace = FilesystemLoader::MAIN_NAMESPACE;
                 } else {
-                    $namespace = strtr($packageName, '/', '_');
+                    $namespace = str_replace('/', '_', $packageName);
                 }
                 $viewConfiguration = [
                     $namespace => $viewConfiguration,
