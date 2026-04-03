@@ -75,6 +75,9 @@ class ActionCacheMiddleware implements MiddlewareInterface
 
         if ($this->environment->context !== Context::Production) {
             $headerLine = 'Set for ' . $ttl;
+            if ($this->cachedActions[$route->controller][$route->action]['sessionSpecific']) {
+                $headerLine .= ' for user ' . $request->getAttribute('session')->getUsername();
+            }
             if ($forceCacheEvasion) {
                 $headerLine .= ' (forced)';
             }
@@ -108,14 +111,20 @@ class ActionCacheMiddleware implements MiddlewareInterface
     protected function getCacheHash(RouteEncapsulation $route, ServerRequestInterface $request): string
     {
         $actionCache = new ActionCache(...$this->cachedActions[$route->controller][$route->action]);
+
+        $cacheKeyValues = [];
+        if ($actionCache->sessionSpecific) {
+            $cacheKeyValues['_user'] = $request->getAttribute('session')?->getUsername();
+        }
+
         if (empty($actionCache->params) && empty($actionCache->matches)) {
-            return 'none';
+            return hash('sha1', json_encode($cacheKeyValues, JSON_THROW_ON_ERROR));
         }
 
         if ($actionCache->interchangeableParams) {
-            $cacheKeyValues = $this->getInterchangeableCacheKeyValues($request, $actionCache);
+            $cacheKeyValues['_params'] = $this->getInterchangeableCacheKeyValues($request, $actionCache);
         } else {
-            $cacheKeyValues = $this->getDistinctCacheKeyValues($request, $actionCache);
+            $cacheKeyValues['_params'] = $this->getDistinctCacheKeyValues($request, $actionCache);
         }
 
         return hash('sha1', json_encode($cacheKeyValues, JSON_THROW_ON_ERROR));
@@ -141,20 +150,21 @@ class ActionCacheMiddleware implements MiddlewareInterface
 
     protected function getDistinctCacheKeyValues(ServerRequestInterface $request, ActionCache $actionCache): array
     {
+        $params = [];
+
         $queryParams = $request->getQueryParams();
-        $cacheKeyParams = [];
         foreach ($actionCache->params as $name) {
-            $cacheKeyParams[$name] = $queryParams[$name] ?? null;
+            $params['param'][$name] = $queryParams[$name] ?? null;
         }
-        ksort($cacheKeyParams);
+        ksort($params['param']);
 
         $givenMatches = $request->getAttribute('route')->matches;
-        $cacheKeyMatches = [];
         foreach ($actionCache->matches as $name) {
-            $cacheKeyMatches[$name] = $givenMatches[$name] ?? null;
+            $params['match'][$name] = $givenMatches[$name] ?? null;
         }
-        ksort($cacheKeyMatches);
-        return [$cacheKeyParams, $cacheKeyMatches];
+        ksort($params['match']);
+
+        return $params;
     }
 
     protected function cacheResponseContents(

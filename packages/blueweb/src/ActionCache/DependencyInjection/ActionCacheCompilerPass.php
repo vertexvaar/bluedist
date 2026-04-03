@@ -36,16 +36,21 @@ readonly class ActionCacheCompilerPass implements CompilerPassInterface
             foreach ($reflectionClass->getMethods() as $reflectionMethod) {
                 $reflectionCacheAttributes = $reflectionMethod->getAttributes(ActionCache::class);
                 if (1 === count($reflectionCacheAttributes)) {
-                    $reflectionRouteAttributes = $reflectionMethod->getAttributes(Route::class);
-                    if (empty($reflectionRouteAttributes)) {
+                    $reflectionRouteAttributes = $reflectionMethod->getAttributes();
+                    $routeAttributes = [];
+                    foreach ($reflectionRouteAttributes as $reflectionRouteAttribute) {
+                        $routeAttribute = $reflectionRouteAttribute->newInstance();
+                        if ($routeAttribute instanceof Route) {
+                            $routeAttributes[] = $routeAttribute;
+                        }
+                    }
+                    if (empty($routeAttributes)) {
                         throw new Exception(
                             'Can not cache an action without a route annotation.'
                             . ' Method: ' . $class . '::' . $reflectionMethod->getName(),
                         );
                     }
-                    foreach ($reflectionRouteAttributes as $reflectionRouteAttribute) {
-                        /** @var Route $routeAttribute */
-                        $routeAttribute = $reflectionRouteAttribute->newInstance();
+                    foreach ($routeAttributes as $routeAttribute) {
                         if ($routeAttribute->method !== HttpMethod::GET) {
                             throw new Exception(
                                 'Can not cache actions with non-GET routes.'

@@ -7,6 +7,7 @@ namespace VerteXVaaR\BlueDist\Controller;
 use DateTimeImmutable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
 use VerteXVaaR\BlueWeb\Controller\Attribute\AsController;
@@ -34,11 +35,28 @@ class Cached extends AbstractController
         $cacheControl = version_compare($serverRequest->getProtocolVersion(), '1.0', '==')
             ? $serverRequest->getHeaderLine('Pragma')
             : $serverRequest->getHeaderLine('Cache-Control');
-        $foo = $serverRequest->getAttribute('route')->matches['foo'] ?? $serverRequest->getQueryParams()['foo'] ?? null;
+
+        $foo = $serverRequest->getAttribute('route')->matches['foo']
+            ?? $serverRequest->getQueryParams()['foo']
+            ?? null;
+
         return $this->render('cached/parametrized.html.twig', [
             'renderTime' => new DateTimeImmutable('now'),
             'cacheControl' => $cacheControl,
             'foo' => $foo,
+        ]);
+    }
+
+    #[AuthorizedRoute('/cached/session', requiredRoles: ['user'])]
+    #[AuthorizedRoute('/cached/session/{foo}', requiredRoles: ['user'])]
+    #[ActionCache(ttl: 15, matches: ['word'], sessionSpecific: true)]
+    public function session(ServerRequestInterface $serverRequest): ResponseInterface
+    {
+        $session = $serverRequest->getAttribute('session');
+
+        return $this->render('cached/session.html.twig', [
+            'renderTime' => new DateTimeImmutable('now'),
+            'session' => $session,
         ]);
     }
 
