@@ -1,19 +1,22 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-    <h1>Cached Action with session awareness</h1>
 
-    <p>
+    <h1 class="title">Cached Action with session awareness</h1>
+
+    <div class="notification is-success is-light">
         This page was rendered at <b>{{ renderTime|date("Y-m-d H:i:s") }}</b> for user <b>{{ session.username }}</b>
-    </p>
+    </div>
 
-    <p>
-        Login with a different user and you will see that the user for which the page was rendered is different.
-    </p>
+    <div class="content">
+        <p>
+            Login with a different user and you will see that the user for which the page was rendered is different.
+        </p>
 
-    {{ include('cached/_cache-info.html.twig') }}
+        {{ include('cached/_cache-info.html.twig') }}
 
-    <p>
-        <a href="/">Back to the index</a>
-    </p>
+        <p>
+            <a href="/">Back to the index</a>
+        </p>
+    </div>
 {% endblock %}

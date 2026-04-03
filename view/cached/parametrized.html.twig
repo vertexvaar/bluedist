@@ -1,26 +1,27 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-    <h1>Cached Action with get parameter</h1>
+    <h1 class="title">Cached Action with get parameter</h1>
 
-    <p>
+    <div class="notification is-success is-light">
         This page was rendered at <b>{{ renderTime|date("Y-m-d H:i:s") }}</b>
-    </p>
+    </div>
 
-    <p>
-        Your GET parameter "foo" has the value {{ foo }}.<br>
-        {% if cacheControl %}
-            The cache control header was set to {{ cacheControl }}.
-        {% else %}
-            This page was rendered without a fording cache control header.
-        {% endif %}
-    </p>
+    <div class="content">
+        <p>
+            Your GET parameter "foo" has the value <strong>{{ foo }}</strong>.<br>
+            {% if cacheControl %}
+                The cache control header was set to <code>{{ cacheControl }}</code>.
+            {% else %}
+                This page was rendered without a fording cache control header.
+            {% endif %}
+        </p>
 
-    <p>
-        The action cache attribute supports caching based on GET params.
-    </p>
+        <p>
+            The action cache attribute supports caching based on GET params.
+        </p>
 
-    <pre><code class="language-php">
+        <pre><code class="language-php">
 class Cached extends AbstractController
 {
     #[Route('/cached/params')]
@@ -33,26 +34,31 @@ class Cached extends AbstractController
         ]);
     }
 }
-    </code></pre>
+        </code></pre>
 
-    <p>
-        You can also <a href="/cached/clearCache">clear all caches</a>. (You will be redirected to the index page).
-    </p>
+        <div class="box">
+            <h4 class="title is-5">Set another value for foo:</h4>
+            <form action="/cached/params" method="get">
+                <div class="field has-addons">
+                    <div class="control">
+                        <input class="input" type="text" name="foo" value="{{ foo }}" placeholder="Value for foo"/>
+                    </div>
+                    <div class="control">
+                        <button type="submit" class="button is-info">Set</button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
-    <p>
-        Set another value for foo:
-    </p>
-    <form action="/cached/params" method="get">
-        <label>
-            Value
-            <input type="text" name="foo" value="{{ foo }}"/>
-        </label>
-        <button type="submit">Set</button>
-    </form>
+        <p>
+            <a href="/cached/clearCache" class="button is-warning is-light">Clear all caches</a>
+            (You will be redirected dto the index page).
+        </p>
 
-    {{ include('cached/_cache-info.html.twig') }}
+        {{ include('cached/_cache-info.html.twig') }}
 
-    <p>
-        <a href="/">Back to the index</a>
-    </p>
+        <p>
+            <a href="/" class="button is-light">Back to the index</a>
+        </p>
+    </div>
 {% endblock %}

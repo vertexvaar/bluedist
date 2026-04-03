@@ -30,6 +30,7 @@ class Fruits extends AbstractController implements LoggerAwareInterface
         $pageSize = 10;
         $paginatedResult = $this->repository->paginate(Fruit::class, $page, $pageSize);
         return $this->render('fruits/list.html.twig', [
+            'session' => $request->getAttribute('session'),
             'pagination' => $paginatedResult,
         ]);
     }
@@ -82,7 +83,10 @@ class Fruits extends AbstractController implements LoggerAwareInterface
     {
         $fruitIdentifier = $request->getAttribute('route')->matches['fruit'];
         $fruit = $this->repository->findByIdentifier(Fruit::class, $fruitIdentifier);
-        return $this->render('fruits/edit.html.twig', ['fruit' => $fruit]);
+        return $this->render('fruits/edit.html.twig', [
+            'session' => $request->getAttribute('session'),
+            'fruit' => $fruit,
+        ]);
     }
 
     /**

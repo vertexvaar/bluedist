@@ -6,30 +6,40 @@
 
         <p>
             Objects are target to many modifications, so updating a already persistend object is essential.<br/>
-            Change the name or color of your selected fruit and save it, or go <a href="/listFruits">back</a> to the
+            Change the name or color of your selected fruit and save it, or go <a href="/fruits">back</a> to the
             list.
         </p>
 
-        <form action="/updateFruit/{{ fruit.identifier }}" method="post">
-            <p>
-                <label>
-                    Name
-                    <input type="text" name="name" value="{{ fruit.name }}"/>
-                </label>
-            </p>
+        <div class="block">
+            <form action="/updateFruit/{{ fruit.identifier }}" method="post">
 
-            <p>
-                <label>
-                    Color
-                    <input type="text" name="color" value="{{ fruit.color }}"/>
-                </label>
-            </p>
-            <input type="submit" value="Update it!">
-        </form>
+                <div class="field">
+                    <label class="label" for="name">Name</label>
+                    <div class="control">
+                        <input id="name" class="input" type="text" name="name" value="{{ fruit.name }}">
+                    </div>
+                </div>
 
-        <form action="/deleteFruit/{{ fruit.identifier }}" method="post">
-            <input type="submit" value="Or delete it :)">
-        </form>
+                <div class="field">
+                    <label class="label" for="color">Color</label>
+                    <div class="control">
+                        <input id="color" class="input" type="text" name="color" value="{{ fruit.color }}">
+                    </div>
+                </div>
+
+                <div class="control">
+                    <button class="button is-link">Update it!</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="block">
+            <form action="/deleteFruit/{{ fruit.identifier }}" method="post">
+                <div class="control">
+                    <button class="button is-link is-danger">Or delete it :)</button>
+                </div>
+            </form>
+        </div>
 
         <h2>The code behind this object update</h2>
 
@@ -70,10 +80,11 @@ public function editFruit(ServerRequestInterface $request): ResponseInterface
         <h2>Try it</h2>
 
         <p>
-            <a href="/updateFruit?name=failure&color=black&identifier={{ fruit.identifier }}">This link</a> will not work
+            <a href="/fruits/{{ fruit.identifier }}?name=failure&color=black&identifier={{ fruit.identifier }}">This
+                link</a> will not work
             since the
             request parameters are expected to exist in POST.
-            You will be redirected to the listFruits view.
+            You will be redirected to the /fruits list.
         </p>
     </section>
 {% endblock %}

@@ -30,17 +30,18 @@ class Cached extends AbstractController
     #[Route('/cached/params')]
     #[Route('/cached/params/{foo}')]
     #[ActionCache(matches: ['foo'], params: ['foo'])]
-    public function parametrized(ServerRequestInterface $serverRequest): ResponseInterface
+    public function parametrized(ServerRequestInterface $request): ResponseInterface
     {
-        $cacheControl = version_compare($serverRequest->getProtocolVersion(), '1.0', '==')
-            ? $serverRequest->getHeaderLine('Pragma')
-            : $serverRequest->getHeaderLine('Cache-Control');
+        $cacheControl = version_compare($request->getProtocolVersion(), '1.0', '==')
+            ? $request->getHeaderLine('Pragma')
+            : $request->getHeaderLine('Cache-Control');
 
-        $foo = $serverRequest->getAttribute('route')->matches['foo']
-            ?? $serverRequest->getQueryParams()['foo']
+        $foo = $request->getAttribute('route')->matches['foo']
+            ?? $request->getQueryParams()['foo']
             ?? null;
 
         return $this->render('cached/parametrized.html.twig', [
+            'session' => $request->getAttribute('session'),
             'renderTime' => new DateTimeImmutable('now'),
             'cacheControl' => $cacheControl,
             'foo' => $foo,
@@ -50,13 +51,11 @@ class Cached extends AbstractController
     #[AuthorizedRoute('/cached/session', requiredRoles: ['user'])]
     #[AuthorizedRoute('/cached/session/{foo}', requiredRoles: ['user'])]
     #[ActionCache(ttl: 15, matches: ['word'], sessionSpecific: true)]
-    public function session(ServerRequestInterface $serverRequest): ResponseInterface
+    public function session(ServerRequestInterface $request): ResponseInterface
     {
-        $session = $serverRequest->getAttribute('session');
-
         return $this->render('cached/session.html.twig', [
+            'session' => $request->getAttribute('session'),
             'renderTime' => new DateTimeImmutable('now'),
-            'session' => $session,
         ]);
     }
 

@@ -1,11 +1,17 @@
 {% if pagination.getTotalPages() > 1 %}
-    <nav class="pagination">
-        {% for page in 1..pagination.getTotalPages() %}
-            {% if page == pagination.currentPage %}
-                <span class="current">{{ page }}</span>
-            {% else %}
-                <a href="/listFruits?page={{ page }}">{{ page }}</a>
-            {% endif %}
-        {% endfor %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <ul class="pagination-list">
+            {% for page in 1..pagination.getTotalPages() %}
+                <li>
+                    {% if page == pagination.currentPage %}
+                        <a class="pagination-link is-current" aria-label="Page {{ page }}"
+                           aria-current="page">{{ page }}</a>
+                    {% else %}
+                        <a class="pagination-link" href="/fruits?page={{ page }}"
+                           aria-label="Goto page {{ page }}">{{ page }}</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
     </nav>
 {% endif %}

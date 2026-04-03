@@ -1,18 +1,20 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-    <h1>Cached Controller</h1>
+    <h1 class="title">Cached Controller</h1>
 
-    <p>
+    <div class="notification is-success is-light">
         This page was rendered at <b>{{ renderTime|date("Y-m-d H:i:s") }}</b>
-    </p>
+    </div>
 
-    <p>
-        Caching controller actions is very easy. All GET actions can be cached. The following example caches the action
-        result for 1 minute.
-    </p>
+    <div class="content">
+        <p>
+            Caching controller actions is very easy. All GET actions can be cached. The following example caches the
+            action
+            result for 1 minute.
+        </p>
 
-    <pre><code class="language-php">
+        <pre><code class="language-php">
 class Cached extends AbstractController
 {
     #[Route('/cached')]
@@ -22,25 +24,26 @@ class Cached extends AbstractController
         return $this->render('cached/index.html.twig', ['renderTime' => new DateTimeImmutable('now')]);
     }
 }
-    </code></pre>
+        </code></pre>
 
-    <p>
-        You may have noticed, that the first call to this page took a bit longer than expected. That's because the
-        action is stalled for a second. When you <a href="/cached">reload this page</a>, it will appear instantly,
-        because the rendered content was cached.
-        The caching is set to 5 seconds, so in 5 seconds the page rendering will be a bit slow, before this page shows
-        up again.
-    </p>
+        <p>
+            You may have noticed, that the first call to this page took a bit longer than expected. That's because the
+            action is stalled for a second. When you <a href="/cached">reload this page</a>, it will appear instantly,
+            because the rendered content was cached.
+            The caching is set to 5 seconds, so in 5 seconds the page rendering will be a bit slow, before this page
+            shows
+            up again.
+        </p>
 
-    {{ include('cached/_cache-info.html.twig') }}
+        <div class="notification is-warning is-light">
+            <p>
+                <strong>Action caching also respects parameters!</strong>
+                <br>
+                You have to tell the caching attribute which ones are relevant for your controller action.
+                We have an <a href="/cached/params/test"><strong>example in action</strong></a>.
+            </p>
+        </div>
 
-    <p>
-        Action caching also respects get parameters, but you have to tell the caching attribute which ones are relevant
-        for your controller action.
-        We have an <a href="/cached/params/test">example in action</a>
-    </p>
-
-    <p>
-        <a href="/">Back to the index</a>
-    </p>
+        {{ include('cached/_cache-info.html.twig') }}
+    </div>
 {% endblock %}

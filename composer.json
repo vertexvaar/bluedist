@@ -52,7 +52,12 @@
       "cache": "var/cache",
       "database": "var/database",
       "config": "config",
-      "view": "view",
+      "view": {
+        "__main__": "view",
+        "vertexvaar_blueauth": {
+          "100": "view/blueauth"
+        }
+      },
       "translations": "translations"
     }
   }

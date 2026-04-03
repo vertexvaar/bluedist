@@ -1,101 +1,159 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-    <section>
-
-        <h1>{{ 'Welcome to VerteXVaaR.BlueSprints'|t }}</h1>
-
-        <h2>{{ 'An experiment gone right :D'|t }}</h2>
-
-        <p>
-            {{ 'VerteXVaaR.BlueSprints was created in a few hours as an experiment of "what could be done in 3 hours" and it\'s development continued for 6 other hours. After 9 hours it had (all simple) routing, templating, of course autoloading (thanks composer) and NoDB persistence, all out of the box. But more is to come.'|t }}
-        </p>
-
-        <h2>{{ 'It will stay simple!'|t }}</h2>
-
-        <p>
-            {{ 'This PHP Framework is designed to stay as simple as possible but yet provide some indispensable features.'|t }}
-            {{ 'Features included (packages in braces are optional)'|t }}:
-        </p>
-        <ul>
-            <li>{{ 'Dependency Injection (PSR-11 "Container Interface") backend by Symfony Dependency Injection'|t }}</li>
-            <li>{{ 'File based storage solution for entities'|t }}</li>
-            <li>{{ 'Caching (PSR-16 "Simple Caching")'|t }}</li>
-            <li>{{ '(vertexvaar/blueweb) Routing configured by annotations'|t }}</li>
-            <li>{{ '(vertexvaar/blueweb) Standardized Request/Response system (PSR-7: "HTTP message interfaces")'|t }}</li>
-            <li>{{ '(vertexvaar/blueweb) Middlewares (PSR-15: "HTTP Server Request Handlers")'|t }}</li>
-            <li>{{ '(vertexvaar/blueweb) Templating with Twig'|t }}</li>
-            <li>{{ '(vertexvaar/blueweb) Controller action caching by annotation'|t }}</li>
-            <li>{{ '(vertexvaar/bluescheduler) Scheduling configured by Annotations'|t }}</li>
-            <li>{{ '(vertexvaar/bluetranslation) i18n (translations) backend by Symfony Translation'|t }}</li>
-            <li>{{ '(vertexvaar/blueauth) Username/Password Authentication'|t }}</li>
-            <li>{{ '(vertexvaar/blueconsole) Console Application backend by Symfony Console'|t }}</li>
-            <li>{{ '(vertexvaar/bluedebug) Debugging toolbar'|t }}</li>
-            <li>{{ '(vertexvaar/bluelog) Logging integration with Sentry and Docker support'|t }}</li>
-        </ul>
-        <p>
-            {{ 'Features not included (and probably not about to be)'|t }}
-        </p>
-        <ul>
-            <li>{{ 'Database Connections'|t }}</li>
-            <li>ORMs</li>
-        </ul>
-
-        <h2>{{ 'Fast framework, fast Development'|t }}</h2>
-
-        <p>
-            Because there are almost no classes inside vertexvaar/bluesprints, and it has no reflection or abstraction
-            it is simply fast by design, without any caching. This (nearly) slender design is good for performance, but
-            it prevents some features. But if you want to develop a simple Application that stores a few models or just
-            prints out content you will be convinced by your own development speed
-        </p>
-
-        <h2>Templating</h2>
-
-        <p>
-            Templating might be something you have don't have to get used to, because it uses Twig. Here is some data
-            set by the controller:
-        </p>
-        <ul>
-            {% for string in strings %}
-                <li>{{ string }}</li>
-            {% endfor %}
-        </ul>
-
-        <h2>Persistence?</h2>
-
-        <p>
-            Want a demo about Persistence? Just <b><a href="/listFruits">follow me</a></b> ;)
-        </p>
-
-        <h2>Caching?</h2>
-
-        <p>
-            Want a demo about Caching? You can set and retrieve cached values <a href="/cache/index">here</a> ;)
-        </p>
-        <p>
-            More interested in caching of controller actions? <a href="/cached">This action</a> is cached!
-        </p>
-
-        <h2>Session? Login?</h2>
-
-        <p>
-            bluesprints can be easily extended with a username/password login by requiring vertexvaar/blueauth.
-            blueauth contains all files required for a full authentication workflow.
-            Create users with <code>bin/blueconsole app:user:create [user] [pass]</code>.
-            User sessions are automatically checked via middleware. You can access the session from the request object.
-        </p>
-
-        {% if session.authenticated %}
-            <p>
-                You are currently authenticated as {{ session.username }}. Your session identifier
-                is {{ session.identifier }}
-                <a href="/logout">Click here to log out</a>
-            </p>
-        {% else %}
-            <p>
-                Login with your created user <a href="/login">Login</a>
-            </p>
-        {% endif %}
+    <section class="hero is-info is-bold mb-5">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    {{ 'Welcome to VerteXVaaR.BlueSprints'|t }}
+                </h1>
+                <h2 class="subtitle">
+                    {{ 'An experiment gone right :D'|t }}
+                </h2>
+            </div>
+        </div>
     </section>
+
+    <div class="box">
+        <div class="content">
+            <p>
+                {{ 'VerteXVaaR.BlueSprints was created in a few hours as an experiment of "what could be done in 3 hours" and it\'s development continued for 6 other hours. After 9 hours it had (all simple) routing, templating, of course autoloading (thanks composer) and NoDB persistence, all out of the box. But more is to come.'|t }}
+            </p>
+        </div>
+    </div>
+
+    <div class="columns is-multiline">
+        <div class="column is-6">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">{{ 'It will stay simple!'|t }}</p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <p>
+                            {{ 'This PHP Framework is designed to stay as simple as possible but yet provide some indispensable features.'|t }}
+                            {{ 'Features included (packages in braces are optional)'|t }}:
+                        </p>
+                        <ul>
+                            <li>{{ 'Dependency Injection (PSR-11 "Container Interface") backend by Symfony Dependency Injection'|t }}</li>
+                            <li>{{ 'File based storage solution for entities'|t }}</li>
+                            <li>{{ 'Caching (PSR-16 "Simple Caching")'|t }}</li>
+                            <li>{{ '(vertexvaar/blueweb) Routing configured by annotations'|t }}</li>
+                            <li>{{ '(vertexvaar/blueweb) Standardized Request/Response system (PSR-7: "HTTP message interfaces")'|t }}</li>
+                            <li>{{ '(vertexvaar/blueweb) Middlewares (PSR-15: "HTTP Server Request Handlers")'|t }}</li>
+                            <li>{{ '(vertexvaar/blueweb) Templating with Twig'|t }}</li>
+                            <li>{{ '(vertexvaar/blueweb) Controller action caching by annotation'|t }}</li>
+                            <li>{{ '(vertexvaar/bluescheduler) Scheduling configured by Annotations'|t }}</li>
+                            <li>{{ '(vertexvaar/bluetranslation) i18n (translations) backend by Symfony Translation'|t }}</li>
+                            <li>{{ '(vertexvaar/blueauth) Username/Password Authentication'|t }}</li>
+                            <li>{{ '(vertexvaar/blueauth) Users management via CLI'|t }}</li>
+                            <li>{{ '(vertexvaar/blueconsole) Console Application backend by Symfony Console'|t }}</li>
+                            <li>{{ '(vertexvaar/bluedebug) Debugging toolbar'|t }}</li>
+                            <li>{{ '(vertexvaar/bluelog) Logging integration with Sentry and Docker support'|t }}</li>
+                        </ul>
+                        <p>
+                            {{ 'Features not included (and probably not about to be)'|t }}
+                        </p>
+                        <ul>
+                            <li>{{ 'Database Connections'|t }}</li>
+                            <li>ORMs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-6">
+            <div class="card mb-4">
+                <header class="card-header">
+                    <p class="card-header-title">{{ 'Fast framework, fast Development'|t }}</p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <p>
+                            Because there are almost no classes inside vertexvaar/bluesprints, and it has no reflection
+                            or abstraction
+                            it is simply fast by design, without any caching. This (nearly) slender design is good for
+                            performance, but
+                            it prevents some features. But if you want to develop a simple Application that stores a few
+                            models or just
+                            prints out content you will be convinced by your own development speed
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">Templating</p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <p>
+                            Templating might be something you have don't have to get used to, because it uses Twig. Here
+                            is some data
+                            set by the controller:
+                        </p>
+                        <ul>
+                            {% for string in strings %}
+                                <li>{{ string }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <article class="message is-success">
+                <div class="message-header">
+                    <p>Persistence?</p>
+                </div>
+                <div class="message-body">
+                    Want a demo about Persistence? Just <b><a href="/listFruits">follow me</a></b> ;)
+                </div>
+            </article>
+        </div>
+        <div class="column">
+            <article class="message is-warning">
+                <div class="message-header">
+                    <p>Caching?</p>
+                </div>
+                <div class="message-body">
+                    Want a demo about Caching? You can set and retrieve cached values <a href="/cache/index">here</a> ;)
+                    <br>
+                    More interested in caching of controller actions? <a href="/cached">This action</a> is cached!
+                </div>
+            </article>
+        </div>
+    </div>
+
+
+    <div class="box">
+        <h2 class="title is-4">Session? Login?</h2>
+        <div class="content">
+            <p>
+                bluesprints can be easily extended with a username/password login by requiring vertexvaar/blueauth.
+                blueauth contains all files required for a full authentication workflow.
+                Create users with <code>bin/blueconsole app:user:create [user] [pass]</code>.
+                User sessions are automatically checked via middleware. You can access the session from the request
+                object.
+            </p>
+        </div>
+
+        {% if session is defined and session.authenticated %}
+            <div class="notification is-success">
+                You are currently authenticated as <strong>{{ session.username }}</strong>. Your session identifier
+                is <code>{{ session.identifier }}</code>
+                <br>
+                <a class="button is-light mt-2" href="/logout">Click here to log out</a>
+            </div>
+        {% else %}
+            <div class="notification is-info">
+                Login with your created user <a class="button is-primary is-light ml-2" href="/login">Login</a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

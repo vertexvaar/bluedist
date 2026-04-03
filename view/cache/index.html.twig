@@ -1,35 +1,64 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-    <h1>Caching demo</h1>
+    <h1 class="title">Caching demo</h1>
 
-    {% if cache_value %}
-        <p>A value has been cached. The value is: {{ cache_value }}</p>
-    {% else %}
-        <p>No value has been stored in the cache so far or it already expired.</p>
-    {% endif %}
+    <div class="content">
+        {% if cache_value %}
+            <article class="message is-success">
+                <div class="message-header">
+                    <p>Cache Hit</p>
+                </div>
+                <div class="message-body">
+                    A value has been cached. The value is: <strong>{{ cache_value }}</strong>
+                </div>
+            </article>
+        {% else %}
+            <article class="message is-info">
+                <div class="message-header">
+                    <p>Cache Miss</p>
+                </div>
+                <div class="message-body">
+                    No value has been stored in the cache so far or it already expired.
+                </div>
+            </article>
+        {% endif %}
+    </div>
 
-    <form action="/cache/store" method="post">
-        <table>
-            <tr>
-                <td>
-                    <label>
-                        Value
-                        <input type="text" name="value">
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        ttl (seconds)
-                        <input type="text" name="ttl">
-                    </label>
-                </td>
-                <td>
-                    <button type="submit">Store value</button>
-                </td>
-            </tr>
-        </table>
+    <div class="box">
 
+        <form method="post" action="/cache/store" id="login">
+
+            <div class="columns">
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label" for="value">Value</label>
+                        <div class="control">
+                            <input id="value" class="input" type="text" name="value">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column">
+                    <div class="field">
+                        <label class="label" for="ttl">TTL</label>
+                        <div class="control">
+                            <input id="ttl" class="input" type="text" name="ttl">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="control">
+                <button class="button is-link">Store value</button>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="content mt-6">
         <p>
             Caching is easy.
         </p>
@@ -57,17 +86,19 @@ class Caching extends AbstractController
         return $this->redirect('/cache/index');
     }
 }
-        </code></pre>
+            </code></pre>
+
+        <div class="content mt-6">
+            <p>
+                You can read more about the caching of whole actions here:<br>
+                <a href="/cached">Action Cache</a><br>
+                <a href="/cached/params">Parameter aware Action Cache</a><br>
+                <a href="/cached/session">Session aware Action Cache</a> (Requires Login)
+            </p>
+        </div>
 
         <p>
-            You can read more about the caching of whole actions here:<br>
-            <a href="/cached">Action Cache</a><br>
-            <a href="/cached/params">Parameter aware Action Cache</a><br>
-            <a href="/cached/session">Session aware Action Cache</a> (Requires Login)
+            <a href="/" class="button is-light">Back to the index</a>
         </p>
-
-        <p>
-            <a href="/">Back to the index</a>
-        </p>
-    </form>
+    </div>
 {% endblock %}
