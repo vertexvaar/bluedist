@@ -9,7 +9,6 @@ use VerteXVaaR\BlueConfig\Structure\ObjectNode;
 use VerteXVaaR\BlueConfig\Structure\RootNode;
 
 use function is_array;
-use function octdec;
 
 readonly class DefinitionService
 {
@@ -18,8 +17,7 @@ readonly class DefinitionService
      */
     public function __construct(
         private iterable $definitions,
-    ) {
-    }
+    ) {}
 
     public function getDefinitions(): array
     {

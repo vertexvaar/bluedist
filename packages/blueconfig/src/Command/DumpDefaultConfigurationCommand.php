@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Dumper;
+use Symfony\Component\Yaml\Yaml;
 use VerteXVaaR\BlueConfig\Config;
 use VerteXVaaR\BlueConfig\Definition\DefinitionService;
 use VerteXVaaR\BlueFoundation\PackageExtras;
@@ -35,7 +36,7 @@ class DumpDefaultConfigurationCommand extends Command
         $config = array_replace_recursive($defaultConfig, $this->config->get());
 
         $dumper = new Dumper(2);
-        $yamlContent = $dumper->dump($config, 5);
+        $yamlContent = $dumper->dump($config, 5, 0, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);
 
         $configFile = concat_paths(
             $this->packageExtras->getPath($this->packageExtras->rootPackageName, 'config'),
