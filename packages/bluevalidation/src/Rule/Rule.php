@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace VerteXVaaR\BlueValidation\Rule;
 
 use VerteXVaaR\BlueValidation\ValidationError;
