@@ -7,3 +7,17 @@ security:
     - 192.168.178.0/24
 filePermissions: '0755'
 folderPermissions: '0755'
+trustedServerNames:
+  - SERVER_NAME
+cors:
+  allowedOrigins:
+    - '*'
+    - _trustedServerName
+  allowedMethods:
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+    - OPTIONS
+  allowedHeaders: []
