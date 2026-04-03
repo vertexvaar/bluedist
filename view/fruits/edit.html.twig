@@ -11,7 +11,7 @@
         </p>
 
         <div class="block">
-            <form action="/updateFruit/{{ fruit.identifier }}" method="post">
+            <form action="/fruits/{{ fruit.identifier }}" method="post">
 
                 <div class="field">
                     <label class="label" for="name">Name</label>
@@ -34,7 +34,7 @@
         </div>
 
         <div class="block">
-            <form action="/deleteFruit/{{ fruit.identifier }}" method="post">
+            <form action="/fruits/{{ fruit.identifier }}/delete" method="post">
                 <div class="control">
                     <button class="button is-link is-danger">Or delete it :)</button>
                 </div>
@@ -51,14 +51,14 @@ if (isset($arguments['identifier'], $arguments['name'], $arguments['color'])) {
     $fruit->setColor($arguments['color']);
     $fruit->save();
 }
-$this->redirect('listFruits');
+$this->redirect('/fruits');
         </code></pre>
 
         <h2>Routing with GET path instead of parameters</h2>
 
         <pre><code class="language-php">
-#[Route(path: '/editFruit/{fruit}')]
-public function editFruit(ServerRequestInterface $request): ResponseInterface
+#[Route(path: '/fruits/{fruit}')]
+public function edit(ServerRequestInterface $request): ResponseInterface
 {
     $fruitIdentifier = $request->getAttribute('route')->matches['fruit'];
     $fruit = $this->repository->findByIdentifier(Fruit::class, $fruitIdentifier);

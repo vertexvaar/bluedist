@@ -14,7 +14,7 @@
         <div class="columns is-multiline">
             {% for fruit in pagination.results %}
                 <div class="column is-one-quarter">
-                    <a href="/editFruit/{{ fruit.identifier }}" class="box has-text-centered is-clickable is-block">
+                    <a href="/fruits/{{ fruit.identifier }}" class="box has-text-centered is-clickable is-block">
                         <span class="icon is-large has-text-primary mb-2">
                             <i class="fas fa-apple-alt fa-3x"></i>
                         </span>
@@ -37,7 +37,7 @@
         {% include 'fruits/_pagination.html.twig' with { pagination: pagination } %}
 
         <div class="mt-4">
-            <form action="/deleteAllFruits" method="post">
+            <form action="/fruits/deleteall" method="post">
                 <div class="control">
                     <button class="button is-link is-warning">Delete all fruits</button>
                 </div>
@@ -46,7 +46,7 @@
     {% else %}
         <div class="notification is-warning">
             <h3 class="title is-4">OH, WAIT! There is no Fruit yet.</h3>
-            <form action="/createDemoFruits" method="post">
+            <form action="/fruits/seed" method="post">
                 <div class="control">
                     <button class="button is-link is-success">Create a bunch of fruits</button>
                 </div>
@@ -57,7 +57,7 @@
     <div class="box mt-6">
         <h2 class="title is-4">Not enough fruits? Just create your own fruit here:</h2>
 
-        <form action="/createFruit" method="post">
+        <form action="/fruits/create" method="post">
 
             <div class="field">
                 <label class="label" for="name">Name</label>
@@ -112,7 +112,7 @@ if (isset($arguments['name'], $arguments['color'])) {
     $fruit->setName($arguments['name']);
     $fruit->save();
 }
-$this->redirect('listFruits');
+$this->redirect('/fruits');
         </code></pre>
 
         <p>

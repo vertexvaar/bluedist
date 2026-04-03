@@ -29,14 +29,14 @@ test('createInitialFruitsTest', async ({ page }) => {
 
     await loginAs(page, 'admin', 'password');
 
-    await page.goto('/listFruits');
+    await page.goto('/fruits');
     await page.getByRole('link', { name: 'Apple' }).click();
     await expect(page.getByText('Change a Apple')).toBeVisible();
 
     await page.getByLabel('Color').fill('green-red');
     await page.getByRole('button', { name: 'Submit' }).click();
 
-    await page.waitForURL('/listFruits');
+    await page.waitForURL('/fruits');
     await expect(page.getByText('green-red')).toBeVisible();
 });
 
@@ -51,9 +51,9 @@ test('deleteAllFruits', async ({ page }) => {
 
     await loginAs(page, 'admin', 'password');
 
-    await page.goto('/listFruits');
+    await page.goto('/fruits');
     await page.getByRole('button', { name: 'Delete all fruits' }).click();
 
-    await page.waitForURL('/listFruits');
+    await page.waitForURL('/fruits');
     await expect(page.getByText('OH WAIT! There is no Fruit yet.')).toBeVisible();
 });
