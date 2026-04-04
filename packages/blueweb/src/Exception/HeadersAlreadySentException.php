@@ -8,8 +8,8 @@ use VerteXVaaR\BlueSprints\BluesprintsException;
 
 class HeadersAlreadySentException extends BluesprintsException
 {
-    private const MESSAGE = 'Headers already sent.';
-    public const CODE = 1695812108;
+    private const string MESSAGE = 'Headers already sent.';
+    public const int CODE = 1695812108;
 
     #[Pure]
     public function __construct(
