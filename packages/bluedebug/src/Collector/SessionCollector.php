@@ -16,7 +16,7 @@ class SessionCollector implements Collector
     protected ?Session $session = null;
 
     public function __construct(
-        private Repository $repository,
+        private readonly Repository $repository,
     ) {
     }
 

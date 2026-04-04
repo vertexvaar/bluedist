@@ -10,11 +10,11 @@ use VerteXVaaR\BlueDebug\Collector\CacheStatisticsCollector;
 
 use function is_callable;
 
-class CacheDecorator implements CacheInterface
+readonly class CacheDecorator implements CacheInterface
 {
     public function __construct(
-        private readonly CacheInterface $inner,
-        private readonly CacheStatisticsCollector $cacheStatisticsCollector,
+        private CacheInterface $inner,
+        private CacheStatisticsCollector $cacheStatisticsCollector,
     ) {
     }
 

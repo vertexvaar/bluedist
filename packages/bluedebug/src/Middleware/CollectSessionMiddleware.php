@@ -16,10 +16,10 @@ use VerteXVaaR\BlueWeb\Middleware\Attribute\AsMiddleware;
     ['vertexvaar/bluesprints/routing'],
     ['vertexvaar/blueauth/authentication']
 )]
-class CollectSessionMiddleware implements MiddlewareInterface
+readonly class CollectSessionMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly SessionCollector $sessionCollector,
+        private SessionCollector $sessionCollector,
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

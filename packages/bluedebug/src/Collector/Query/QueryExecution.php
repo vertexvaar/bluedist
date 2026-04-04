@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDebug\Collector\Query;
 
-class QueryExecution
+readonly class QueryExecution
 {
     public function __construct(
         public readonly int $start,

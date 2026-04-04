@@ -14,11 +14,11 @@ use function func_get_args;
  * @template T of Entity
  * @implements Store<T>
  */
-class StoreDecorator implements Store
+readonly class StoreDecorator implements Store
 {
     public function __construct(
-        private readonly Store $inner,
-        private readonly QueryCollector $queryCollector,
+        private Store $inner,
+        private QueryCollector $queryCollector,
     ) {
     }
 

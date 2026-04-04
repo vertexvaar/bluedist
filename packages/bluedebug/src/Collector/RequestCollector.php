@@ -48,7 +48,7 @@ class RequestCollector implements Collector
         );
     }
 
-    protected function diffRequest(ServerRequestInterface $previousRequest, ServerRequestInterface $request)
+    protected function diffRequest(ServerRequestInterface $previousRequest, ServerRequestInterface $request): array
     {
         $previousHeaders = [];
         foreach (array_keys($previousRequest->getHeaders()) as $header) {

@@ -47,7 +47,7 @@ class ResponseCollector implements Collector
         );
     }
 
-    protected function diffResponses(ResponseInterface $previousResponse, ResponseInterface $response)
+    protected function diffResponses(ResponseInterface $previousResponse, ResponseInterface $response): array
     {
         $previousHeaders = [];
         foreach (array_keys($previousResponse->getHeaders()) as $header) {

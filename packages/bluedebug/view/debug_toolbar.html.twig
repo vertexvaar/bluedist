@@ -11,16 +11,25 @@
             {% endfor %}
         </table>
     {% else %}
-        {% set encoded = data|json_encode(constant('JSON_PRETTY_PRINT')) %}
-        {% if encoded matches '/^[{[]/' %}
-            <pre class="val-json">{{ encoded|replace({'\\/': '/'})|raw }}</pre>
+        {% if data is string and data matches '/^[{[]/' %}
+            {% set decoded = data|json_decode %}
+            {% if decoded is not same as(null) %}
+                {{ _self.render_data(decoded) }}
+            {% else %}
+                <pre class="val-json">{{ data|raw }}</pre>
+            {% endif %}
         {% else %}
-            {% set type = data is same as(null) ? 'null' : (data is same as(true) or data is same as(false) ? 'boolean' : 'string') %}
-            <span class="val-{{ type }}">
-                {% if type == 'null' %}null
-                {% elseif type == 'boolean' %}{{ data ? 'true' : 'false' }}
-                {% else %}{{ encoded|raw }}{% endif %}
-            </span>
+            {% set encoded = data|json_encode(constant('JSON_PRETTY_PRINT')) %}
+            {% if encoded matches '/^[{[]/' %}
+                <pre class="val-json">{{ encoded|replace({'\\/': '/'})|raw }}</pre>
+            {% else %}
+                {% set type = data is same as(null) ? 'null' : (data is same as(true) or data is same as(false) ? 'boolean' : 'string') %}
+                <span class="val-{{ type }}">
+                    {% if type == 'null' %}null
+                    {% elseif type == 'boolean' %}{{ data ? 'true' : 'false' }}
+                    {% else %}{{ encoded|raw }}{% endif %}
+                </span>
+            {% endif %}
         {% endif %}
     {% endif %}
 {% endmacro %}
@@ -59,23 +68,24 @@
             :host(.pos-top) .flexbox-panel {
                 flex-direction: row;
                 flex-wrap: nowrap;
-                justify-content: center;
+                justify-content: flex-start;
                 align-items: center;
                 padding: 0 10px;
                 height: 35px;
+                overflow-x: auto;
+                overflow-y: hidden;
             }
 
             :host(.pos-right) .flexbox-panel,
             :host(.pos-left) .flexbox-panel {
                 flex-direction: column;
                 justify-content: flex-start;
-                align-items: stretch;
-                overflow-y: auto;
-                overflow-x: hidden;
+                align-items: flex-start;
+                overflow: auto;
             }
 
             .flexbox-item {
-                flex: 0 1 auto;
+                flex: 0 0 auto;
                 position: relative;
                 cursor: pointer;
             }
@@ -96,8 +106,9 @@
                 display: block;
                 border-bottom: 1px solid #333333;
                 padding: 12px;
-                white-space: normal;
                 cursor: default;
+                width: 100%;
+                box-sizing: border-box;
             }
 
             .flexbox-item:hover, .flexbox-item.active {
@@ -157,8 +168,8 @@
                 min-width: 0;
             }
 
-            :host(.pos-bottom) .infobox { bottom: 100%; left: 50%; transform: translateX(-50%); }
-            :host(.pos-top) .infobox { top: 100%; left: 50%; transform: translateX(-50%); }
+            :host(.pos-bottom) .infobox { position: fixed; bottom: 35px; left: 50%; transform: translateX(-50%); }
+            :host(.pos-top) .infobox { position: fixed; top: 35px; left: 50%; transform: translateX(-50%); }
 
             :host(.pos-bottom) .infobox,
             :host(.pos-top) .infobox {
@@ -166,7 +177,7 @@
                 max-width: 1600px;
                 min-width: 450px;
                 max-height: 85vh;
-                overflow-y: auto;
+                overflow: auto;
                 box-sizing: border-box;
             }
 
@@ -183,6 +194,7 @@
                 overflow: visible;
                 border: none;
                 transform: none;
+                width: 100%;
             }
 
             table {
@@ -190,14 +202,12 @@
                 width: 100%;
             }
 
-            :host(.pos-right) table, :host(.pos-left) table { table-layout: fixed; }
+            :host(.pos-right) table, :host(.pos-left) table { width: 100%; }
 
             td, th {
                 text-align: left;
                 vertical-align: top;
                 color: #eeeeee;
-                word-break: break-all;
-                overflow-wrap: anywhere;
                 padding: 2px 6px;
             }
 
@@ -216,21 +226,25 @@
                 display: block;
             }
 
-            :host(.pos-right) .infobox th, :host(.pos-left) .infobox th { 
+            :host(.pos-right) .infobox th, :host(.pos-left) .infobox th {
                 background-color: transparent;
-                width: 100%; 
-                display: block; 
-                padding-bottom: 0; 
+                width: 100%;
+                display: block;
+                padding-bottom: 0;
                 border: none;
                 color: #aaaaaa;
                 font-size: 12px;
+                word-break: break-all;
+                overflow-wrap: anywhere;
             }
-            :host(.pos-right) .infobox td, :host(.pos-left) .infobox td { 
-                width: 100%; 
-                display: block; 
-                padding-bottom: 8px; 
-                color: #eeeeee; 
-                border: none; 
+            :host(.pos-right) .infobox td, :host(.pos-left) .infobox td {
+                width: 100%;
+                display: block;
+                padding-bottom: 8px;
+                color: #eeeeee;
+                border: none;
+                word-break: break-all;
+                overflow-wrap: anywhere;
             }
 
             :host(.pos-bottom) th, :host(.pos-top) th { border-right: 1px solid #333; }
@@ -240,25 +254,35 @@
                 background-color: rgba(0,0,0,0.2);
                 border-radius: 4px;
                 border: 1px solid #333;
+                width: max-content;
+                min-width: 100%;
+            }
+
+            :host(.pos-right) .nested-data, :host(.pos-left) .nested-data {
+                width: 100%;
+                min-width: 0;
             }
 
             .nested-data tr {
                 border-bottom: 1px solid #2a2a2a;
+                display: flex;
             }
 
             .nested-key {
                 font-size: 11px;
                 color: #999;
                 padding: 2px 8px;
-                flex: 0 0 130px !important;
+                flex: 0 0 130px;
                 border-right: 1px solid #333;
                 font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
                 background-color: rgba(255,255,255,0.01);
+                box-sizing: border-box;
             }
 
             .nested-val {
                 padding: 2px 8px;
-                flex: 1 1 auto !important;
+                flex: 1 1 auto;
+                box-sizing: border-box;
             }
 
             a {
@@ -276,7 +300,7 @@
                 color: #ffffff;
                 background-color: #444444;
             }
-            
+
             .spacer {
                 flex-grow: 1;
             }
@@ -298,6 +322,72 @@
                 display: block;
                 margin-bottom: 4px;
                 font-size: 13px;
+                white-space: nowrap;
+            }
+
+            .sidebar-filter {
+                display: none;
+                padding: 10px;
+                border-bottom: 1px solid #333333;
+                background-color: #2a2a2a;
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 20;
+                box-sizing: border-box;
+            }
+
+            :host(.pos-right) .sidebar-filter, :host(.pos-left) .sidebar-filter {
+                display: block;
+                width: 100%;
+            }
+
+            .sidebar-filter input {
+                width: 100%;
+                background-color: #1a1a1a;
+                border: 1px solid #444;
+                color: #eee;
+                padding: 6px 10px;
+                border-radius: 4px;
+                font-size: 12px;
+                box-sizing: border-box;
+            }
+
+            .sidebar-filter input:focus {
+                outline: none;
+                border-color: #4dabf7;
+            }
+
+            .waterfall-container {
+                width: 100%;
+                min-width: 250px;
+                position: relative;
+                margin-top: 4px;
+            }
+
+            .waterfall-bar-bg {
+                height: 12px;
+                background-color: rgba(255, 255, 255, 0.05);
+                border-radius: 2px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .waterfall-bar {
+                height: 100%;
+                background-color: #4dabf7;
+                position: absolute;
+                border-radius: 1px;
+                min-width: 1px;
+            }
+
+            .waterfall-label {
+                font-size: 10px;
+                color: #888;
+                margin-top: 2px;
+                display: block;
+                white-space: nowrap;
             }
 
             .toolbar-actions {
@@ -309,17 +399,21 @@
                 border-left: 1px solid #333333;
                 position: sticky;
                 bottom: 0;
+                left: 0;
                 right: 0;
                 background-color: #222222;
                 z-index: 10;
+                width: auto !important;
+                min-width: 0 !important;
+                padding: 5px 10px !important;
             }
 
             :host(.pos-right) .toolbar-actions, :host(.pos-left) .toolbar-actions {
                 border-left: none;
                 border-top: 1px solid #333333;
-                width: 100%;
+                width: 100% !important;
                 justify-content: center;
-                padding: 5px 0;
+                padding: 5px 0 !important;
             }
 
             #resize-handle {
@@ -342,43 +436,67 @@
             .val-number { color: #ffd43b; }
             .val-boolean { color: #ff922b; }
             .val-null { color: #adb5bd; font-style: italic; }
-            
+
             /* Pretty Print JSON */
             .val-json {
                 margin: 0;
                 font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
                 font-size: 13px;
                 color: #e9ecef;
-                white-space: pre-wrap;
-                word-break: break-all;
+                white-space: pre;
                 background-color: rgba(0,0,0,0.2);
                 padding: 8px;
                 border-radius: 4px;
                 border: 1px solid #333;
+                width: max-content;
+                min-width: 100%;
+                box-sizing: border-box;
+            }
+
+            :host(.pos-right) .val-json, :host(.pos-left) .val-json {
+                white-space: pre-wrap;
+                word-break: break-all;
+                width: 100%;
+                min-width: 0;
             }
         </style>
         <div id="resize-handle"></div>
         <div id="debugtoolbar" class="flexbox-panel">
+            <div class="sidebar-filter">
+                <input type="text" id="sidebar-search" placeholder="Filter items...">
+            </div>
             {% for rendering in collectorRenderings %}
                 <div class="flexbox-item">
                     <span class="item-title">{{ rendering.title }}: {{ rendering.shortInformation }}</span>
                     {% if rendering.popupTable %}
                         <div class="infobox">
                             <table>
+                                {% set total_duration = rendering.popupTable._meta.total_duration_ms|default(0) %}
                                 {% for key, value in rendering.popupTable %}
-                                    <tr>
-                                        <th>{{ key|raw }}</th>
-                                        <td>
-                                            {{ _self.render_data(value) }}
-                                        </td>
-                                    </tr>
+                                    {% if key != '_meta' %}
+                                        <tr>
+                                            <th>{{ key|raw }}</th>
+                                            <td>
+                                                {% if value.start_ms is defined and value.duration_ms is defined and total_duration > 0 %}
+                                                    <div class="waterfall-container">
+                                                        <div class="waterfall-bar-bg">
+                                                            <div class="waterfall-bar" style="left: {{ (value.start_ms / total_duration * 100)|round(2) }}%; width: {{ (value.duration_ms / total_duration * 100)|round(2) }}%;"></div>
+                                                        </div>
+                                                        <span class="waterfall-label">{{ value.duration_ms }}ms (at {{ value.start_ms }}ms)</span>
+                                                    </div>
+                                                {% else %}
+                                                    {{ _self.render_data(value) }}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endif %}
                                 {% endfor %}
                             </table>
                         </div>
                     {% endif %}
                 </div>
             {% endfor %}
-            
+
             <div class="spacer"></div>
 
             <div class="flexbox-item toolbar-actions">
@@ -427,9 +545,12 @@
             document.body.style.marginBottom = ''; document.body.style.marginTop = '';
             document.body.style.marginRight = ''; document.body.style.marginLeft = '';
 
+            const navbar = document.querySelector('.navbar.is-fixed-top');
+            if (navbar) { navbar.style.left = ''; navbar.style.right = ''; }
+
             if (pos === 'bottom') document.body.style.marginBottom = '35px';
             if (pos === 'top') document.body.style.marginTop = '35px';
-            
+
             if (pos === 'right' || pos === 'left') {
                 host.style.width = (localStorage.getItem(storageKeyWidth) || '350') + 'px';
             } else { host.style.width = ''; }
@@ -438,38 +559,60 @@
             updateBodyMargins();
         }
 
-        function updateBodyMargins() {
+        function updateBodyMargins(overrideWidth) {
             const pos = localStorage.getItem(storageKeyPos);
-            if (pos === 'right') document.body.style.marginRight = host.offsetWidth + 'px';
-            if (pos === 'left') document.body.style.marginLeft = host.offsetWidth + 'px';
+            const width = overrideWidth || host.offsetWidth;
+            const widthPx = width + 'px';
+            const navbar = document.querySelector('.navbar.is-fixed-top');
+
+            if (pos === 'right') {
+                document.body.style.marginRight = widthPx;
+                if (navbar) navbar.style.right = widthPx;
+            }
+            if (pos === 'left') {
+                document.body.style.marginLeft = widthPx;
+                if (navbar) navbar.style.left = widthPx;
+            }
         }
 
         let currentPos = localStorage.getItem(storageKeyPos) || 'bottom';
         if (!positions.includes(currentPos)) currentPos = 'bottom';
         setPosition(currentPos);
 
-        const ro = new ResizeObserver(() => updateBodyMargins());
-        ro.observe(host);
-
         // Smart Positioning for Popups
         function ensureInViewport(item) {
             const infobox = item.querySelector('.infobox');
             if (!infobox) return;
 
-            // Reset to defaults
+            const pos = localStorage.getItem(storageKeyPos);
+            if (pos === 'right' || pos === 'left') return;
+
+            // Reset horizontal centering
             infobox.style.left = '50%';
             infobox.style.transform = 'translateX(-50%)';
 
-            const rect = infobox.getBoundingClientRect();
-            const padding = 10;
-
-            if (rect.left < padding) {
-                const offset = padding - rect.left;
-                infobox.style.transform = `translateX(calc(-50% + ${offset}px))`;
-            } else if (rect.right > window.innerWidth - padding) {
-                const offset = (window.innerWidth - padding) - rect.right;
-                infobox.style.transform = `translateX(calc(-50% + ${offset}px))`;
+            // Set precise vertical position based on the toolbar host's actual viewport position
+            const hostRect = host.getBoundingClientRect();
+            if (pos === 'bottom') {
+                infobox.style.bottom = (window.innerHeight - hostRect.top) + 'px';
+                infobox.style.top = '';
+            } else {
+                infobox.style.top = hostRect.bottom + 'px';
+                infobox.style.bottom = '';
             }
+
+            // Adjust horizontal position after layout is computed
+            requestAnimationFrame(() => {
+                const rect = infobox.getBoundingClientRect();
+                const padding = 10;
+                if (rect.left < padding) {
+                    const offset = padding - rect.left;
+                    infobox.style.transform = `translateX(calc(-50% + ${offset}px))`;
+                } else if (rect.right > window.innerWidth - padding) {
+                    const offset = (window.innerWidth - padding) - rect.right;
+                    infobox.style.transform = `translateX(calc(-50% + ${offset}px))`;
+                }
+            });
         }
 
         // Interaction Logic for Horizontal Mode
@@ -482,7 +625,7 @@
             item.addEventListener('mouseenter', () => {
                 const pos = localStorage.getItem(storageKeyPos);
                 if (pos === 'right' || pos === 'left') return;
-                
+
                 if (hoverTimeout) clearTimeout(hoverTimeout);
                 shadowRoot.querySelectorAll('.flexbox-item.active:not(.locked)').forEach(el => el.classList.remove('active'));
                 item.classList.add('active');
@@ -492,7 +635,7 @@
             item.addEventListener('mouseleave', () => {
                 const pos = localStorage.getItem(storageKeyPos);
                 if (pos === 'right' || pos === 'left' || item.classList.contains('locked')) return;
-                
+
                 hoverTimeout = setTimeout(() => {
                     item.classList.remove('active');
                 }, 300);
@@ -525,7 +668,11 @@
             const pos = localStorage.getItem(storageKeyPos);
             if (pos === 'left') newWidth = e.clientX;
             else if (pos === 'right') newWidth = window.innerWidth - e.clientX;
-            if (newWidth >= 200 && newWidth <= window.innerWidth * 0.8) { host.style.width = newWidth + 'px'; localStorage.setItem(storageKeyWidth, newWidth); }
+            if (newWidth >= 200 && newWidth <= window.innerWidth * 0.8) {
+                host.style.width = newWidth + 'px';
+                localStorage.setItem(storageKeyWidth, newWidth);
+                updateBodyMargins(newWidth);
+            }
         });
         window.addEventListener('mouseup', () => { if (isResizing) { isResizing = false; handle.classList.remove('active'); document.body.style.cursor = ''; document.body.style.userSelect = ''; } });
 
@@ -539,8 +686,41 @@
         shadowRoot.querySelector('#pos-ccw').addEventListener('click', (e) => { e.preventDefault(); updatePosition(1); });
         shadowRoot.querySelector('#pos-cw').addEventListener('click', (e) => { e.preventDefault(); updatePosition(-1); });
         shadowRoot.querySelector('#pos-opposite').addEventListener('click', (e) => { e.preventDefault(); updatePosition(2); });
-        
+
+        // Filtering Logic
+        const sidebarSearch = shadowRoot.querySelector('#sidebar-search');
+        sidebarSearch.addEventListener('input', () => {
+            const query = sidebarSearch.value.toLowerCase();
+            const items = shadowRoot.querySelectorAll('.flexbox-item:not(.toolbar-actions, .sidebar-filter)');
+
+            items.forEach(item => {
+                const title = item.querySelector('.item-title').textContent.toLowerCase();
+                const rows = item.querySelectorAll('.infobox tr');
+                let hasVisibleRow = false;
+
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        row.style.display = '';
+                        hasVisibleRow = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                if (title.includes(query) || hasVisibleRow) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
         window.addEventListener('resize', () => {
+            const pos = localStorage.getItem(storageKeyPos);
+            if (pos === 'right' || pos === 'left') {
+                updateBodyMargins();
+            }
             shadowRoot.querySelectorAll('.flexbox-item.active').forEach(item => ensureInViewport(item));
         });
     })();
