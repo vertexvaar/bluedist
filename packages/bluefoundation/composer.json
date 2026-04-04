@@ -17,7 +17,7 @@
     }
   },
   "require": {
-    "php": "8.4.*",
+    "php": "8.5.*",
     "composer-plugin-api": "^2.0",
     "co-stack/dependency-injection-additions": "@dev",
     "psr/container": "^2.0",

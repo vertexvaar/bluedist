@@ -1,7 +1,7 @@
 name: bluedist
 type: php
 docroot: public
-php_version: "8.4"
+php_version: "8.5"
 webserver_type: apache-fpm
 xdebug_enabled: false
 additional_hostnames: []
