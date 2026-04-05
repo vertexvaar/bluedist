@@ -1,0 +1,13 @@
+{# @var element \VerteXVaaR\BlueForm\Element\FormElement #}
+{# @var label string #}
+{# @var content string #}
+{# @var errors string #}
+
+<div class="field">
+    {{ label|raw }}
+    <div class="control has-icons-{{ element.icon.position.value }}">
+        {{ content|raw }}
+        {{ include('@vertexvaar_blueform/form/support/icon.html.twig', {icon: element.icon}) }}
+    </div>
+    {{ errors|raw }}
+</div>

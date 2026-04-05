@@ -1,0 +1,8 @@
+{# @var element VerteXVaaR\BlueForm\Section #}
+<div class="box">
+    <p class="heading">{{ element.label }}</p>
+    {% for child in element.children %}
+        {% set templateName = child.templateName %}
+        {{ include("@vertexvaar_blueform/#{templateName}.html.twig", {element: child}) }}
+    {% endfor %}
+</div>

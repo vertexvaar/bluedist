@@ -1,0 +1,21 @@
+{# @var form VerteXVaaR\BlueForm\Element\Form #}
+
+{% if form.context and form.context.show %}
+    <div>
+        {% for child in form.children %}
+            {% if child.condition %}
+                {% set templateName = child.templateName %}
+                {{ include("@vertexvaar_blueform/#{templateName}.html.twig", {element: child}) }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% else %}
+    <form method="post" action="{{ form.getTagAttribute('action') }}">
+        {% for child in form.children %}
+            {% if child.condition %}
+                {% set templateName = child.templateName %}
+                {{ include("@vertexvaar_blueform/#{templateName}.html.twig", {element: child}) }}
+            {% endif %}
+        {% endfor %}
+    </form>
+{% endif %}

@@ -1,0 +1,7 @@
+{# @var element VerteXVaaR\BlueForm\Element\Container\ButtonGroup #}
+<div class="field is-grouped">
+    {% for child in element.children %}
+        {% set templateName = child.templateName %}
+        {{ include("@vertexvaar_blueform/#{templateName}.html.twig", {element: child}) }}
+    {% endfor %}
+</div>

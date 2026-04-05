@@ -6,14 +6,15 @@ namespace VerteXVaaR\BlueAuth\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Contracts\Service\Attribute\Required;
+use VerteXVaaR\BlueAuth\Dto\Login;
+use VerteXVaaR\BlueAuth\Form\LoginForm;
 use VerteXVaaR\BlueAuth\Service\AuthenticationService;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
 use VerteXVaaR\BlueWeb\Controller\Attribute\AsController;
 use VerteXVaaR\BlueWeb\Enum\Severity;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
-
-use function array_key_exists;
 
 #[AsController]
 class AuthenticationController extends AbstractController
@@ -27,6 +28,7 @@ class AuthenticationController extends AbstractController
     }
 
     #[Route(path: '/login')]
+    #[Route(path: '/login', method: Route::POST)]
     public function login(ServerRequestInterface $request): ResponseInterface
     {
         $this->authenticationService->forcePersistentSession($request);
@@ -35,27 +37,22 @@ class AuthenticationController extends AbstractController
         if ($session->isAuthenticated()) {
             return $this->redirect('/');
         }
-        $flashMessages = $this->flashMessageService->get($session->identifier);
-        return $this->render('@vertexvaar_blueauth/login.html.twig', ['flashMessages' => $flashMessages]);
-    }
 
-    #[Route(path: '/logout')]
-    public function logout(ServerRequestInterface $request): ResponseInterface
-    {
-        $session = $request->getAttribute('session');
-        $this->authenticationService->logout($session);
-        return $this->redirect('/');
-    }
+        $form = new LoginForm();
+        $form->handleRequest($request);
 
-    #[Route(path: '/login', method: Route::POST)]
-    public function authenticate(ServerRequestInterface $request): ResponseInterface
-    {
-        $body = $request->getParsedBody();
-        if (array_key_exists('username', $body) && array_key_exists('password', $body)) {
-            $session = $request->getAttribute('session');
-            $this->authenticationService->authorize($session, $body['username'], $body['password']);
+        if ($form->submitted) {
+            $login = new Login(Uuid::uuid4()->toString());
+            $form->writeToEntity($login);
+            $this->authenticationService->authorize($session, $login->username, $login->password);
 
             if ($session->isAuthenticated()) {
+                $this->flashMessageService->add(
+                    $session,
+                    'Login successful',
+                    sprintf('You are now logged in as %s.', $login->username),
+                    Severity::ERROR,
+                );
                 return $this->redirect('/');
             }
             $this->flashMessageService->add(
@@ -65,6 +62,19 @@ class AuthenticationController extends AbstractController
                 Severity::ERROR,
             );
         }
-        return $this->redirect('/login');
+
+        $flashMessages = $this->flashMessageService->get($session);
+        return $this->render('@vertexvaar_blueauth/login.html.twig', [
+            'form' => $form,
+            'flashMessages' => $flashMessages,
+        ]);
+    }
+
+    #[Route(path: '/logout')]
+    public function logout(ServerRequestInterface $request): ResponseInterface
+    {
+        $session = $request->getAttribute('session');
+        $this->authenticationService->logout($session);
+        return $this->redirect('/');
     }
 }

@@ -20,8 +20,8 @@ readonly class FlashMessageService
     /**
      * @return array<FlashMessage>
      */
-    public function get(string|int $for): array
+    public function get(Session $session): array
     {
-        return $this->flashMessageStore->get($for);
+        return $this->flashMessageStore->get($session->identifier);
     }
 }

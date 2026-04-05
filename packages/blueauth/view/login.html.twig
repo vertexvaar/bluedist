@@ -1,34 +1,7 @@
 <section>
     <h1>Login</h1>
 
-    {% for flashMessage in flashMessages %}
-        <article class="message {{ flashMessage.severity.bulmaClass }}">
-            <div class="message-header">
-                {{ flashMessage.title }}
-            </div>
-            <div class="message-body">
-                {{ flashMessage.message }}
-            </div>
-        </article>
-    {% endfor %}
+    {{ include('@vertexvaar_blueweb/_flashmessages.html.twig') }}
 
-    <form method="post" action="/login" id="login">
-        <table>
-            <tr>
-                <td>
-                    <label>Username
-                        <input type="text" name="username"/>
-                    </label>
-                </td>
-                <td>
-                    <label>Password
-                        <input type="password" name="password"/>
-                    </label>
-                </td>
-                <td>
-                    <button type="submit">Login</button>
-                </td>
-            </tr>
-        </table>
-    </form>
+    {{ include('@vertexvaar_blueform/form.html.twig') }}
 </section>

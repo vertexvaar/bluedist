@@ -6,29 +6,9 @@
         <div class="box">
             <h1 class="title has-text-centered">Login</h1>
 
-            <form method="post" action="/login" id="login">
+            {{ include('@vertexvaar_blueweb/_flashmessages.html.twig') }}
 
-                <div class="field">
-                    <label class="label" for="username">Username</label>
-                    <div class="control has-icons-left">
-                        <input id="username" class="input" type="text" name="username" placeholder="admin">
-                        <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label" for="password">Password</label>
-                    <div class="control has-icons-left">
-                        <input id="password" class="input" type="password" name="password" placeholder="********">
-                        <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
-                    </div>
-                </div>
-
-                <div class="control">
-                    <button class="button is-link is-fullwidth">Login</button>
-                </div>
-
-            </form>
+            {{ include('@vertexvaar_blueform/form.html.twig') }}
 
         </div>
         <p class="has-text-centered mt-4">

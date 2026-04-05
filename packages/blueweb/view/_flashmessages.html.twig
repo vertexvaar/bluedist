@@ -1,0 +1,12 @@
+{# @var flashMessages \VerteXVaaR\BlueWeb\FlashMessage\FlashMessage[] #}
+
+{% for flashMessage in flashMessages %}
+    <article class="message {{ flashMessage.severity.bulmaClass }}">
+        <div class="message-header">
+            {{ flashMessage.title }}
+        </div>
+        <div class="message-body">
+            {{ flashMessage.message }}
+        </div>
+    </article>
+{% endfor %}
