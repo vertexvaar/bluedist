@@ -38,8 +38,8 @@ test('admin can create a fruit', async ({ page }) => {
 
     // redirects to show page after creation
     await expect(page.getByText('Fruit Details')).toBeVisible();
-    await expect(page.getByDisplayValue('Mango')).toBeVisible();
-    await expect(page.getByDisplayValue('Yellow')).toBeVisible();
+    await expect(page.locator('input[value="Mango"]')).toBeVisible();
+    await expect(page.locator('input[value="Yellow"]')).toBeVisible();
 });
 
 test('admin show page displays fields as disabled', async ({ page }) => {
@@ -106,7 +106,7 @@ test('admin can update a fruit', async ({ page }) => {
 
     // Redirects to show page with updated values
     await expect(page.getByText('Fruit Details')).toBeVisible();
-    await expect(page.getByDisplayValue('Yellow-Green')).toBeVisible();
+    await expect(page.locator('input[value="Yellow-Green"]')).toBeVisible();
 });
 
 test('admin can delete a fruit', async ({ page }) => {
