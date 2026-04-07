@@ -18,9 +18,9 @@ test('loginAndLogout', async ({ page, context }) => {
     await expect(page.getByRole('link', { name: 'Log in' })).toBeVisible();
 
     await page.goto('/login');
-    await page.locator('#login [name="username"]').fill('admin');
-    await page.locator('#login [name="password"]').fill('password');
-    await page.locator('#login button[type="submit"]').click();
+    await page.locator('form[name="form"] [name="form[username]"]').fill('admin');
+    await page.locator('form[name="form"] [name="form[password]"]').fill('password');
+    await page.locator('form[name="form"] button[type="submit"]').click();
 
     await page.waitForURL('/');
     await expect(page.getByText('You are currently authenticated as')).toBeVisible();
