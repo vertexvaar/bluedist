@@ -40,6 +40,11 @@ trait HasValidation
         $this->validationResult = $result;
     }
 
+    public function getValidationErrors(): ValidationResult
+    {
+        return $this->validationResult ?? new ValidationResult();
+    }
+
     public function hasValidationErrors(): bool
     {
         return !($this->validationResult?->isValid() ?? true);

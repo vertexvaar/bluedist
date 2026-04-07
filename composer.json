@@ -30,7 +30,8 @@
     "vertexvaar/bluecms": "@dev",
     "vertexvaar/blueform": "@dev",
     "vertexvaar/bluevalidation": "@dev",
-    "vertexvaar/blueseed": "@dev"
+    "vertexvaar/blueseed": "@dev",
+    "vertexvaar/blueadmin": "@dev"
   },
   "autoload": {
     "psr-4": {
