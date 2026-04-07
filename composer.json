@@ -29,7 +29,8 @@
     "vertexvaar/blueconfig": "@dev",
     "vertexvaar/bluecms": "@dev",
     "vertexvaar/blueform": "@dev",
-    "vertexvaar/bluevalidation": "@dev"
+    "vertexvaar/bluevalidation": "@dev",
+    "vertexvaar/blueseed": "@dev"
   },
   "autoload": {
     "psr-4": {

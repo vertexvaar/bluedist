@@ -1,0 +1,27 @@
+{
+  "name": "vertexvaar/blueseed",
+  "description": "Seeding system for BlueSprints",
+  "type": "library",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "Oliver Eglseder",
+      "email": "bluesprints@vxvr.de",
+      "homepage": "http://vxvr.de/",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "VerteXVaaR\\BlueSeed\\": "src/"
+    }
+  },
+  "require": {
+    "php": "8.5.*"
+  },
+  "extra": {
+    "vertexvaar/bluesprints": {
+      "services": "svc"
+    }
+  }
+}

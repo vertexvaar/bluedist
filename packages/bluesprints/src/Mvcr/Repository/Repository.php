@@ -40,6 +40,16 @@ readonly class Repository
         return $this->store->findAll($className);
     }
 
+    /**
+     * @param class-string<T> $className
+     *
+     * @return int
+     */
+    public function countAll(string $className): int
+    {
+        return $this->store->countAll($className);
+    }
+
     public function persist(Entity $entity): void
     {
         $this->store->store($entity);
