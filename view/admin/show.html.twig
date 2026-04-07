@@ -1,0 +1,35 @@
+{% extends "@vertexvaar_blueadmin/layout.html.twig" %}
+
+{% block head %}
+    <title>Fruit Details - BlueAdmin</title>
+{% endblock %}
+
+{% block content %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/admin">Admin</a></li>
+            <li><a href="/admin/fruits">Fruits</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Show</a></li>
+        </ul>
+    </nav>
+
+    <h1 class="title">Fruit Details</h1>
+
+    <div class="box">
+        {{ include('@vertexvaar_blueform/form.html.twig') }}
+
+        <hr>
+
+        <div class="field is-grouped">
+            <div class="control">
+                <a class="button is-warning" href="/admin/fruits/{{ form.entity.identifier }}/edit">
+                    <span class="icon is-small"><i class="fas fa-edit"></i></span>
+                    <span>Edit Fruit</span>
+                </a>
+            </div>
+            <div class="control">
+                <a class="button is-light" href="/admin/fruits">Back to List</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,139 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block head %}
+            <title>Bluesprints Admin</title>
+        {% endblock %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+
+    <body class="has-navbar-fixed-top">
+        <nav class="navbar is-white is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
+            <div class="container is-fluid">
+                <div class="navbar-brand">
+                    <a class="navbar-item has-text-weight-bold is-size-4" href="/admin">
+                        BlueAdmin
+                    </a>
+
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="adminNavbarMenu">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+
+                <div id="adminNavbarMenu" class="navbar-menu">
+                    <div class="navbar-start">
+                        <a class="navbar-item" href="/">
+                            <span class="icon mr-1"><i class="fas fa-external-link-alt"></i></span>
+                            View Site
+                        </a>
+                    </div>
+
+                    <div class="navbar-end">
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">
+                                <span class="icon mr-1"><i class="fas fa-user-circle"></i></span>
+                                {{ user.username|default('Admin User') }}
+                            </a>
+                            <div class="navbar-dropdown is-right">
+                                <a class="navbar-item" href="/logout">
+                                    <span class="icon mr-1 has-text-danger"><i class="fas fa-sign-out-alt"></i></span>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section class="section">
+            <div class="container is-fluid">
+                <div class="columns">
+                    <div class="column is-2 is-hidden-mobile">
+                        <aside class="menu">
+                            <p class="menu-label">
+                                General
+                            </p>
+                            <ul class="menu-list">
+                                <li>
+                                    <a href="/admin">
+                                        <span class="icon mr-1"><i class="fas fa-tachometer-alt"></i></span>
+                                        Dashboard
+                                    </a>
+                                </li>
+                            </ul>
+                            <p class="menu-label">
+                                Resources
+                            </p>
+                            <ul class="menu-list">
+                                <li>
+                                    <a href="/admin/fruits">
+                                        <span class="icon mr-1"><i class="fas fa-apple-alt"></i></span>
+                                        Fruits
+                                    </a>
+                                </li>
+                            </ul>
+                            <p class="menu-label">
+                                System
+                            </p>
+                            <ul class="menu-list">
+                                <li>
+                                    <a href="/admin/seeds">
+                                        <span class="icon mr-1"><i class="fas fa-seedling"></i></span>
+                                        Seeders
+                                    </a>
+                                </li>
+                            </ul>                        </aside>
+                    </div>
+                    <div class="column">
+                        <div class="container is-fluid">
+                            {% block content %}
+                                <h1 class="title">Welcome</h1>
+                                <p class="subtitle">
+                                    Please select a resource from the menu.
+                                </p>
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Navbar Burger Toggle
+                const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+                if ($navbarBurgers.length > 0) {
+                    $navbarBurgers.forEach( el => {
+                        el.addEventListener('click', () => {
+                            const target = el.dataset.target;
+                            const $target = document.getElementById(target);
+                            el.classList.toggle('is-active');
+                            $target.classList.toggle('is-active');
+                        });
+                    });
+                }
+
+                // Select All Checkboxes logic
+                const $selectAllCheckboxes = document.querySelectorAll('.select-all');
+                $selectAllCheckboxes.forEach($selectAll => {
+                    $selectAll.addEventListener('change', (e) => {
+                        const $table = $selectAll.closest('table');
+                        if (!$table) return;
+                        
+                        const $checkboxes = $table.querySelectorAll('tbody input[type="checkbox"]');
+                        $checkboxes.forEach($checkbox => {
+                            $checkbox.checked = e.target.checked;
+                        });
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

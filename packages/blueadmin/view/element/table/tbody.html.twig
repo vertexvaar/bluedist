@@ -1,0 +1,7 @@
+<tbody>
+    {% for item in items %}
+        {{ include('@vertexvaar_blueadmin/element/table/tbody/tr.html.twig') }}
+    {% else %}
+        {{ include('@vertexvaar_blueadmin/element/table/tbody/empty.html.twig') }}
+    {% endfor %}
+</tbody>

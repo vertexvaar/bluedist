@@ -1,0 +1,50 @@
+{% extends "@vertexvaar_blueadmin/layout.html.twig" %}
+
+{% block head %}
+    <title>Fruits - BlueAdmin</title>
+{% endblock %}
+
+{% block content %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/admin">Admin</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Fruits</a></li>
+        </ul>
+    </nav>
+
+    <div class="level">
+        <div class="level-left">
+            <h1 class="title">Fruits</h1>
+        </div>
+        <div class="level-right">
+            <div class="level-item">
+                <a class="button is-primary" href="/admin/fruits/create">
+                    <span class="icon is-small"><i class="fas fa-plus"></i></span>
+                    <span>Create Fruit</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="box">
+        <div class="level mb-4">
+            <div class="level-left">
+                <div class="level-item">
+                    <form method="get" action="/admin/fruits">
+                        <div class="field has-addons">
+                            <div class="control has-icons-left">
+                                <input class="input" type="text" name="q" placeholder="Search..." value="{{ q|e }}">
+                                <span class="icon is-small is-left"><i class="fas fa-search"></i></span>
+                            </div>
+                            <div class="control">
+                                <button class="button is-info" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{ include('@vertexvaar_blueadmin/element/form.html.twig') }}
+    </div>
+{% endblock %}

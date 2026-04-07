@@ -1,0 +1,27 @@
+<tr>
+    {% if table.bulkActions %}
+        <td class="has-text-centered">
+            <input type="checkbox" name="ids[]" value="{{ item.identifier }}" form="bulk-action-form">
+        </td>
+    {% endif %}
+
+    {% for column in table.columns %}
+        {{ include('@vertexvaar_blueadmin/element/table/tbody/tr/td.html.twig') }}
+    {% endfor %}
+
+    {% if table.rowActions %}
+        <td class="has-text-centered">
+            <div class="field is-grouped is-grouped-centered">
+                {% for rowAction in table.rowActions %}
+                    <div class="control">
+                        {% if rowAction.method.value === 'GET' %}
+                            {{ include('@vertexvaar_blueadmin/element/html/link.html.twig') }}
+                        {% elseif rowAction.method.value === 'POST' %}
+                            {{ include('@vertexvaar_blueadmin/element/html/link_form_button.html.twig') }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </td>
+    {% endif %}
+</tr>

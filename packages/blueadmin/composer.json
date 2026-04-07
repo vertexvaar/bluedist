@@ -1,0 +1,33 @@
+{
+  "name": "vertexvaar/blueadmin",
+  "description": "Administrative GUI",
+  "type": "library",
+  "license": "GPL-3.0+",
+  "authors": [
+    {
+      "name": "Oliver Eglseder",
+      "email": "bluesprints@vxvr.de",
+      "homepage": "http://vxvr.de/",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "VerteXVaaR\\BlueAdmin\\": "src/"
+    }
+  },
+  "require": {
+    "php": "8.5.*",
+    "vertexvaar/blueweb": "*",
+    "vertexvaar/blueauth": "*",
+    "vertexvaar/bluesprints": "*",
+    "vertexvaar/blueseed": "*"
+  },
+  "extra": {
+    "vertexvaar/bluesprints": {
+      "services": "svc",
+      "view": "view",
+      "resources": "res"
+    }
+  }
+}

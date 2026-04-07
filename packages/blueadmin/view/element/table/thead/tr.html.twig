@@ -1,0 +1,15 @@
+<tr>
+    {% if table.bulkActions %}
+        <th class="is-narrow has-text-centered">
+            <input type="checkbox" class="select-all">
+        </th>
+    {% endif %}
+
+    {% for column in table.columns %}
+        {{ include('@vertexvaar_blueadmin/element/table/thead/tr/th.html.twig') }}
+    {% endfor %}
+
+    {% if table.rowActions %}
+        <th class="has-text-centered">Actions</th>
+    {% endif %}
+</tr>

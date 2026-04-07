@@ -1,0 +1,14 @@
+{% if table.bulkActions %}
+    <div class="level mt-4 mb-4">
+        <div class="level-left">
+            <div class="level-item">
+                <span class="has-text-grey mr-2">With selected:</span>
+                <div class="field is-grouped">
+                    {% for bulkAction in table.bulkActions %}
+                        {{ include('@vertexvaar_blueadmin/element/table/bulk_action.html.twig') }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

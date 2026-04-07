@@ -1,0 +1,63 @@
+{% extends "@vertexvaar_blueadmin/layout.html.twig" %}
+
+{% block head %}
+    <title>Seeders - BlueAdmin</title>
+{% endblock %}
+
+{% block content %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/admin">Admin</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Seeders</a></li>
+        </ul>
+    </nav>
+
+    <h1 class="title">Seeders</h1>
+    <p class="subtitle">Populate your storage with demo data.</p>
+
+    {% for flashMessage in flashMessages %}
+        <article class="message {{ flashMessage.severity.bulmaClass }}">
+            <div class="message-header">
+                <p>{{ flashMessage.title }}</p>
+            </div>
+            <div class="message-body">
+                {{ flashMessage.message }}
+            </div>
+        </article>
+    {% endfor %}
+
+    <div class="box">
+        <table class="table is-fullwidth is-striped is-hoverable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th class="has-text-centered">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for seederName, seeder in seeders %}
+                    <tr>
+                        <td class="is-vcentered">
+                            <strong>{{ seederName }}</strong>
+                        </td>
+                        <td class="has-text-centered">
+                            <form action="/admin/seeds/run/{{ seederName }}" method="post">
+                                <button type="submit" class="button is-primary is-small" onclick="return confirm('Run seeder {{ seederName }}?');">
+                                    <span class="icon is-small"><i class="fas fa-play"></i></span>
+                                    <span>Run Seeder</span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2" class="has-text-centered py-6 has-text-grey">
+                            <span class="icon is-large"><i class="fas fa-inbox fa-2x"></i></span>
+                            <p>No seeders found.</p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

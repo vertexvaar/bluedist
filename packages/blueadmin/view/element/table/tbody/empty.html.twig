@@ -1,0 +1,9 @@
+{% set total_cols = table.columns|length %}
+{% if table.bulkActions %}{% set total_cols = total_cols + 1 %}{% endif %}
+{% if table.rowActions %}{% set total_cols = total_cols + 1 %}{% endif %}
+<tr>
+    <td colspan="{{ total_cols }}" class="has-text-centered py-6 has-text-grey">
+        <span class="icon is-large"><i class="fas fa-inbox fa-2x"></i></span>
+        <p>No items found.</p>
+    </td>
+</tr>

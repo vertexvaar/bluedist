@@ -1,0 +1,41 @@
+{% extends "@vertexvaar_blueadmin/layout.html.twig" %}
+
+{% block head %}
+    <title>Dashboard - BlueAdmin</title>
+{% endblock %}
+
+{% block content %}
+    <h1 class="title">Dashboard</h1>
+    <p class="subtitle">Welcome to your administration panel.</p>
+
+    <div class="tile is-ancestor">
+        <div class="tile is-parent">
+            <article class="tile is-child box notification is-primary is-light">
+                <p class="title">Welcome!</p>
+                <p class="subtitle">You are logged in as admin.</p>
+                <div class="content">
+                    Use the sidebar to manage your resources.
+                </div>
+            </article>
+        </div>
+        <div class="tile is-parent">
+            <article class="tile is-child box">
+                <p class="title">Fruits</p>
+                <p class="subtitle">Quick access</p>
+                <div class="content">
+                    <a href="/admin/fruits" class="button is-link">Manage Fruits</a>
+                </div>
+            </article>
+        </div>
+        <div class="tile is-parent">
+            <article class="tile is-child box">
+                <p class="title">Stats</p>
+                <p class="subtitle">System overview</p>
+                <div class="content">
+                    <p>Framework: <strong>BlueSprints</strong></p>
+                    <p>Storage: <strong>File-backed (NoDB)</strong></p>
+                </div>
+            </article>
+        </div>
+    </div>
+{% endblock %}
