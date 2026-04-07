@@ -10,7 +10,7 @@
         {% endfor %}
     </div>
 {% else %}
-    <form method="post" action="{{ form.getTagAttribute('action') }}">
+    <form method="post" action="{{ form.getTagAttribute('action') }}" name="{{ form.name }}">
         {% for child in form.children %}
             {% if child.condition %}
                 {% set templateName = child.templateName %}
