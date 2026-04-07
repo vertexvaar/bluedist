@@ -23,7 +23,7 @@ return static function (ContainerBuilder $container): void {
     );
     $container->registerAttributeForAutoconfiguration(
         AsController::class,
-        static function (ChildDefinition $definition, AsController $attribute): void {
+        static function (ChildDefinition $definition): void {
             $definition->addTag('blueweb.controller');
         },
     );
