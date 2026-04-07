@@ -94,10 +94,11 @@ abstract class FormElement extends Element
         try {
             $pathString = $this->getPathString();
             $value = array_value($parsedBody, $pathString);
+            $this->setSubmittedValue($value);
         } catch (ArrayKeyPathDoesNotExistException|ArrayPathTerminatesEarlyException) {
             $value = null;
         }
 
-        $this->setSubmittedValue($value);
+        $this->runValidation($this->submitted, $value);
     }
 }

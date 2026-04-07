@@ -1,6 +1,6 @@
 {
-  "name": "vertexvaar/blueform",
-  "description": "Framework-agnostic PSR-7 form engine for PHP (BlueSprints)",
+  "name": "vertexvaar/bluevalidation",
+  "description": "Generic PHP 8.5 validation rule library for BlueSprints",
   "type": "library",
   "license": "GPL-3.0+",
   "authors": [
@@ -13,19 +13,15 @@
   ],
   "autoload": {
     "psr-4": {
-      "VerteXVaaR\\BlueForm\\": "src/"
+      "VerteXVaaR\\BlueValidation\\": "src/"
     }
   },
   "require": {
-    "php": "8.5.*",
-    "psr/http-message": "^2.0",
-    "twig/twig": "^3.7.1",
-    "vertexvaar/bluevalidation": "@dev"
+    "php": "8.5.*"
   },
   "extra": {
     "vertexvaar/bluesprints": {
-      "services": "svc",
-      "view": "view"
+      "translations": "translations"
     }
   }
 }

@@ -43,6 +43,11 @@ class Form extends ContainerElement
         }
     }
 
+    public function isValid(): bool
+    {
+        return !$this->hasValidationErrors();
+    }
+
     public function writeToEntity(Entity $entity): static
     {
         parent::writeToEntity($entity);

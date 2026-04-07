@@ -59,6 +59,16 @@ abstract class ContainerElement extends Element
         }
     }
 
+    public function hasValidationErrors(): bool
+    {
+        foreach ($this->children as $child) {
+            if ($child->hasValidationErrors()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected function writeToEntity(Entity $entity): static
     {
         foreach ($this->children as $child) {

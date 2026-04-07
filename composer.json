@@ -28,7 +28,8 @@
     "symfony/http-client": "*",
     "vertexvaar/blueconfig": "@dev",
     "vertexvaar/bluecms": "@dev",
-    "vertexvaar/blueform": "@dev"
+    "vertexvaar/blueform": "@dev",
+    "vertexvaar/bluevalidation": "@dev"
   },
   "autoload": {
     "psr-4": {

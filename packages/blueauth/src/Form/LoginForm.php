@@ -9,6 +9,8 @@ use VerteXVaaR\BlueForm\Element\Form\Input\Password;
 use VerteXVaaR\BlueForm\Element\Form\Input\Text;
 use VerteXVaaR\BlueForm\Element\Form\Security\Csrf;
 use VerteXVaaR\BlueForm\Element\Support\Icon;
+use VerteXVaaR\BlueValidation\Rule\MinLength;
+use VerteXVaaR\BlueValidation\Rule\Required;
 
 use function getenv;
 
@@ -23,11 +25,13 @@ class LoginForm extends Form
             new Text('username')
                 ->setLabel('Username')
                 ->setPlaceholder('e.g. admin')
-                ->setIcon(new Icon('fas fa-user', Direction::Left)),
+                ->setIcon(new Icon('fas fa-user', Direction::Left))
+                ->addValidation(new Required()),
             new Password('password')
                 ->setLabel('Password')
                 ->setPlaceholder('********')
-                ->setIcon(new Icon('fas fa-lock', Direction::Left)),
+                ->setIcon(new Icon('fas fa-lock', Direction::Left))
+                ->addValidation(new Required(), new MinLength(8)),
             new Submit('login')
                 ->setLabel('Login')
                 ->setIsFullWidth(),

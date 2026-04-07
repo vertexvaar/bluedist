@@ -16,6 +16,8 @@ use VerteXVaaR\BlueWeb\Controller\Attribute\AsController;
 use VerteXVaaR\BlueWeb\Enum\Severity;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
+use function sprintf;
+
 #[AsController]
 class AuthenticationController extends AbstractController
 {
@@ -42,18 +44,20 @@ class AuthenticationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->submitted) {
-            $login = new Login(Uuid::uuid4()->toString());
-            $form->writeToEntity($login);
-            $this->authenticationService->authorize($session, $login->username, $login->password);
+            if ($form->isValid()) {
+                $login = new Login(Uuid::uuid4()->toString());
+                $form->writeToEntity($login);
+                $this->authenticationService->authorize($session, $login->username, $login->password);
 
-            if ($session->isAuthenticated()) {
-                $this->flashMessageService->add(
-                    $session,
-                    'Login successful',
-                    sprintf('You are now logged in as %s.', $login->username),
-                    Severity::ERROR,
-                );
-                return $this->redirect('/');
+                if ($session->isAuthenticated()) {
+                    $this->flashMessageService->add(
+                        $session,
+                        'Login successful',
+                        sprintf('You are now logged in as %s.', $login->username),
+                        Severity::ERROR,
+                    );
+                    return $this->redirect('/');
+                }
             }
             $this->flashMessageService->add(
                 $session,

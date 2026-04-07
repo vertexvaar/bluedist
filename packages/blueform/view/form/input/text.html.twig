@@ -7,7 +7,7 @@
 {% set content %}
     <input
             id="{{ element.name }}"
-            class="input {% if element.validationErrors.errors %}is-danger{% endif %}"
+            class="input {% if element.validationResult.errors %}is-danger{% endif %}"
             type="text"
             name="{{ element.htmlPathString }}"
             value="{{ element.value }}"
@@ -19,9 +19,9 @@
 {% endset %}
 
 {% set errors %}
-    {% if element.validationErrors.errors %}
-        {% for validationError in element.validationErrors.errors %}
-            <p class="help is-danger">{{ validationError.label|t }}</p>
+    {% if element.validationResult.errors %}
+        {% for validationError in element.validationResult.errors %}
+            <p class="help is-danger">{{ validationError.code|t(validationError.context) }}</p>
         {% endfor %}
     {% endif %}
 {% endset %}

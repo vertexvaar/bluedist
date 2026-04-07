@@ -11,6 +11,7 @@ use VerteXVaaR\BlueForm\Trait\HasIcon;
 use VerteXVaaR\BlueForm\Trait\HasParent;
 use VerteXVaaR\BlueForm\Trait\HasTagAttributes;
 use VerteXVaaR\BlueForm\Trait\HasTemplateName;
+use VerteXVaaR\BlueForm\Trait\HasValidation;
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
 abstract class Element
@@ -21,6 +22,7 @@ abstract class Element
     use HasParent;
     use HasTagAttributes;
     use HasTemplateName;
+    use HasValidation;
 
     public function __construct(string $name)
     {

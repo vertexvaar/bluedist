@@ -1,19 +1,19 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-<div class="columns is-centered">
-    <div class="column is-one-third">
-        <div class="box">
-            <h1 class="title has-text-centered">Login</h1>
+    <div class="columns is-centered">
+        <div class="column is-one-third">
+            <div class="box">
+                <h1 class="title has-text-centered">Login</h1>
 
-            {{ include('@vertexvaar_blueweb/_flashmessages.html.twig') }}
+                {{ include('@vertexvaar_blueweb/_flashmessages.html.twig') }}
 
-            {{ include('@vertexvaar_blueform/form.html.twig') }}
+                {{ include('@vertexvaar_blueform/form.html.twig') }}
 
+            </div>
+            <p class="has-text-centered mt-4">
+                <a href="/">Back to Home</a>
+            </p>
         </div>
-        <p class="has-text-centered mt-4">
-            <a href="/">Back to Home</a>
-        </p>
     </div>
-</div>
 {% endblock %}
