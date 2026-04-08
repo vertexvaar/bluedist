@@ -31,18 +31,8 @@ readonly class RootNode extends ObjectNode
         return $this->description;
     }
 
-    public function getType(): string
-    {
-        return 'object';
-    }
-
     public function getChildren(): array
     {
         return $this->children;
-    }
-
-    public function getDefault(): array
-    {
-        return [];
     }
 }
