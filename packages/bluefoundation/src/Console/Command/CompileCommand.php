@@ -60,7 +60,7 @@ class CompileCommand extends Command
         $this->compilePackageExtras($rootPath, $bootstrapPath);
         $this->compileContainer($input, $output, $bootstrapPath);
 
-        $this->dumpBootstrap($rootPath, $bootstrapPath);
+        $this->dumpBootstrap($bootstrapPath);
 
         return self::SUCCESS;
     }
@@ -265,7 +265,7 @@ class CompileCommand extends Command
         }
     }
 
-    private function dumpBootstrap(string $rootPath, string $bootstrapPath): void
+    private function dumpBootstrap(string $bootstrapPath): void
     {
         $file = concat_paths($bootstrapPath, 'bootstrap.php');
         file_put_contents(
