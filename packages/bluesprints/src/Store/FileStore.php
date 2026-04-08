@@ -16,13 +16,16 @@ use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 use function CoStack\Lib\concat_paths;
 use function file_exists;
 use function file_get_contents;
+use function file_put_contents;
 use function getenv;
 use function is_dir;
 use function iterator_count;
 use function mkdir;
 use function octdec;
 use function serialize;
+use function sprintf;
 use function str_replace;
+use function unlink;
 use function unserialize;
 
 use const DIRECTORY_SEPARATOR as DS;
