@@ -11,8 +11,7 @@ readonly class StringNode implements Node
         private string $name,
         private string $description,
         private string $default,
-    ) {
-    }
+    ) {}
 
     public function getKey(): string
     {

@@ -14,8 +14,7 @@ readonly class RootNode extends ObjectNode
         private string $name,
         private string $description,
         private array $children,
-    ) {
-    }
+    ) {}
 
     public function getKey(): string
     {

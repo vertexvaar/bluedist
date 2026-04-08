@@ -11,8 +11,7 @@ readonly class ArrayNode implements Node
         private string $name,
         private string $description,
         private array $default,
-    ) {
-    }
+    ) {}
 
     public function getKey(): string
     {

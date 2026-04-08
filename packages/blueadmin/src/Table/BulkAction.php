@@ -38,7 +38,9 @@ readonly class BulkAction
             $attributes['class'] ??= 'button is-small is-danger';
             $attributes['style'] ??= 'display:inline';
         } else {
-            throw new InvalidArgumentException(sprintf('HttpMethod::%s can not be used for BulkAction', $this->method->name));
+            throw new InvalidArgumentException(
+                sprintf('HttpMethod::%s can not be used for BulkAction', $this->method->name),
+            );
         }
         $this->attributes = $attributes;
     }

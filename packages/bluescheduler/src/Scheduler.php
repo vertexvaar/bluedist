@@ -16,8 +16,7 @@ readonly class Scheduler
     public function __construct(
         private SchedulerTaskRegistry $schedulerTaskRegistry,
         private Repository $repository,
-    ) {
-    }
+    ) {}
 
     /**
      * Starts all the scheduled tasks. They are not executed in parallel.

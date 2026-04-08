@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSeed;
 
+use InvalidArgumentException;
+use RuntimeException;
 use VerteXVaaR\BlueFoundation\Service\DependencyOrderingService;
 use VerteXVaaR\BlueSeed\Exception\SeederNotFoundException;
 use VerteXVaaR\BlueSeed\Seeder\Seeder;
-
-use InvalidArgumentException;
-use RuntimeException;
 
 use function array_column;
 use function array_keys;
@@ -90,7 +89,10 @@ readonly class SeedService
     {
         if (isset($visiting[$identifier])) {
             throw new RuntimeException(
-                sprintf('Circular dependency detected: %s', implode(' -> ', array_keys($visiting)) . ' -> ' . $identifier),
+                sprintf(
+                    'Circular dependency detected: %s',
+                    implode(' -> ', array_keys($visiting)) . ' -> ' . $identifier,
+                ),
             );
         }
 

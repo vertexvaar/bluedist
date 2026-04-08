@@ -1,4 +1,8 @@
-<form method="post" action="{{ rowAction.link(item) }}" style="{{ rowAction.attribute('style', item) }}" {% if rowAction.attribute('onsubmit', item) %}onsubmit="{{ rowAction.attribute('onsubmit', item)|raw }}"{% endif %}>
+<form method="post"
+      action="{{ rowAction.link(item) }}"
+      style="{{ rowAction.attribute('style', item) }}"
+      {% if rowAction.attribute('onsubmit', item) %}onsubmit="{{ rowAction.attribute('onsubmit', item)|raw }}"{% endif %}
+>
     <button class="button is-small {{ rowAction.attribute('class', item) }}" type="submit">
         {{ rowAction.title(item)|raw }}
     </button>

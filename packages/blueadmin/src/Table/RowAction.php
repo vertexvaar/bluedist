@@ -38,7 +38,9 @@ readonly class RowAction
             $attributes['class'] ??= 'button is-small is-danger';
             $attributes['style'] ??= 'display:inline';
         } else {
-            throw new InvalidArgumentException(sprintf('HttpMethod::%s can not be used for RowAction', $this->method->name));
+            throw new InvalidArgumentException(
+                sprintf('HttpMethod::%s can not be used for RowAction', $this->method->name),
+            );
         }
         $this->attributes = $attributes;
     }

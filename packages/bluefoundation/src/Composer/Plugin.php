@@ -7,11 +7,9 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Symfony\Component\Process\PhpSubprocess;
-use Symfony\Component\Process\Process;
 
 use function CoStack\Lib\concat_paths;
 use function getcwd;
-use function str_ends_with;
 
 class Plugin implements PluginInterface, EventSubscriberInterface
 {

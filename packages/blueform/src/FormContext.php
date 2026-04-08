@@ -10,8 +10,7 @@ class FormContext
 {
     public function __construct(
         public FormPurpose $purpose = FormPurpose::Edit,
-    ) {
-    }
+    ) {}
 
     public function isShow(): bool
     {

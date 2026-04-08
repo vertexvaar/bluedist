@@ -20,6 +20,6 @@ trait HasCondition
 
     public function getCondition(): bool
     {
-        return (bool) evaluate($this->condition, $this);
+        return (bool)evaluate($this->condition, $this);
     }
 }

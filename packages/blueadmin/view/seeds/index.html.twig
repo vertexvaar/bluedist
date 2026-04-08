@@ -42,7 +42,10 @@
                         </td>
                         <td class="has-text-centered">
                             <form action="/admin/seeds/run/{{ seederName }}" method="post">
-                                <button type="submit" class="button is-primary is-small" onclick="return confirm('Run seeder {{ seederName }}?');">
+                                <button type="submit"
+                                        class="button is-primary is-small"
+                                        onclick="return confirm('Run seeder {{ seederName }}?');"
+                                >
                                     <span class="icon is-small"><i class="fas fa-play"></i></span>
                                     <span>Run Seeder</span>
                                 </button>

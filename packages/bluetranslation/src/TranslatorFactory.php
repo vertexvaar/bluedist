@@ -23,8 +23,7 @@ readonly class TranslatorFactory
         private string $fallbackLanguage,
         private ServerRequestInterface $serverRequest,
         private PackageExtras $packageExtras,
-    ) {
-    }
+    ) {}
 
     public function create(): Translator
     {

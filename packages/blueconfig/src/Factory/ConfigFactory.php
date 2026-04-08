@@ -18,8 +18,7 @@ readonly class ConfigFactory
     public function __construct(
         private iterable $providers,
         private DefinitionService $definitionService,
-    ) {
-    }
+    ) {}
 
     public function build(): Config
     {

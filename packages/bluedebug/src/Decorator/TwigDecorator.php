@@ -16,8 +16,7 @@ class TwigDecorator extends View
     public function __construct(
         private readonly View $view,
         private readonly Stopwatch $stopwatch,
-    ) {
-    }
+    ) {}
 
     public function render($name, array $context = []): string
     {

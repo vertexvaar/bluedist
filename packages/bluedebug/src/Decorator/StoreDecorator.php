@@ -19,8 +19,7 @@ readonly class StoreDecorator implements Store
     public function __construct(
         private Store $inner,
         private QueryCollector $queryCollector,
-    ) {
-    }
+    ) {}
 
     public function findByIdentifier(string $class, string $identifier): ?Entity
     {

@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 use VerteXVaaR\BlueSeed\SeedService;
 
 #[AsCommand('app:seed')]
@@ -43,7 +44,7 @@ class SeedCommand extends Command
         try {
             $this->seedService->seed($name);
             $output->writeln(sprintf('Successfully seeded "%s"', $name));
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $output->writeln(sprintf('Error seeding "%s": %s', $name, $e->getMessage()));
             return Command::FAILURE;
         }

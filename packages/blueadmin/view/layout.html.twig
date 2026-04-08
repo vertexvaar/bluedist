@@ -19,7 +19,12 @@
                         BlueAdmin
                     </a>
 
-                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="adminNavbarMenu">
+                    <a role="button"
+                       class="navbar-burger"
+                       aria-label="menu"
+                       aria-expanded="false"
+                       data-target="adminNavbarMenu"
+                    >
                         <span aria-hidden="true"></span>
                         <span aria-hidden="true"></span>
                         <span aria-hidden="true"></span>
@@ -89,7 +94,8 @@
                                         Seeders
                                     </a>
                                 </li>
-                            </ul>                        </aside>
+                            </ul>
+                        </aside>
                     </div>
                     <div class="column">
                         <div class="container is-fluid">
@@ -110,7 +116,7 @@
                 // Navbar Burger Toggle
                 const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
                 if ($navbarBurgers.length > 0) {
-                    $navbarBurgers.forEach( el => {
+                    $navbarBurgers.forEach(el => {
                         el.addEventListener('click', () => {
                             const target = el.dataset.target;
                             const $target = document.getElementById(target);
@@ -126,7 +132,7 @@
                     $selectAll.addEventListener('change', (e) => {
                         const $table = $selectAll.closest('table');
                         if (!$table) return;
-                        
+
                         const $checkboxes = $table.querySelectorAll('tbody input[type="checkbox"]');
                         $checkboxes.forEach($checkbox => {
                             $checkbox.checked = e.target.checked;

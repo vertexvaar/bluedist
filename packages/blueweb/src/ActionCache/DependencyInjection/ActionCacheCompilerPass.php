@@ -21,8 +21,7 @@ readonly class ActionCacheCompilerPass implements CompilerPassInterface
 {
     public function __construct(
         private string $tagName,
-    ) {
-    }
+    ) {}
 
     public function process(ContainerBuilder $container): void
     {
@@ -53,9 +52,13 @@ readonly class ActionCacheCompilerPass implements CompilerPassInterface
                     foreach ($routeAttributes as $routeAttribute) {
                         if ($routeAttribute->method !== HttpMethod::GET) {
                             throw new Exception(
-                                'Can not cache actions with non-GET routes.'
-                                . ' Method: ' . $class . '::' . $reflectionMethod->getName()
-                                . ' Conflicting Route: ' . $routeAttribute->method->value . ': ' . $routeAttribute->path,
+                                sprintf(
+                                    "Can not cache actions with non-GET routes. Method: %s::%s Conflicting Route: %s: %s",
+                                    $class,
+                                    $reflectionMethod->getName(),
+                                    $routeAttribute->method->value,
+                                    $routeAttribute->path,
+                                ),
                             );
                         }
                     }

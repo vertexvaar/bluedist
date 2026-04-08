@@ -6,6 +6,4 @@ namespace VerteXVaaR\BlueForm\Element\Form\Input;
 
 use VerteXVaaR\BlueForm\Element\Form\FormElement;
 
-class Text extends FormElement
-{
-}
+class Text extends FormElement {}

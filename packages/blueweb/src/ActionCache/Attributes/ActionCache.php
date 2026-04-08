@@ -15,6 +15,5 @@ class ActionCache
         public array $params = [],
         public bool $interchangeableParams = true,
         public bool $sessionSpecific = false,
-    ) {
-    }
+    ) {}
 }

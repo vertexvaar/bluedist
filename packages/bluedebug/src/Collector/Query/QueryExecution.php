@@ -9,8 +9,7 @@ readonly class QueryExecution
     public function __construct(
         public readonly int $start,
         public readonly int $stop,
-    ) {
-    }
+    ) {}
 
     public function getDuration(): int
     {

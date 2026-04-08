@@ -27,7 +27,8 @@ readonly class Max implements ValidationRule
             return new ValidationError(
                 self::CODE,
                 ['{max}' => $this->max],
-                sprintf('This value should be %s or less.', $this->max),);
+                sprintf('This value should be %s or less.', $this->max),
+            );
         }
         return null;
     }

@@ -29,8 +29,7 @@ class LoggerFactory
     public function __construct(
         protected readonly PackageExtras $packageExtras,
         protected readonly Environment $environment,
-    ) {
-    }
+    ) {}
 
     public function create(string $name): LoggerInterface
     {

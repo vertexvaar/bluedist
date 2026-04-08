@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueForm\Element\Container;
 
-class Section extends ContainerElement
-{
-}
+class Section extends ContainerElement {}

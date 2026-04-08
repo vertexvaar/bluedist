@@ -17,8 +17,7 @@ class SessionCollector implements Collector
 
     public function __construct(
         private readonly Repository $repository,
-    ) {
-    }
+    ) {}
 
     public function collect(Session $session): void
     {

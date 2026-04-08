@@ -1,5 +1,9 @@
 {{ include('@vertexvaar_blueadmin/element/table.html.twig') }}
 
-<form id="bulk-action-form" method="post" action="/admin/fruits/delete-multiple" onsubmit="return confirm('Delete selected fruits?');">
+<form id="bulk-action-form"
+      method="post"
+      action="/admin/fruits/delete-multiple"
+      onsubmit="return confirm('Delete selected fruits?');"
+>
     {{ include('@vertexvaar_blueadmin/element/table/bulk_actions.html.twig') }}
 </form>

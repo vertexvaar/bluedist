@@ -11,8 +11,7 @@ readonly class NumberNode implements Node
         private string $name,
         private string $description,
         private int|float $default,
-    ) {
-    }
+    ) {}
 
     public function getKey(): string
     {

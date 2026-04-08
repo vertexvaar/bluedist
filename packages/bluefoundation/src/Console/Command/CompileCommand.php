@@ -90,7 +90,12 @@ class CompileCommand extends Command
                 continue;
             }
             foreach ($packageComposer['extra']['vertexvaar/bluesprints'] as $name => $path) {
-                $packageBlueSprintsExtras[$name] = $this->recursivelyExpandPaths($rootPath, $installPath, $path, $packages);
+                $packageBlueSprintsExtras[$name] = $this->recursivelyExpandPaths(
+                    $rootPath,
+                    $installPath,
+                    $path,
+                    $packages,
+                );
             }
             $packagePaths[$packageName] = $packageBlueSprintsExtras;
         }

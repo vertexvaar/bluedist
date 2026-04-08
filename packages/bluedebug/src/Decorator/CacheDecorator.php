@@ -15,8 +15,7 @@ readonly class CacheDecorator implements CacheInterface
     public function __construct(
         private CacheInterface $inner,
         private CacheStatisticsCollector $cacheStatisticsCollector,
-    ) {
-    }
+    ) {}
 
     public function get(string $key, mixed $default = null): mixed
     {

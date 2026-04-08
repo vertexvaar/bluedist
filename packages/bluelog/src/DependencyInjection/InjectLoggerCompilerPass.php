@@ -18,8 +18,7 @@ readonly class InjectLoggerCompilerPass implements CompilerPassInterface
 {
     public function __construct(
         protected string $tagName,
-    ) {
-    }
+    ) {}
 
     public function process(ContainerBuilder $container): void
     {

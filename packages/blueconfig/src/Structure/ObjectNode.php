@@ -14,8 +14,7 @@ readonly class ObjectNode implements Node
         private string $name,
         private string $description,
         private array $children,
-    ) {
-    }
+    ) {}
 
     public function getKey(): string
     {

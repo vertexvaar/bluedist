@@ -48,10 +48,37 @@
                 box-sizing: border-box;
             }
 
-            :host(.pos-bottom) { bottom: 0; left: 0; right: 0; width: 100%; height: auto; }
-            :host(.pos-top) { top: 0; left: 0; right: 0; width: 100%; height: auto; }
-            :host(.pos-right) { top: 0; right: 0; bottom: 0; height: 100%; width: 350px; }
-            :host(.pos-left) { top: 0; left: 0; bottom: 0; height: 100%; width: 350px; }
+            :host(.pos-bottom) {
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: auto;
+            }
+
+            :host(.pos-top) {
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: auto;
+            }
+
+            :host(.pos-right) {
+                top: 0;
+                right: 0;
+                bottom: 0;
+                height: 100%;
+                width: 350px;
+            }
+
+            :host(.pos-left) {
+                top: 0;
+                left: 0;
+                bottom: 0;
+                height: 100%;
+                width: 350px;
+            }
 
             .flexbox-panel {
                 position: relative;
@@ -117,7 +144,7 @@
 
             .flexbox-item.locked {
                 background-color: #333333;
-                box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+                box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
             }
 
             .infobox {
@@ -128,7 +155,7 @@
                 padding: 15px;
                 border-radius: 4px;
                 z-index: 10001;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
                 transition: opacity 0.2s ease-in-out;
                 border: 1px solid #444444;
             }
@@ -168,8 +195,19 @@
                 min-width: 0;
             }
 
-            :host(.pos-bottom) .infobox { position: fixed; bottom: 35px; left: 50%; transform: translateX(-50%); }
-            :host(.pos-top) .infobox { position: fixed; top: 35px; left: 50%; transform: translateX(-50%); }
+            :host(.pos-bottom) .infobox {
+                position: fixed;
+                bottom: 35px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            :host(.pos-top) .infobox {
+                position: fixed;
+                top: 35px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
 
             :host(.pos-bottom) .infobox,
             :host(.pos-top) .infobox {
@@ -202,7 +240,9 @@
                 width: 100%;
             }
 
-            :host(.pos-right) table, :host(.pos-left) table { width: 100%; }
+            :host(.pos-right) table, :host(.pos-left) table {
+                width: 100%;
+            }
 
             td, th {
                 text-align: left;
@@ -237,6 +277,7 @@
                 word-break: break-all;
                 overflow-wrap: anywhere;
             }
+
             :host(.pos-right) .infobox td, :host(.pos-left) .infobox td {
                 width: 100%;
                 display: block;
@@ -247,11 +288,13 @@
                 overflow-wrap: anywhere;
             }
 
-            :host(.pos-bottom) th, :host(.pos-top) th { border-right: 1px solid #333; }
+            :host(.pos-bottom) th, :host(.pos-top) th {
+                border-right: 1px solid #333;
+            }
 
             .nested-data {
                 margin: 2px 0;
-                background-color: rgba(0,0,0,0.2);
+                background-color: rgba(0, 0, 0, 0.2);
                 border-radius: 4px;
                 border: 1px solid #333;
                 width: max-content;
@@ -275,7 +318,7 @@
                 flex: 0 0 130px;
                 border-right: 1px solid #333;
                 font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-                background-color: rgba(255,255,255,0.01);
+                background-color: rgba(255, 255, 255, 0.01);
                 box-sizing: border-box;
             }
 
@@ -427,15 +470,37 @@
                 background-color: transparent;
             }
 
-            #resize-handle:hover, #resize-handle.active { background-color: #4dabf7; }
-            :host(.pos-left) #resize-handle { display: block; right: 0; }
-            :host(.pos-right) #resize-handle { display: block; left: 0; }
+            #resize-handle:hover, #resize-handle.active {
+                background-color: #4dabf7;
+            }
+
+            :host(.pos-left) #resize-handle {
+                display: block;
+                right: 0;
+            }
+
+            :host(.pos-right) #resize-handle {
+                display: block;
+                left: 0;
+            }
 
             /* Value formatting */
-            .val-string { color: #e9ecef; }
-            .val-number { color: #ffd43b; }
-            .val-boolean { color: #ff922b; }
-            .val-null { color: #adb5bd; font-style: italic; }
+            .val-string {
+                color: #e9ecef;
+            }
+
+            .val-number {
+                color: #ffd43b;
+            }
+
+            .val-boolean {
+                color: #ff922b;
+            }
+
+            .val-null {
+                color: #adb5bd;
+                font-style: italic;
+            }
 
             /* Pretty Print JSON */
             .val-json {
@@ -444,7 +509,7 @@
                 font-size: 13px;
                 color: #e9ecef;
                 white-space: pre;
-                background-color: rgba(0,0,0,0.2);
+                background-color: rgba(0, 0, 0, 0.2);
                 padding: 8px;
                 border-radius: 4px;
                 border: 1px solid #333;
@@ -480,7 +545,8 @@
                                                 {% if value.start_ms is defined and value.duration_ms is defined and total_duration > 0 %}
                                                     <div class="waterfall-container">
                                                         <div class="waterfall-bar-bg">
-                                                            <div class="waterfall-bar" style="left: {{ (value.start_ms / total_duration * 100)|round(2) }}%; width: {{ (value.duration_ms / total_duration * 100)|round(2) }}%;"></div>
+                                                            <div class="waterfall-bar"
+                                                                 style="left: {{ (value.start_ms / total_duration * 100)|round(2) }}%; width: {{ (value.duration_ms / total_duration * 100)|round(2) }}%;"></div>
                                                         </div>
                                                         <span class="waterfall-label">{{ value.duration_ms }}ms (at {{ value.start_ms }}ms)</span>
                                                     </div>
@@ -501,23 +567,38 @@
 
             <div class="flexbox-item toolbar-actions">
                 <a href="#" id="pos-ccw" title="Move Counter-Clockwise">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                        <path d="M3 3v5h5"/>
+                    </svg>
                 </a>
                 <a href="#" id="pos-opposite" title="Move to Opposite Side">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="m21 16-4 4-4-4"/>
+                        <path d="M17 20V4"/>
+                        <path d="m3 8 4-4 4 4"/>
+                        <path d="M7 4v16"/>
+                    </svg>
                 </a>
                 <a href="#" id="pos-cw" title="Move Clockwise">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+                        <path d="M21 3v5h-5"/>
+                    </svg>
                 </a>
-                <a href="#" id="close-btn" title="Close Debug Toolbar" onclick="this.getRootNode().host.remove(); document.body.style.margin = ''; return false;">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                <a href="#" id="close-btn" title="Close Debug Toolbar"
+                   onclick="this.getRootNode().host.remove(); document.body.style.margin = ''; return false;">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M18 6 6 18"/>
+                        <path d="m6 6 12 12"/>
+                    </svg>
                 </a>
             </div>
         </div>
     </template>
 </div>
 <script>
-    (function() {
+    (function () {
         const requestId = '{{ requestId }}';
         const host = document.getElementById('blue-debug-toolbar-host-' + requestId);
         if (!host) return;
@@ -526,7 +607,7 @@
             const template = host.querySelector('template[shadowrootmode]');
             if (template) {
                 const mode = template.getAttribute('shadowrootmode');
-                const shadowRoot = host.attachShadow({ mode });
+                const shadowRoot = host.attachShadow({mode});
                 shadowRoot.appendChild(template.content);
                 template.remove();
             }
@@ -542,18 +623,25 @@
         function setPosition(pos) {
             host.classList.remove('pos-bottom', 'pos-top', 'pos-right', 'pos-left');
             host.classList.add('pos-' + pos);
-            document.body.style.marginBottom = ''; document.body.style.marginTop = '';
-            document.body.style.marginRight = ''; document.body.style.marginLeft = '';
+            document.body.style.marginBottom = '';
+            document.body.style.marginTop = '';
+            document.body.style.marginRight = '';
+            document.body.style.marginLeft = '';
 
             const navbar = document.querySelector('.navbar.is-fixed-top');
-            if (navbar) { navbar.style.left = ''; navbar.style.right = ''; }
+            if (navbar) {
+                navbar.style.left = '';
+                navbar.style.right = '';
+            }
 
             if (pos === 'bottom') document.body.style.marginBottom = '35px';
             if (pos === 'top') document.body.style.marginTop = '35px';
 
             if (pos === 'right' || pos === 'left') {
                 host.style.width = (localStorage.getItem(storageKeyWidth) || '350') + 'px';
-            } else { host.style.width = ''; }
+            } else {
+                host.style.width = '';
+            }
 
             localStorage.setItem(storageKeyPos, pos);
             updateBodyMargins();
@@ -661,7 +749,12 @@
         const handle = shadowRoot.querySelector('#resize-handle');
         let isResizing = false;
 
-        handle.addEventListener('mousedown', () => { isResizing = true; handle.classList.add('active'); document.body.style.cursor = 'ew-resize'; document.body.style.userSelect = 'none'; });
+        handle.addEventListener('mousedown', () => {
+            isResizing = true;
+            handle.classList.add('active');
+            document.body.style.cursor = 'ew-resize';
+            document.body.style.userSelect = 'none';
+        });
         window.addEventListener('mousemove', (e) => {
             if (!isResizing) return;
             let newWidth;
@@ -674,7 +767,14 @@
                 updateBodyMargins(newWidth);
             }
         });
-        window.addEventListener('mouseup', () => { if (isResizing) { isResizing = false; handle.classList.remove('active'); document.body.style.cursor = ''; document.body.style.userSelect = ''; } });
+        window.addEventListener('mouseup', () => {
+            if (isResizing) {
+                isResizing = false;
+                handle.classList.remove('active');
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            }
+        });
 
         const updatePosition = (offset) => {
             const currentIndex = positions.indexOf(currentPos);
@@ -683,9 +783,18 @@
             setPosition(currentPos);
         };
 
-        shadowRoot.querySelector('#pos-ccw').addEventListener('click', (e) => { e.preventDefault(); updatePosition(1); });
-        shadowRoot.querySelector('#pos-cw').addEventListener('click', (e) => { e.preventDefault(); updatePosition(-1); });
-        shadowRoot.querySelector('#pos-opposite').addEventListener('click', (e) => { e.preventDefault(); updatePosition(2); });
+        shadowRoot.querySelector('#pos-ccw').addEventListener('click', (e) => {
+            e.preventDefault();
+            updatePosition(1);
+        });
+        shadowRoot.querySelector('#pos-cw').addEventListener('click', (e) => {
+            e.preventDefault();
+            updatePosition(-1);
+        });
+        shadowRoot.querySelector('#pos-opposite').addEventListener('click', (e) => {
+            e.preventDefault();
+            updatePosition(2);
+        });
 
         // Filtering Logic
         const sidebarSearch = shadowRoot.querySelector('#sidebar-search');

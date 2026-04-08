@@ -14,8 +14,7 @@ readonly class ConfigurationFileProvider implements Provider
 {
     public function __construct(
         private PackageExtras $packageExtras,
-    ) {
-    }
+    ) {}
 
     public function get(): array
     {

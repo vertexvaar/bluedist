@@ -13,8 +13,7 @@ readonly class TwigFactoryDecorator
     public function __construct(
         private TwigFactory $inner,
         private Stopwatch $stopwatch,
-    ) {
-    }
+    ) {}
 
     public function create(): View
     {

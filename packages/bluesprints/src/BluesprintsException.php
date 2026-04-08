@@ -6,6 +6,4 @@ namespace VerteXVaaR\BlueSprints;
 
 use Exception;
 
-abstract class BluesprintsException extends Exception
-{
-}
+abstract class BluesprintsException extends Exception {}

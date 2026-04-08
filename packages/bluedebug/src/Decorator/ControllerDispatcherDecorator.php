@@ -15,8 +15,7 @@ readonly class ControllerDispatcherDecorator implements RequestHandlerInterface
     public function __construct(
         private ControllerDispatcher $inner,
         private Stopwatch $stopwatch,
-    ) {
-    }
+    ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

@@ -22,8 +22,7 @@ readonly class TwigFactory
         private Environment $environment,
         private iterable $extensions,
         private PackageExtras $packageExtras,
-    ) {
-    }
+    ) {}
 
     public function create(): View
     {

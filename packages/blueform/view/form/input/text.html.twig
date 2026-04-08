@@ -11,9 +11,9 @@
             type="text"
             name="{{ element.htmlPathString }}"
             value="{{ element.value }}"
-           {% if element.placeholder %}placeholder="{{ element.placeholder }}"{% endif %}
-           {% if element.disabled %}disabled{% endif %}
-           {% if element.readonly %}readonly{% endif %}
+            {% if element.placeholder %}placeholder="{{ element.placeholder }}"{% endif %}
+            {% if element.disabled %}disabled{% endif %}
+            {% if element.readonly %}readonly{% endif %}
             autocomplete="{{ element.name }}"
     >
 {% endset %}

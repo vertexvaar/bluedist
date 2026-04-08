@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDebug\Template\Extension;
 
+use JsonException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigTest;
-
-use JsonException;
 
 use function get_object_vars;
 use function is_string;

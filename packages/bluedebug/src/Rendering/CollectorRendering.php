@@ -10,6 +10,5 @@ readonly class CollectorRendering
         public string $title,
         public string $shortInformation,
         public ?array $popupTable = null,
-    ) {
-    }
+    ) {}
 }

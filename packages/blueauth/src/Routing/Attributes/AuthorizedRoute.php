@@ -21,6 +21,5 @@ readonly class AuthorizedRoute extends Route
         public int $priority = 100,
         public bool $requireAuthorization = false,
         public array $requiredRoles = [],
-    ) {
-    }
+    ) {}
 }
