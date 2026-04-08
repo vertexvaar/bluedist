@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueFoundation\Console\Command;
 
 use Composer\InstalledVersions;
+use LogicException;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Symfony\Component\Config\FileLocator;
@@ -136,12 +137,15 @@ class CompileCommand extends Command
         $path = substr($path, 1);
         $parts = explode('/', $path, 3);
         if (count($parts) !== 3) {
-            return implode('/', $path);
+            throw new LogicException(sprintf('The path "%s" does not refer to a path in a package.', $path));
         }
         $packageName = implode('/', [$parts[0], $parts[1]]);
-        $referredPackage = $packages[$packageName] ?? [];
+        if (!isset($packages[$packageName])) {
+            throw new LogicException(sprintf('The package "%s" does not exist.', $packageName));
+        }
+        $referredPackage = $packages[$packageName];
         if (!isset($referredPackage['install_path'])) {
-            return implode('/', $path);
+            throw new LogicException(sprintf('The package "%s" does not have an install path.', $packageName));
         }
         return $this->resolvePackagePath($parts[2], $referredPackage['install_path'], $rootPath, $packages);
     }
