@@ -7,6 +7,7 @@ namespace VerteXVaaR\BlueAdmin\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Contracts\Service\Attribute\Required;
+use Throwable;
 use VerteXVaaR\BlueAuth\Routing\Attributes\AuthorizedRoute;
 use VerteXVaaR\BlueSeed\SeedService;
 use VerteXVaaR\BlueWeb\Controller\AbstractController;
@@ -29,10 +30,10 @@ class SeedController extends AbstractController
     public function list(ServerRequestInterface $request): ResponseInterface
     {
         $session = $request->getAttribute('session');
-        $flashMessages = $this->flashMessageService->get($session->identifier);
+        $flashMessages = $this->flashMessageService->get($session);
 
         return $this->render('@vertexvaar_blueadmin/seeds/index.html.twig', [
-            'seeders' => $this->seedService->getSeeders(),
+            'seeders' => $this->seedService->seeders,
             'flashMessages' => $flashMessages,
         ]);
     }
@@ -46,14 +47,14 @@ class SeedController extends AbstractController
         try {
             $this->seedService->seed($name);
             $this->flashMessageService->add(
-                $session->identifier,
+                $session,
                 'Success',
                 sprintf('Seeder "%s" executed successfully.', $name),
                 Severity::SUCCESS,
             );
         } catch (Throwable $e) {
             $this->flashMessageService->add(
-                $session->identifier,
+                $session,
                 'Error',
                 sprintf('Error executing seeder "%s": %s', $name, $e->getMessage()),
                 Severity::ERROR,

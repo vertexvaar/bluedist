@@ -9,9 +9,16 @@ use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
 readonly class FruitSeeder implements Seeder
 {
+    public const string IDENTIFIER = 'fruit';
+
     public function __construct(
         private Repository $repository,
     ) {}
+
+    public function getIdentifier(): string
+    {
+        return self::IDENTIFIER;
+    }
 
     public function getDependencies(): array
     {

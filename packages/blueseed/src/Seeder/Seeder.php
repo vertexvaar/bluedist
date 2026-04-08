@@ -5,7 +5,12 @@ namespace VerteXVaaR\BlueSeed\Seeder;
 interface Seeder
 {
     /**
-     * @return array<class-string<Seeder>>
+     * @return string Unique name for this seeder.
+     */
+    public function getIdentifier(): string;
+
+    /**
+     * @return array<string> Array of names this seeder depends on
      */
     public function getDependencies(): array;
 
