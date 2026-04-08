@@ -101,10 +101,10 @@ readonly class TracingFileStore implements Store
         return $transaction;
     }
 
-    private function endTrace(?Transaction $transaction)
+    private function endTrace(?Transaction $transaction): void
     {
         if (!$this->enabled || null === $transaction) {
-            return null;
+            return;
         }
         SentrySdk::getCurrentHub()->getSpan()->finish();
 
