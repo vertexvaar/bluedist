@@ -61,7 +61,7 @@ class ErrorHandler
         array $callStack = [],
     ): bool {
         $this->includeCss();
-        $context = (new DI())->get(Environment::class)->context;
+        $context = new DI()->get(Environment::class)->context;
         echo '<div class="c-error">';
         if (Context::Development === $context || Context::Testing === $context) {
             echo '<h1>An error occurred</h1>';
@@ -106,7 +106,6 @@ class ErrorHandler
                 } elseif (is_string($argument)) {
                     echo $argument;
                 } else {
-                    /** @noinspection ForgottenDebugOutputInspection */
                     var_dump($argument);
                 }
             }
@@ -123,7 +122,7 @@ class ErrorHandler
             $helpFileContents = file_get_contents($helpFile);
             echo '<h2>This might help you:</h2>';
             if (class_exists(Parsedown::class)) {
-                echo (new Parsedown())->text($helpFileContents);
+                echo new Parsedown()->text($helpFileContents);
             } else {
                 echo '<div class="c-error__md">';
                 echo nl2br($helpFileContents);
