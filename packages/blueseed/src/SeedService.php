@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueSeed;
 
-use InvalidArgumentException;
-use RuntimeException;
 use VerteXVaaR\BlueFoundation\Service\DependencyOrderingService;
+use VerteXVaaR\BlueSeed\Exception\CircularSeederDependencyException;
+use VerteXVaaR\BlueSeed\Exception\SeederDoesNotExistException;
 use VerteXVaaR\BlueSeed\Exception\SeederNotFoundException;
 use VerteXVaaR\BlueSeed\Seeder\Seeder;
 
 use function array_column;
 use function array_keys;
 use function implode;
-use function sprintf;
 
 readonly class SeedService
 {
@@ -52,12 +51,14 @@ readonly class SeedService
         }
     }
 
+    /**
+     * @throws SeederDoesNotExistException
+     * @throws CircularSeederDependencyException
+     */
     public function seed(string $identifier): void
     {
         if (!isset($this->seeders[$identifier])) {
-            throw new InvalidArgumentException(
-                sprintf('Seeder "%s" does not exist.', $identifier),
-            );
+            throw new SeederDoesNotExistException($identifier);
         }
 
         $seeders = $this->collectDependencies($identifier);
@@ -84,16 +85,12 @@ readonly class SeedService
      * @param string $identifier
      * @param array<string, true> $visiting
      * @return array<string, array{'seeder': Seeder, 'after': array<string>}>
+     * @throws CircularSeederDependencyException
      */
     protected function collectDependencies(string $identifier, array $visiting = []): array
     {
         if (isset($visiting[$identifier])) {
-            throw new RuntimeException(
-                sprintf(
-                    'Circular dependency detected: %s',
-                    implode(' -> ', array_keys($visiting)) . ' -> ' . $identifier,
-                ),
-            );
+            throw new CircularSeederDependencyException(implode(' -> ', array_keys($visiting)) . ' -> ' . $identifier);
         }
 
         $seederData = $this->seeders[$identifier];

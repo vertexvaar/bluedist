@@ -3,13 +3,12 @@
 namespace VerteXVaaR\BlueAdmin\Table;
 
 use Closure;
-use InvalidArgumentException;
+use VerteXVaaR\BlueAdmin\Exception\UnsupportedRowActionMethodException;
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 use VerteXVaaR\BlueWeb\Enum\HttpMethod;
 
 use function array_key_exists;
 use function CoStack\Lib\evaluate;
-use function sprintf;
 
 readonly class RowAction
 {
@@ -24,7 +23,7 @@ readonly class RowAction
      * @param HttpMethod $method
      * @param array<string|Closure> $attributes
      *
-     * @throws InvalidArgumentException
+     * @throws UnsupportedRowActionMethodException
      */
     public function __construct(
         protected string|Closure $title,
@@ -38,9 +37,7 @@ readonly class RowAction
             $attributes['class'] ??= 'button is-small is-danger';
             $attributes['style'] ??= 'display:inline';
         } else {
-            throw new InvalidArgumentException(
-                sprintf('HttpMethod::%s can not be used for RowAction', $this->method->name),
-            );
+            throw new UnsupportedRowActionMethodException($this->method->name);
         }
         $this->attributes = $attributes;
     }

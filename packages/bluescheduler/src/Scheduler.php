@@ -8,7 +8,6 @@ use VerteXVaaR\BlueScheduler\Model\TaskExecution;
 use VerteXVaaR\BlueScheduler\Task\AbstractTask;
 use VerteXVaaR\BlueSprints\Mvcr\Repository\Repository;
 
-use function strtr;
 use function time;
 
 readonly class Scheduler

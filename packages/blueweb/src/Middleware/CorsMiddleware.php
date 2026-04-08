@@ -7,8 +7,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use RuntimeException;
 use VerteXVaaR\BlueConfig\Config;
+use VerteXVaaR\BlueWeb\Exception\NoAllowedOriginException;
+use VerteXVaaR\BlueWeb\Exception\ServerNameNotDeterminedException;
 use VerteXVaaR\BlueWeb\Middleware\Attribute\AsMiddleware;
 
 use function implode;
@@ -75,7 +76,7 @@ readonly class CorsMiddleware implements MiddlewareInterface
                 return $serverName;
             }
         }
-        throw new RuntimeException('Could not reliably determine the server\'s name');
+        throw new ServerNameNotDeterminedException();
     }
 
     protected function getAllowedOrigins(ServerRequestInterface $request): array
@@ -92,7 +93,7 @@ readonly class CorsMiddleware implements MiddlewareInterface
         }
 
         if (empty($allowedOrigins)) {
-            throw new RuntimeException('No allowed origin could be identified');
+            throw new NoAllowedOriginException();
         }
 
         return $allowedOrigins;

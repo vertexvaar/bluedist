@@ -2,10 +2,10 @@
 
 namespace VerteXVaaR\BlueWeb;
 
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use VerteXVaaR\BlueWeb\Exception\HeadersAlreadySentException;
+use VerteXVaaR\BlueWeb\Exception\InvalidResponseEmitterBufferLengthException;
 use VerteXVaaR\BlueWeb\Exception\OutputAlreadySentException;
 
 use function headers_sent;
@@ -15,19 +15,13 @@ class ResponseEmitter
     private ?int $bufferLength;
 
     /**
-     * @throws InvalidArgumentException if buffer length is integer type and less than or one.
+     * @throws InvalidResponseEmitterBufferLengthException if buffer length is integer type and less than or one.
      */
     public function __construct(
         ?int $bufferLength = null,
     ) {
         if ($bufferLength !== null && $bufferLength < 1) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Buffer length for `%s` must be greater than zero; received `%d`.',
-                    self::class,
-                    $bufferLength,
-                ),
-            );
+            throw new InvalidResponseEmitterBufferLengthException(self::class, $bufferLength);
         }
 
         $this->bufferLength = $bufferLength;

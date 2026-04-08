@@ -7,10 +7,10 @@ namespace VerteXVaaR\BlueSprints\Store;
 use DateTime;
 use DateTimeImmutable;
 use FilesystemIterator;
-use RuntimeException;
 use SplFileInfo;
 use VerteXVaaR\BlueConfig\Config;
 use VerteXVaaR\BlueFoundation\PackageExtras;
+use VerteXVaaR\BlueSprints\Exception\DirectoryNotCreatedException;
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
 use function CoStack\Lib\concat_paths;
@@ -23,7 +23,6 @@ use function iterator_count;
 use function mkdir;
 use function octdec;
 use function serialize;
-use function sprintf;
 use function str_replace;
 use function unlink;
 use function unserialize;
@@ -114,7 +113,7 @@ readonly class FileStore implements Store
             && !mkdir($classFolder, octdec($this->config->get('folderPermissions')), true)
             && !is_dir($classFolder)
         ) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $classFolder));
+            throw new DirectoryNotCreatedException($classFolder);
         }
 
         return $classFolder;

@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace VerteXVaaR\BlueFoundation\Console\Command;
 
 use Composer\InstalledVersions;
-use LogicException;
 use Psr\Container\ContainerInterface;
-use RuntimeException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,6 +16,10 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use VerteXVaaR\BlueFoundation\Exception\BootstrapDirectoryNotCreatedException;
+use VerteXVaaR\BlueFoundation\Exception\PackageInstallPathMissingException;
+use VerteXVaaR\BlueFoundation\Exception\PackageNotFoundException;
+use VerteXVaaR\BlueFoundation\Exception\PackagePathInvalidException;
 use VerteXVaaR\BlueFoundation\PackageExtras;
 
 use function array_key_last;
@@ -55,7 +57,7 @@ class CompileCommand extends Command
 
         $bootstrapPath = concat_paths($rootPath, 'bootstrap');
         if (!mkdir_deep($bootstrapPath)) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $bootstrapPath));
+            throw new BootstrapDirectoryNotCreatedException($bootstrapPath);
         }
 
         $this->compilePackageExtras($rootPath, $bootstrapPath);
@@ -137,15 +139,15 @@ class CompileCommand extends Command
         $path = substr($path, 1);
         $parts = explode('/', $path, 3);
         if (count($parts) !== 3) {
-            throw new LogicException(sprintf('The path "%s" does not refer to a path in a package.', $path));
+            throw new PackagePathInvalidException($path);
         }
         $packageName = implode('/', [$parts[0], $parts[1]]);
         if (!isset($packages[$packageName])) {
-            throw new LogicException(sprintf('The package "%s" does not exist.', $packageName));
+            throw new PackageNotFoundException($packageName);
         }
         $referredPackage = $packages[$packageName];
         if (!isset($referredPackage['install_path'])) {
-            throw new LogicException(sprintf('The package "%s" does not have an install path.', $packageName));
+            throw new PackageInstallPathMissingException($packageName);
         }
         return $this->resolvePackagePath($parts[2], $referredPackage['install_path'], $rootPath, $packages);
     }

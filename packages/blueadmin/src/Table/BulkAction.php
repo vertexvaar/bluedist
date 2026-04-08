@@ -3,13 +3,12 @@
 namespace VerteXVaaR\BlueAdmin\Table;
 
 use Closure;
-use InvalidArgumentException;
+use VerteXVaaR\BlueAdmin\Exception\UnsupportedBulkActionMethodException;
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 use VerteXVaaR\BlueWeb\Enum\HttpMethod;
 
 use function array_key_exists;
 use function CoStack\Lib\evaluate;
-use function sprintf;
 
 readonly class BulkAction
 {
@@ -24,7 +23,7 @@ readonly class BulkAction
      * @param HttpMethod $method
      * @param array<string|Closure> $attributes
      *
-     * @throws InvalidArgumentException
+     * @throws UnsupportedBulkActionMethodException
      */
     public function __construct(
         protected string|Closure $title,
@@ -38,9 +37,7 @@ readonly class BulkAction
             $attributes['class'] ??= 'button is-small is-danger';
             $attributes['style'] ??= 'display:inline';
         } else {
-            throw new InvalidArgumentException(
-                sprintf('HttpMethod::%s can not be used for BulkAction', $this->method->name),
-            );
+            throw new UnsupportedBulkActionMethodException($this->method->name);
         }
         $this->attributes = $attributes;
     }

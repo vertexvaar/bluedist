@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueWeb\ActionCache\DependencyInjection;
 
-use Exception;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use VerteXVaaR\BlueWeb\ActionCache\Attributes\ActionCache;
 use VerteXVaaR\BlueWeb\ActionCache\Middleware\ActionCacheMiddleware;
 use VerteXVaaR\BlueWeb\Enum\HttpMethod;
+use VerteXVaaR\BlueWeb\Exception\ActionCacheWithoutRouteException;
+use VerteXVaaR\BlueWeb\Exception\NonGetRouteActionCacheException;
 use VerteXVaaR\BlueWeb\Routing\Attributes\Route;
 
 use function array_keys;
@@ -44,21 +45,15 @@ readonly class ActionCacheCompilerPass implements CompilerPassInterface
                         }
                     }
                     if (empty($routeAttributes)) {
-                        throw new Exception(
-                            'Can not cache an action without a route annotation.'
-                            . ' Method: ' . $class . '::' . $reflectionMethod->getName(),
-                        );
+                        throw new ActionCacheWithoutRouteException($class, $reflectionMethod->getName());
                     }
                     foreach ($routeAttributes as $routeAttribute) {
                         if ($routeAttribute->method !== HttpMethod::GET) {
-                            throw new Exception(
-                                sprintf(
-                                    "Can not cache actions with non-GET routes. Method: %s::%s Conflicting Route: %s: %s",
-                                    $class,
-                                    $reflectionMethod->getName(),
-                                    $routeAttribute->method->value,
-                                    $routeAttribute->path,
-                                ),
+                            throw new NonGetRouteActionCacheException(
+                                $class,
+                                $reflectionMethod->getName(),
+                                $routeAttribute->method->value,
+                                $routeAttribute->path,
                             );
                         }
                     }

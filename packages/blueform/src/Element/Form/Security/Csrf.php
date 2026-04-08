@@ -8,11 +8,15 @@ use CoStack\Lib\Exceptions\ArrayKeyPathDoesNotExistException;
 use CoStack\Lib\Exceptions\ArrayPathTerminatesEarlyException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use InvalidArgumentException;
-use LogicException;
 use Psr\Http\Message\ServerRequestInterface;
 use SensitiveParameter;
 use VerteXVaaR\BlueForm\Element\Form\FormElement;
+use VerteXVaaR\BlueForm\Exception\CsrfDefaultValueNotAllowedException;
+use VerteXVaaR\BlueForm\Exception\CsrfInitialValueNotAllowedException;
+use VerteXVaaR\BlueForm\Exception\EmptyCsrfFieldNameException;
+use VerteXVaaR\BlueForm\Exception\EmptyCsrfSecretException;
+use VerteXVaaR\BlueForm\Exception\EmptyCsrfTokenIdException;
+use VerteXVaaR\BlueForm\Exception\InvalidCsrfTtlException;
 
 use function base64_encode;
 use function CoStack\Lib\array_value;
@@ -31,19 +35,19 @@ class Csrf extends FormElement
         parent::__construct('csrf');
 
         if ($this->tokenId === '') {
-            throw new InvalidArgumentException('Token ID must not be empty.');
+            throw new EmptyCsrfTokenIdException();
         }
 
         if ($this->secret === '') {
-            throw new InvalidArgumentException('Secret must not be empty.');
+            throw new EmptyCsrfSecretException();
         }
 
         if ($this->fieldName === '') {
-            throw new InvalidArgumentException('Field name must not be empty.');
+            throw new EmptyCsrfFieldNameException();
         }
 
         if ($this->ttl < 1) {
-            throw new InvalidArgumentException('TTL must be greater than 0.');
+            throw new InvalidCsrfTtlException();
         }
 
         $this->condition = function (): bool {
@@ -80,11 +84,11 @@ class Csrf extends FormElement
 
     public function setDefaultValue(mixed $defaultValue): static
     {
-        throw new LogicException('Calling setDefaultValue on CSRF is not allowed');
+        throw new CsrfDefaultValueNotAllowedException();
     }
 
     public function setInitialValue(mixed $initialValue): static
     {
-        throw new LogicException('Calling setInitialValue on CSRF is not allowed');
+        throw new CsrfInitialValueNotAllowedException();
     }
 }

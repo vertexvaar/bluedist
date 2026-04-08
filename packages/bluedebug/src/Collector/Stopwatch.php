@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueDebug\Collector;
 
-use RuntimeException;
+use VerteXVaaR\BlueDebug\Exception\TimerNotStartedException;
 use VerteXVaaR\BlueDebug\Rendering\CollectorRendering;
 
 use function hrtime;
@@ -19,10 +19,13 @@ class Stopwatch implements Collector
         $this->timings[$name]['start'] = hrtime(true);
     }
 
+    /**
+     * @throws TimerNotStartedException
+     */
     public function stop(string $name): void
     {
         if (!isset($this->timings[$name])) {
-            throw new RuntimeException(sprintf("Timer not started for %s", $name));
+            throw new TimerNotStartedException($name);
         }
         $this->timings[$name]['end'] = hrtime(true);
         $this->timings[$name]['duration'] = $this->timings[$name]['end'] - $this->timings[$name]['start'];

@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueFoundation\Service;
 
-use UnexpectedValueException;
+use VerteXVaaR\BlueFoundation\Exception\CyclicDependencyException;
 
 use function array_keys;
 use function in_array;
@@ -202,10 +202,7 @@ class DependencyOrderingService
             });
         });
         if (!empty($cycles)) {
-            throw new UnexpectedValueException(
-                'Your dependencies have cycles. That will not work out. Cycles found: ' . implode(', ', $cycles),
-                1381960494,
-            );
+            throw new CyclicDependencyException(implode(', ', $cycles));
         }
 
         // We now built a list of dependencies
