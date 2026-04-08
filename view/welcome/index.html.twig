@@ -140,9 +140,10 @@
             <p>
                 bluesprints can be easily extended with a username/password login by requiring vertexvaar/blueauth.
                 blueauth contains all files required for a full authentication workflow.
-                Create users with <code>bin/blueconsole app:user:create [user] [pass]</code>.
+                Create users with <code>./vendor/bin/bluesprints app:user:create [user] [pass]</code>.
                 User sessions are automatically checked via middleware. You can access the session from the request
                 object.
+                Add roles to the user with <code>./vendor/bin/bluesprints app:user:addrole [user] [role]</code>
             </p>
         </div>
 
