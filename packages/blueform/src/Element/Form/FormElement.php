@@ -9,7 +9,6 @@ use CoStack\Lib\Exceptions\ArrayKeyPathDoesNotExistException;
 use CoStack\Lib\Exceptions\ArrayPathTerminatesEarlyException;
 use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueForm\Element\Element;
-use VerteXVaaR\BlueForm\FormContext;
 use VerteXVaaR\BlueForm\Trait\HasAccessors;
 use VerteXVaaR\BlueForm\Trait\HasDefaultValue;
 use VerteXVaaR\BlueForm\Trait\HasDisabled;
@@ -30,14 +29,6 @@ abstract class FormElement extends Element
     use HasPlaceholder;
     use HasReadonly;
     use HasSubmittedValue;
-
-    protected ?FormContext $context = null;
-
-    public function setContext(FormContext $context): static
-    {
-        $this->context = $context;
-        return $this;
-    }
 
     public function isDisabled(): bool
     {

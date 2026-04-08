@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace VerteXVaaR\BlueForm\Element;
 
-use VerteXVaaR\BlueForm\FormContext;
 use VerteXVaaR\BlueForm\Trait\HasCondition;
+use VerteXVaaR\BlueForm\Trait\HasContext;
 use VerteXVaaR\BlueForm\Trait\HasElementAttributes;
 use VerteXVaaR\BlueForm\Trait\HasIcon;
 use VerteXVaaR\BlueForm\Trait\HasParent;
@@ -17,6 +17,7 @@ use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 abstract class Element
 {
     use HasCondition;
+    use HasContext;
     use HasElementAttributes;
     use HasIcon;
     use HasParent;
@@ -27,11 +28,6 @@ abstract class Element
     public function __construct(string $name)
     {
         $this->name = $name;
-    }
-
-    public function setContext(FormContext $context): static
-    {
-        return $this;
     }
 
     abstract protected function writeToEntity(Entity $entity): static;

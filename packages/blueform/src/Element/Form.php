@@ -6,7 +6,6 @@ namespace VerteXVaaR\BlueForm\Element;
 
 use Psr\Http\Message\ServerRequestInterface;
 use VerteXVaaR\BlueForm\Element\Container\ContainerElement;
-use VerteXVaaR\BlueForm\FormContext;
 use VerteXVaaR\BlueForm\Trait\HasSubmittedValue;
 use VerteXVaaR\BlueSprints\Mvcr\Model\Entity;
 
@@ -25,13 +24,6 @@ class Form extends ContainerElement
     {
         $this->entity = $entity;
         parent::setEntity($entity);
-        return $this;
-    }
-
-    public function setContext(FormContext $context): static
-    {
-        $this->context = $context;
-        parent::setContext($context);
         return $this;
     }
 
