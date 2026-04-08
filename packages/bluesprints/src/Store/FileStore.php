@@ -18,6 +18,7 @@ use function file_exists;
 use function file_get_contents;
 use function getenv;
 use function is_dir;
+use function iterator_count;
 use function mkdir;
 use function octdec;
 use function serialize;
@@ -120,14 +121,9 @@ readonly class FileStore implements Store
     {
         $databaseFolder = $this->getFolder($class);
 
-        $count = 0;
-
         /** @var SplFileInfo[] $fileSystemIterator */
         $fileSystemIterator = new FilesystemIterator($databaseFolder, FilesystemIterator::SKIP_DOTS);
-        foreach ($fileSystemIterator as $file) {
-            ++$count;
-        }
 
-        return $count;
+        return iterator_count($fileSystemIterator);
     }
 }
