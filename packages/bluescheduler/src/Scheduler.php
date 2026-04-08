@@ -44,7 +44,7 @@ readonly class Scheduler
 
     public function getTaskExecution(string $taskName): TaskExecution
     {
-        $identifier = strtr($taskName, '\\', '_');
+        $identifier = str_replace('\\', '_', $taskName);
         $taskExecution = $this->repository->findByIdentifier(TaskExecution::class, $identifier);
         if (null === $taskExecution) {
             $taskExecution = new TaskExecution($identifier);
