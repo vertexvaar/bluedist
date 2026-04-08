@@ -7,8 +7,6 @@ namespace VerteXVaaR\BlueSprints\Store;
 use DateTime;
 use DateTimeImmutable;
 use FilesystemIterator;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SplFileInfo;
 use VerteXVaaR\BlueConfig\Config;
@@ -32,10 +30,8 @@ use const DIRECTORY_SEPARATOR as DS;
  * @template T of Entity
  * @implements Store<T>
  */
-class FileStore implements Store, LoggerAwareInterface
+readonly class FileStore implements Store
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private Config $config,
         private PackageExtras $packageExtras,
