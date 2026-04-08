@@ -27,7 +27,6 @@ use function sprintf;
 use function var_dump;
 use function var_export;
 
-use const E_ALL;
 use const PHP_SAPI;
 
 class ErrorHandler
@@ -40,7 +39,7 @@ class ErrorHandler
             return;
         }
         set_exception_handler($this->handleException(...));
-        set_error_handler($this->printErrorPage(...), E_ALL);
+        set_error_handler($this->printErrorPage(...));
     }
 
     public function handleException(Throwable $throwable): void
